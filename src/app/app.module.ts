@@ -12,24 +12,22 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import * as fromApp from './store/app.reducer';
 import { HttpClientModule } from '@angular/common/http';
+import { CashBoxModule } from './cashbox/cash-box.module';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    MainComponent
-  ],
+  declarations: [AppComponent, MainComponent],
   imports: [
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
     AuthModule,
+    CashBoxModule,
     BrowserAnimationsModule,
     MaterialModule,
     StoreModule.forRoot(fromApp.appReducer),
     EffectsModule.forRoot([AuthEffects]),
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule {
-}
+export class AppModule {}
