@@ -4,6 +4,7 @@ import { AuthGuard } from '../auth/auth.guard';
 import { CashBoxComponent } from './cash-box.component';
 import { CashBoxListComponent } from './cash-box-list/cash-box-list.component';
 import { CashBoxEditComponent } from './cash-box-edit/cash-box-edit.component';
+import { CashBoxViewComponent } from './cash-box-view/cash-box-view.component';
 
 const routes: Routes = [
   {
@@ -13,6 +14,8 @@ const routes: Routes = [
     children: [
       { path: '', component: CashBoxListComponent },
       { path: 'new', component: CashBoxEditComponent },
+      { path: ':id', component: CashBoxViewComponent },
+      { path: ':id/edit', component: CashBoxEditComponent },
     ],
   },
 ];
