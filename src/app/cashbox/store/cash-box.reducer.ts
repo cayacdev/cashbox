@@ -27,9 +27,16 @@ function updateCashBoxes(state, index: number, cashBox: CashBox): CashBox[] {
 
 const cashBoxReducer = createReducer(
   initialState,
+  on(CashBoxAction.fetchCashBoxes, (state) => {
+    return {
+      ...state,
+      loading: true,
+    };
+  }),
   on(CashBoxAction.setCashBoxes, (state, { cashBoxes }) => {
     return {
       ...state,
+      loading: false,
       cashBoxes,
     };
   }),
@@ -42,6 +49,7 @@ const cashBoxReducer = createReducer(
   on(CashBoxAction.updateCashBox, (state, { index, cashBox }) => {
     return {
       ...state,
+      loading: true,
       cashBoxes: updateCashBoxes(state, index, cashBox),
     };
   }),

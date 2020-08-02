@@ -3,6 +3,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import * as fromApp from '../../store/app.reducer';
 import * as CashBoxActions from '../store/cash-box.actions';
 import { Store } from '@ngrx/store';
+import { ActivatedRoute } from '@angular/router';
+import { CashBox } from '../cash-box.model';
 
 @Component({
   selector: 'app-cash-box-edit',
@@ -13,29 +15,53 @@ export class CashBoxEditComponent implements OnInit {
   form: FormGroup;
   loading: boolean;
   error: string;
-  editMode: false;
+  editMode = false;
+  private cashBox: CashBox;
 
-  constructor(private store: Store<fromApp.AppState>) {}
+  constructor(
+    private store: Store<fromApp.AppState>,
+    private activatedRoute: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
-    this.form = new FormGroup({
-      name: new FormControl(null, [
-        Validators.required,
-        Validators.maxLength(255),
-      ]),
-      description: new FormControl(null, [Validators.maxLength(255)]),
-    });
+    this.cashBox = this.activatedRoute.snapshot.data.cashBox;
     this.store.select('cashBoxes').subscribe((state) => {
       this.loading = state.loading;
       this.error = state.error;
     });
+    if (this.cashBox) {
+      this.editMode = true;
+    }
+    this.initForm();
   }
 
   onSubmit(): void {
-    if (this.form.valid) {
+    if (!this.form.valid) {
+      return;
+    }
+    if (!this.editMode) {
       this.store.dispatch(
         CashBoxActions.addCashBox({ cashBox: this.form.value })
       );
+    } else {
+      this.store.dispatch(
+        CashBoxActions.updateCashBox({
+          cashBox: this.form.value,
+          index: this.cashBox.id,
+        })
+      );
     }
+  }
+
+  private initForm(): void {
+    this.form = new FormGroup({
+      name: new FormControl(this.cashBox?.name, [
+        Validators.required,
+        Validators.maxLength(255),
+      ]),
+      description: new FormControl(this.cashBox?.description, [
+        Validators.maxLength(255),
+      ]),
+    });
   }
 }

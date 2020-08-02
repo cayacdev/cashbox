@@ -15,6 +15,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class CashBoxListComponent implements OnInit {
   dataSource = new MatTableDataSource();
+  isLoading: boolean;
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   displayedColumns = ['name', 'description', 'actions'];
@@ -29,6 +30,7 @@ export class CashBoxListComponent implements OnInit {
   ngOnInit(): void {
     this.store.select('cashBoxes').subscribe((state) => {
       this.dataSource.data = state.cashBoxes;
+      this.isLoading = state.loading;
     });
 
     this.dataSource.sort = this.sort;

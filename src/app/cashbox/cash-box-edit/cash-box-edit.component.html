@@ -5,13 +5,16 @@
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
       <p>
         <mat-form-field>
-          <input type="text" matInput placeholder="name" formControlName="name">
+          <input type="text" matInput placeholder="name" formControlName="name" #inputName>
+          <mat-hint align="end">{{inputName.value?.length || 0}}/255</mat-hint>
         </mat-form-field>
       </p>
 
       <p>
         <mat-form-field>
-          <textarea matNativeControl placeholder="description" formControlName="description"></textarea>
+          <textarea matNativeControl placeholder="description" formControlName="description"
+                    #inputDescription></textarea>
+          <mat-hint align="end">{{inputDescription.value?.length || 0}}/255</mat-hint>
         </mat-form-field>
       </p>
 

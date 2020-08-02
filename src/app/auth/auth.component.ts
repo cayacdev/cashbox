@@ -26,9 +26,6 @@ export class AuthComponent implements OnInit {
     this.storeSub = this.store.select('auth').subscribe((authState) => {
       this.isLoading = authState.loading;
       this.error = authState.authError;
-      if (this.error) {
-        this.showErrorAlert(this.error);
-      }
     });
   }
 
@@ -39,14 +36,8 @@ export class AuthComponent implements OnInit {
     const email = this.form.value.email;
     const password = this.form.value.password;
 
-    console.log(email);
-
     this.store.dispatch(new AuthActions.LoginStart({ email, password }));
 
     this.form.reset();
-  }
-
-  private showErrorAlert(error: string): void {
-    console.log(error);
   }
 }

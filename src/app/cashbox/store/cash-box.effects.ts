@@ -32,13 +32,33 @@ export class CashBoxEffects {
         return this.http
           .post(`${environment.backendDomain}/api/cash-boxes`, cashBox)
           .pipe(
-            map(() => {
-              return CashBoxAction.updateCashBoxSuccess({ cashBox });
-            }),
             catchError((error: HttpErrorResponse) => {
               return of(
                 CashBoxAction.updateCashBoxFail({ error: error.message })
               );
+            }),
+            map(() => {
+              return CashBoxAction.updateCashBoxSuccess({ cashBox });
+            })
+          );
+      })
+    )
+  );
+
+  updateCashBox$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(CashBoxAction.updateCashBox),
+      switchMap(({ cashBox, index }) => {
+        return this.http
+          .put(`${environment.backendDomain}/api/cash-boxes/${index}`, cashBox)
+          .pipe(
+            catchError((error: HttpErrorResponse) => {
+              return of(
+                CashBoxAction.updateCashBoxFail({ error: error.message })
+              );
+            }),
+            map(() => {
+              return CashBoxAction.updateCashBoxSuccess({ cashBox });
             })
           );
       })
