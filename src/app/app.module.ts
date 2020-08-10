@@ -12,11 +12,12 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import * as fromApp from './store/app.reducer';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { CashBoxModule } from './cashbox/cash-box.module';
-import { CashBoxEffects } from './cashbox/store/cash-box.effects';
+import { CashBoxModule } from './cash-box/cash-box.module';
+import { CashBoxEffects } from './cash-box/store/cash-box.effects';
 import { AuthInterceptorService } from './auth/auth-interceptor.service';
 import { environment } from '../environments/environment';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { BudgetPlanEffects } from './budget-plan/store/budget-plan.effects';
 
 @NgModule({
   declarations: [AppComponent, MainComponent],
@@ -29,7 +30,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
     BrowserAnimationsModule,
     MaterialModule,
     StoreModule.forRoot(fromApp.appReducer),
-    EffectsModule.forRoot([AuthEffects, CashBoxEffects]),
+    EffectsModule.forRoot([AuthEffects, CashBoxEffects, BudgetPlanEffects]),
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states
       logOnly: environment.production, // Restrict extension to log-only mode

@@ -10,6 +10,7 @@ import { CashBoxComponent } from './cash-box.component';
 import { CashBoxEditComponent } from './cash-box-edit/cash-box-edit.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CashBoxViewComponent } from './cash-box-view/cash-box-view.component';
+import { BudgetPlanModule } from '../budget-plan/budget-plan.module';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { CashBoxViewComponent } from './cash-box-view/cash-box-view.component';
     CashBoxRoutingModule,
     MaterialModule,
     ReactiveFormsModule,
+    BudgetPlanModule,
   ],
 })
 export class CashBoxModule {}

@@ -6,6 +6,7 @@ import { CashBoxListComponent } from './cash-box-list/cash-box-list.component';
 import { CashBoxEditComponent } from './cash-box-edit/cash-box-edit.component';
 import { CashBoxViewComponent } from './cash-box-view/cash-box-view.component';
 import { CashBoxResolver } from './cash-box.resolver';
+import { BudgetPlansResolver } from '../budget-plan/budget-plans-resolver.service';
 
 const routes: Routes = [
   {
@@ -18,7 +19,7 @@ const routes: Routes = [
       {
         path: ':id',
         component: CashBoxViewComponent,
-        resolve: { cashBox: CashBoxResolver },
+        resolve: { cashBox: CashBoxResolver, budgetPlans: BudgetPlansResolver },
       },
       {
         path: ':id/edit',

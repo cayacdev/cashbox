@@ -12,6 +12,9 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 const modules = [
   LayoutModule,
@@ -27,6 +30,9 @@ const modules = [
   MatTableModule,
   MatTabsModule,
   MatDialogModule,
+  MatCheckboxModule,
+  MatDatepickerModule,
+  MatNativeDateModule,
 ];
 
 @NgModule({

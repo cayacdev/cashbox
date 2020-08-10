@@ -1,22 +1,24 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import * as fromApp from '../../store/app.reducer';
 import * as CashBoxActions from '../store/cash-box.actions';
 import { Store } from '@ngrx/store';
 import { ActivatedRoute } from '@angular/router';
 import { CashBox } from '../cash-box.model';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-cash-box-edit',
   templateUrl: './cash-box-edit.component.html',
   styleUrls: ['./cash-box-edit.component.scss'],
 })
-export class CashBoxEditComponent implements OnInit {
+export class CashBoxEditComponent implements OnInit, OnDestroy {
   form: FormGroup;
   loading: boolean;
   error: string;
   editMode = false;
   private cashBox: CashBox;
+  private sub: Subscription;
 
   constructor(
     private store: Store<fromApp.AppState>,
@@ -25,7 +27,7 @@ export class CashBoxEditComponent implements OnInit {
 
   ngOnInit(): void {
     this.cashBox = this.activatedRoute.snapshot.data.cashBox;
-    this.store.select('cashBoxes').subscribe((state) => {
+    this.sub = this.store.select('cashBoxes').subscribe((state) => {
       this.loading = state.loading;
       this.error = state.error;
     });
@@ -63,5 +65,9 @@ export class CashBoxEditComponent implements OnInit {
         Validators.maxLength(255),
       ]),
     });
+  }
+
+  ngOnDestroy(): void {
+    this.sub.unsubscribe();
   }
 }

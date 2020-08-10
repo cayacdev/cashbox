@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { CashBox } from '../cash-box.model';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -7,18 +7,20 @@ import { Store } from '@ngrx/store';
 import * as CashBoxActions from '../store/cash-box.actions';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-cash-box-list',
   templateUrl: './cash-box-list.component.html',
   styleUrls: ['./cash-box-list.component.scss'],
 })
-export class CashBoxListComponent implements OnInit {
+export class CashBoxListComponent implements OnInit, OnDestroy {
   dataSource = new MatTableDataSource();
   isLoading: boolean;
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   displayedColumns = ['name', 'description', 'actions'];
+  private sub: Subscription;
 
   constructor(
     private store: Store<fromApp.AppState>,
@@ -28,7 +30,7 @@ export class CashBoxListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.store.select('cashBoxes').subscribe((state) => {
+    this.sub = this.store.select('cashBoxes').subscribe((state) => {
       this.dataSource.data = state.cashBoxes;
       this.isLoading = state.loading;
     });
@@ -62,6 +64,10 @@ export class CashBoxListComponent implements OnInit {
         }
       });
     }
+  }
+
+  ngOnDestroy(): void {
+    this.sub.unsubscribe();
   }
 }
 

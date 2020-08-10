@@ -28,23 +28,13 @@ function updateCashBoxes(state, index: number, cashBox: CashBox): CashBox[] {
 const cashBoxReducer = createReducer(
   initialState,
   on(CashBoxAction.fetchCashBoxes, (state) => {
-    return {
-      ...state,
-      loading: true,
-    };
+    return { ...state, loading: true };
   }),
   on(CashBoxAction.setCashBoxes, (state, { cashBoxes }) => {
-    return {
-      ...state,
-      loading: false,
-      cashBoxes,
-    };
+    return { ...state, loading: false, cashBoxes };
   }),
   on(CashBoxAction.addCashBox, (state) => {
-    return {
-      ...state,
-      loading: true,
-    };
+    return { ...state, loading: true };
   }),
   on(CashBoxAction.updateCashBox, (state, { index, cashBox }) => {
     return {
@@ -67,11 +57,7 @@ const cashBoxReducer = createReducer(
     };
   }),
   on(CashBoxAction.updateCashBoxFail, (state, { error }) => {
-    return {
-      ...state,
-      loading: false,
-      error,
-    };
+    return { ...state, loading: false, error };
   })
 );
 

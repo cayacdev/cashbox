@@ -38,7 +38,6 @@ export class MainComponent implements OnInit, OnDestroy {
   }
 
   onClickMenuItem(): void {
-    console.log(this.drawer);
     this.isHandset$.pipe(take(1)).subscribe((isHandset) => {
       if (isHandset) {
         this.drawer.close();
