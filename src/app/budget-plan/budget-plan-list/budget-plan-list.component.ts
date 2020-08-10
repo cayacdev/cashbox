@@ -6,6 +6,9 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatSort } from '@angular/material/sort';
+import { DeleteDialogComponent } from '../../shared/delete-dialog/delete-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
+import * as BudgetPlanAction from '../store/budget-plan.actions';
 
 @Component({
   selector: 'app-cash-box-budget-plan-list',
@@ -25,14 +28,19 @@ export class BudgetPlanListComponent implements OnInit, OnDestroy {
   isLoading: boolean;
   private sub: Subscription;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
+  cashBoxId: number;
+
+  selectedBudgetPlan: BudgetPlan;
 
   constructor(
     private store: Store<fromApp.AppState>,
     private router: Router,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
+    this.cashBoxId = this.activatedRoute.snapshot.data.cashBox.id;
     this.sub = this.store.select('budgetPlan').subscribe((state) => {
       this.dataSource.data = state.budgetPlans;
       this.isLoading = state.loading;
@@ -40,7 +48,9 @@ export class BudgetPlanListComponent implements OnInit, OnDestroy {
     this.dataSource.sort = this.sort;
   }
 
-  onView(element: any): void {}
+  onView(element: BudgetPlan): void {
+    this.selectedBudgetPlan = element;
+  }
 
   onEdit(element: BudgetPlan): void {
     this.router.navigate(['budget-plans', element.id, 'edit'], {
@@ -48,7 +58,23 @@ export class BudgetPlanListComponent implements OnInit, OnDestroy {
     });
   }
 
-  onDelete(element: any): void {}
+  onDelete(element: BudgetPlan): void {
+    const dialogRef = this.dialog.open(DeleteDialogComponent, {
+      width: '250px',
+      data: { data: element, headline: element.name },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === element) {
+        this.store.dispatch(
+          BudgetPlanAction.deleteBudgetPlan({
+            cashBoxId: this.cashBoxId,
+            index: element.id,
+          })
+        );
+      }
+    });
+  }
 
   ngOnDestroy(): void {
     this.sub.unsubscribe();

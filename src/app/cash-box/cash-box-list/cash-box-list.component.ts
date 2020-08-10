@@ -1,13 +1,14 @@
-import { Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { CashBox } from '../cash-box.model';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import * as fromApp from '../../store/app.reducer';
 import { Store } from '@ngrx/store';
 import * as CashBoxActions from '../store/cash-box.actions';
-import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { DeleteDialogComponent } from '../../shared/delete-dialog/delete-dialog.component';
 
 @Component({
   selector: 'app-cash-box-list',
@@ -50,35 +51,21 @@ export class CashBoxListComponent implements OnInit, OnDestroy {
   }
 
   onDelete(element: CashBox): void {
-    {
-      const dialogRef = this.dialog.open(CashBoxDeleteDialogComponent, {
-        width: '250px',
-        data: { cashBox: element },
-      });
+    const dialogRef = this.dialog.open(DeleteDialogComponent, {
+      width: '250px',
+      data: { data: element, headline: element.name },
+    });
 
-      dialogRef.afterClosed().subscribe((result) => {
-        if (result === element) {
-          this.store.dispatch(
-            CashBoxActions.deleteCashBox({ index: element.id })
-          );
-        }
-      });
-    }
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === element) {
+        this.store.dispatch(
+          CashBoxActions.deleteCashBox({ index: element.id })
+        );
+      }
+    });
   }
 
   ngOnDestroy(): void {
     this.sub.unsubscribe();
   }
-}
-
-interface CashBoxDeleteDialogData {
-  cashBox: CashBox;
-}
-
-@Component({
-  selector: 'app-cash-box-delete-dialog',
-  templateUrl: './cash-box-delete.dialog.html',
-})
-export class CashBoxDeleteDialogComponent {
-  constructor(@Inject(MAT_DIALOG_DATA) public data: CashBoxDeleteDialogData) {}
 }

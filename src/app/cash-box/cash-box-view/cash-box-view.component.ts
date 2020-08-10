@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { CashBox } from '../cash-box.model';
 import { ActivatedRoute } from '@angular/router';
+import { CashBox } from '../cash-box.model';
 
 @Component({
   selector: 'app-cash-box-view',

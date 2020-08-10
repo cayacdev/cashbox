@@ -1,8 +1,9 @@
 <mat-tab-group>
   <mat-tab label="Overview">
-    <app-cash-box-budget-plan-view [cashBox]="cashBox">
-      <button mat-button color="primary" routerLink="edit">Edit</button>
-    </app-cash-box-budget-plan-view>
+    <button class="edit-button" mat-raised-button color="accent" routerLink="edit">Edit</button>
+    <h1>{{cashBox.name}}</h1>
+    <p>{{cashBox.description}}</p>
+    <app-cash-box-budget-plan-view [budgetPlan]="{name: 'Test'}"></app-cash-box-budget-plan-view>
   </mat-tab>
   <mat-tab label="Reports">
     Add some cool reports here

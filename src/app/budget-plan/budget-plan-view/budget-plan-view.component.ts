@@ -1,8 +1,7 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { CashBox } from '../../cash-box/cash-box.model';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
-import { ActivatedRoute } from '@angular/router';
+import { BudgetPlan } from '../budget-plan.model';
 
 interface CashBoxEntries {
   date: Date;
@@ -182,16 +181,14 @@ const TEST_DATA: CashBoxEntries[] = [
   styleUrls: ['./budget-plan-view.component.scss'],
 })
 export class BudgetPlanViewComponent implements OnInit {
-  @Input() cashBox: CashBox;
+  @Input() budgetPlan: BudgetPlan;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   entries = new MatTableDataSource<CashBoxEntries>();
   displayedColumns = ['date', 'userName', 'description', 'amount'];
 
-  constructor(private activatedRoute: ActivatedRoute) {}
+  constructor() {}
 
   ngOnInit(): void {
-    this.cashBox = this.activatedRoute.snapshot.data.cashBox;
-
     this.entries.data = TEST_DATA;
     this.entries.sort = this.sort;
   }

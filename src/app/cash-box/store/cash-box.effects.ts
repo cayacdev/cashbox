@@ -2,11 +2,11 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import * as CashBoxAction from './cash-box.actions';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
-import { CashBox } from '../cash-box.model';
 import { environment } from '../../../environments/environment';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { EMPTY, of } from 'rxjs';
 import { Router } from '@angular/router';
+import { CashBox } from '../cash-box.model';
 
 @Injectable()
 export class CashBoxEffects {
