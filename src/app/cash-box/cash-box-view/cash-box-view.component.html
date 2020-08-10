@@ -1,8 +1,9 @@
 <mat-tab-group>
   <mat-tab label="Overview">
-    <button class="edit-button" mat-raised-button color="accent" routerLink="edit">Edit</button>
+    <button class="toolbar-button" mat-stroked-button color="primary" routerLink="edit">Edit</button>
     <h1>{{cashBox.name}}</h1>
     <p>{{cashBox.description}}</p>
+    <!-- FIXME -->
     <app-cash-box-budget-plan-view [budgetPlan]="{name: 'Test'}"></app-cash-box-budget-plan-view>
   </mat-tab>
   <mat-tab label="Reports">

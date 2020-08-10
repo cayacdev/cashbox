@@ -1,6 +1,5 @@
-<mat-spinner *ngIf="loading"></mat-spinner>
-<mat-card *ngIf="!loading">
-  <mat-card-title>Create new cash box</mat-card-title>
+<mat-card *ngIf="!isLoading">
+  <mat-card-title>{{editMode ? 'Update' : 'Create'}} cash box</mat-card-title>
   <mat-card-content>
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
       <p>
@@ -23,10 +22,13 @@
       </p>
 
       <div class="button">
-        <button type="submit" mat-raised-button color="primary">Create</button>
+        <button type="submit" mat-raised-button color="primary">{{editMode ? 'Update' : 'Create'}}</button>
         <button type="button" mat-raised-button color="warn" routerLink="..">Cancel</button>
       </div>
 
     </form>
   </mat-card-content>
 </mat-card>
+<div class="mat-spinner-wrapper" *ngIf="isLoading">
+  <mat-spinner></mat-spinner>
+</div>

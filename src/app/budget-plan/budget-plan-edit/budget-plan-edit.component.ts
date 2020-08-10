@@ -29,6 +29,7 @@ export class BudgetPlanEditComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.budgetPlan = this.activatedRoute.snapshot.data.budgetPlan;
+    this.editMode = !!this.budgetPlan;
     this.activatedRoute.parent.data.pipe(take(1)).subscribe((data) => {
       this.cashBoxId = data.cashBoxId;
     });

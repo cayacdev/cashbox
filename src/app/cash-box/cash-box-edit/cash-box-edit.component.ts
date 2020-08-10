@@ -14,7 +14,7 @@ import { CashBox } from '../cash-box.model';
 })
 export class CashBoxEditComponent implements OnInit, OnDestroy {
   form: FormGroup;
-  loading: boolean;
+  isLoading: boolean;
   error: string;
   editMode = false;
   private cashBox: CashBox;
@@ -28,7 +28,7 @@ export class CashBoxEditComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.cashBox = this.activatedRoute.snapshot.data.cashBox;
     this.sub = this.store.select('cashBoxes').subscribe((state) => {
-      this.loading = state.loading;
+      this.isLoading = state.loading;
       this.error = state.error;
     });
     if (this.cashBox) {
