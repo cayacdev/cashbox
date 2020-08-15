@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+  production: true,
+  backendDomain: 'https://cashbox-v2-api-test.cayacdev.de',
 };

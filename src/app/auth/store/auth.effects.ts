@@ -8,6 +8,7 @@ import { HttpClient } from '@angular/common/http';
 import * as AuthActions from './auth.actions';
 import { Auth } from '../auth.model';
 import { AuthService } from '../auth.service';
+import { environment } from '../../../environments/environment';
 
 export interface AuthResponseData {
   status: string;
@@ -57,10 +58,13 @@ export class AuthEffects {
     ofType(AuthActions.SIGNUP_START),
     switchMap((signupAction: AuthActions.SignupStart) => {
       return this.http
-        .post<AuthResponseData>('https://localhost:8080/api/auth/signup', {
-          email: signupAction.payload.email,
-          password: signupAction.payload.password,
-        })
+        .post<AuthResponseData>(
+          `${environment.backendDomain}/api/auth/signup`,
+          {
+            email: signupAction.payload.email,
+            password: signupAction.payload.password,
+          }
+        )
         .pipe(
           tap(() => {
             this.router.navigate(['/auth/login']);
@@ -77,7 +81,7 @@ export class AuthEffects {
     ofType(AuthActions.LOGIN_START),
     switchMap((authData: AuthActions.LoginStart) => {
       return this.http
-        .post<AuthResponseData>('http://localhost:8080/api/auth/login', {
+        .post<AuthResponseData>(`${environment.backendDomain}/api/auth/login`, {
           email: authData.payload.email,
           password: authData.payload.password,
         })
