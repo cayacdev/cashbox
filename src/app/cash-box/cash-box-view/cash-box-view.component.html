@@ -1,10 +1,10 @@
-<mat-tab-group>
+<mat-tab-group *ngIf="cashBox">
   <mat-tab label="Overview">
     <button class="toolbar-button" mat-stroked-button color="primary" routerLink="edit">Edit</button>
     <h1>{{cashBox.name}}</h1>
     <p>{{cashBox.description}}</p>
     <!-- FIXME -->
-    <app-cash-box-budget-plan-view [budgetPlan]="{name: 'Test'}"></app-cash-box-budget-plan-view>
+    <app-cash-box-budget-plan-view [budgetPlan]="cashBox.activeBudgetPlan"></app-cash-box-budget-plan-view>
   </mat-tab>
   <mat-tab label="Reports">
     Add some cool reports here

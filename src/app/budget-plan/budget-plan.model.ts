@@ -7,7 +7,6 @@ export class BudgetPlan {
     public start_date: Date,
     public end_date: Date,
     public budget: number,
-    public active: boolean,
     public entries: BudgetPlanEntry[]
   ) {}
 }

@@ -25,6 +25,23 @@ export class BudgetPlanEffects {
     )
   );
 
+  fetchEntries$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(BudgetPlanAction.fetchEntries),
+      switchMap(({ budgetPlanId, cashBoxId }) => {
+        return this.http.get<BudgetPlan>(
+          `${environment.backendDomain}/api/cash-boxes/${cashBoxId}/plans/${budgetPlanId}`
+        );
+      }),
+      map((budgetPlan) => {
+        return BudgetPlanAction.setEntries({
+          budgetPlanId: budgetPlan.id,
+          entries: budgetPlan.entries,
+        });
+      })
+    )
+  );
+
   createCashBox$ = createEffect(() =>
     this.actions$.pipe(
       ofType(BudgetPlanAction.addBudgetPlan),

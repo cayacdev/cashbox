@@ -2,178 +2,9 @@ import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { BudgetPlan } from '../budget-plan.model';
-
-interface CashBoxEntries {
-  date: Date;
-  userName: string;
-  description: string;
-  amount: number;
-}
-
-const TEST_DATA: CashBoxEntries[] = [
-  {
-    date: new Date(),
-    userName: 'Test User',
-    description: 'Lebensmittel',
-    amount: 12.32,
-  },
-  {
-    date: new Date(),
-    userName: 'Test User',
-    description: 'Lebensmittel',
-    amount: 12.32,
-  },
-  {
-    date: new Date(),
-    userName: 'Test User',
-    description: 'Lebensmittel',
-    amount: 12.32,
-  },
-  {
-    date: new Date(),
-    userName: 'Test User',
-    description: 'Lebensmittel',
-    amount: 12.32,
-  },
-  {
-    date: new Date(),
-    userName: 'Test User',
-    description: 'Lebensmittel',
-    amount: 12.32,
-  },
-  {
-    date: new Date(),
-    userName: 'Test User',
-    description: 'Lebensmittel',
-    amount: 12.32,
-  },
-  {
-    date: new Date(),
-    userName: 'Test User',
-    description: 'Lebensmittel',
-    amount: 12.32,
-  },
-  {
-    date: new Date(),
-    userName: 'Test User',
-    description: 'Lebensmittel',
-    amount: 12.32,
-  },
-  {
-    date: new Date(),
-    userName: 'Test User',
-    description: 'Lebensmittel',
-    amount: 12.32,
-  },
-  {
-    date: new Date(),
-    userName: 'Test User',
-    description: 'Lebensmittel',
-    amount: 12.32,
-  },
-  {
-    date: new Date(),
-    userName: 'Test User',
-    description: 'Lebensmittel',
-    amount: 12.32,
-  },
-  {
-    date: new Date(),
-    userName: 'Test User',
-    description: 'Lebensmittel',
-    amount: 12.32,
-  },
-  {
-    date: new Date(),
-    userName: 'Test User',
-    description: 'Lebensmittel',
-    amount: 12.32,
-  },
-  {
-    date: new Date(),
-    userName: 'Test User',
-    description: 'Lebensmittel',
-    amount: 12.32,
-  },
-  {
-    date: new Date(),
-    userName: 'Test User',
-    description: 'Lebensmittel',
-    amount: 12.32,
-  },
-  {
-    date: new Date(),
-    userName: 'Test User',
-    description: 'Lebensmittel',
-    amount: 12.32,
-  },
-  {
-    date: new Date(),
-    userName: 'Test User',
-    description: 'Lebensmittel',
-    amount: 12.32,
-  },
-  {
-    date: new Date(),
-    userName: 'Test User',
-    description: 'Lebensmittel',
-    amount: 12.32,
-  },
-  {
-    date: new Date(),
-    userName: 'Test User',
-    description: 'Lebensmittel',
-    amount: 12.32,
-  },
-  {
-    date: new Date(),
-    userName: 'Test User',
-    description: 'Lebensmittel',
-    amount: 12.32,
-  },
-  {
-    date: new Date(),
-    userName: 'Test User',
-    description: 'Lebensmittel',
-    amount: 12.32,
-  },
-  {
-    date: new Date(),
-    userName: 'Test User',
-    description: 'Lebensmittel',
-    amount: 12.32,
-  },
-  {
-    date: new Date(),
-    userName: 'Test User',
-    description: 'Lebensmittel',
-    amount: 12.32,
-  },
-  {
-    date: new Date(),
-    userName: 'Test User',
-    description: 'Lebensmittel',
-    amount: 12.32,
-  },
-  {
-    date: new Date(),
-    userName: 'Test User',
-    description: 'Lebensmittel',
-    amount: 12.32,
-  },
-  {
-    date: new Date(),
-    userName: 'Test User',
-    description: 'Lebensmittel',
-    amount: 12.32,
-  },
-  {
-    date: new Date(),
-    userName: 'Test User',
-    description: 'Lebensmittel',
-    amount: 12.32,
-  },
-];
+import { BudgetPlanEntry } from '../budget-plan-entry.model';
+import { Store } from '@ngrx/store';
+import * as fromApp from '../../store/app.reducer';
 
 @Component({
   selector: 'app-cash-box-budget-plan-view',
@@ -183,19 +14,29 @@ const TEST_DATA: CashBoxEntries[] = [
 export class BudgetPlanViewComponent implements OnInit {
   @Input() budgetPlan: BudgetPlan;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
-  entries = new MatTableDataSource<CashBoxEntries>();
-  displayedColumns = ['date', 'userName', 'description', 'amount'];
+  entries = new MatTableDataSource<BudgetPlanEntry>();
+  displayedColumns = ['date', 'user', 'description', 'value'];
 
-  constructor() {}
+  constructor(private store: Store<fromApp.AppState>) {}
 
   ngOnInit(): void {
-    this.entries.data = TEST_DATA;
+    if (this.budgetPlan.entries) {
+      this.entries.data = this.budgetPlan.entries;
+    } else {
+      const id = this.budgetPlan.id;
+      this.store.select('budgetPlan').subscribe((state) => {
+        this.entries.data = state.budgetPlans.find(
+          (plan) => plan.id === id
+        ).entries;
+      });
+    }
+
     this.entries.sort = this.sort;
   }
 
   getTotalCost(): number {
     return this.entries.data
-      .map((t) => t.amount)
+      ?.map((t) => t.value)
       .reduce((acc, value) => acc + value, 0);
   }
 }

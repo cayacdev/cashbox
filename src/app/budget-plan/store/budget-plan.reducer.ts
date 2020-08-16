@@ -29,6 +29,23 @@ const budgetPlanReducer = createReducer(
   on(BudgetPlanAction.setBudgetPlans, (state, { budgetPlans }) => {
     return { ...state, loading: false, budgetPlans };
   }),
+  on(BudgetPlanAction.fetchEntries, (state) => {
+    return { ...state, loading: true };
+  }),
+  on(BudgetPlanAction.setEntries, (state, { budgetPlanId, entries }) => {
+    const indexToUpdate = state.budgetPlans.findIndex(
+      (plan) => plan.id === budgetPlanId
+    );
+
+    const updatedBudgetPlan = {
+      ...state.budgetPlans[indexToUpdate],
+      entries,
+    };
+
+    const plans = [...state.budgetPlans];
+    plans[indexToUpdate] = updatedBudgetPlan;
+    return { ...state, loading: false, budgetPlans: plans };
+  }),
   on(BudgetPlanAction.addBudgetPlan, (state) => {
     return { ...state, loading: true };
   }),

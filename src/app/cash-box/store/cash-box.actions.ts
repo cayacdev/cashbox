@@ -8,6 +8,16 @@ export const setCashBoxes = createAction(
 
 export const fetchCashBoxes = createAction('[CashBox] fetch');
 
+export const setSelected = createAction(
+  '[CashBox] set selected',
+  props<{ cashBox: CashBox }>()
+);
+
+export const fetchSelected = createAction(
+  '[CashBox] fetch selected',
+  props<{ cashBoxId: number }>()
+);
+
 export const addCashBox = createAction(
   '[CashBox] add',
   props<{ cashBox: CashBox }>()

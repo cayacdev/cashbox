@@ -49,6 +49,14 @@ export class BudgetPlanListComponent implements OnInit, OnDestroy {
   }
 
   onView(element: BudgetPlan): void {
+    if (element && !element.entries) {
+      this.store.dispatch(
+        BudgetPlanAction.fetchEntries({
+          cashBoxId: this.cashBoxId,
+          budgetPlanId: element.id,
+        })
+      );
+    }
     this.selectedBudgetPlan = element;
   }
 

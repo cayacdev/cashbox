@@ -4,9 +4,9 @@ import { BudgetPlan } from '../budget-plan.model';
 import { Store } from '@ngrx/store';
 import * as fromApp from '../../store/app.reducer';
 import { ActivatedRoute } from '@angular/router';
-import { take } from 'rxjs/operators';
 import * as BudgetPlanAction from '../store/budget-plan.actions';
 import { Subscription } from 'rxjs';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-budget-plan-edit',
@@ -55,7 +55,6 @@ export class BudgetPlanEditComponent implements OnInit, OnDestroy {
           Validators.required,
         ]),
       }),
-      active: new FormControl(this.budgetPlan?.active, []),
     });
   }
 
@@ -69,12 +68,8 @@ export class BudgetPlanEditComponent implements OnInit, OnDestroy {
           cashBoxId: this.cashBoxId,
           budgetPlan: {
             ...this.form.value,
-            start_date: this.fixDate(this.form.value.range.start_date)
-              .toISOString()
-              .split('T')[0],
-            end_date: this.fixDate(this.form.value.range.end_date)
-              .toISOString()
-              .split('T')[0],
+            start_date: this.fixDate(this.form.value.range.start_date),
+            end_date: this.fixDate(this.form.value.range.end_date),
           },
         })
       );
@@ -82,19 +77,23 @@ export class BudgetPlanEditComponent implements OnInit, OnDestroy {
       this.store.dispatch(
         BudgetPlanAction.updateBudgetPlan({
           cashBoxId: this.cashBoxId,
-          budgetPlan: this.form.value,
+          budgetPlan: {
+            ...this.form.value,
+            start_date: this.fixDate(this.form.value.range.start_date),
+            end_date: this.fixDate(this.form.value.range.end_date),
+          },
           index: this.budgetPlan.id,
         })
       );
     }
   }
 
-  private fixDate(date: string): Date {
+  private fixDate(date: string): string {
     const d = new Date(date);
     if (!this.editMode) {
       d.setMinutes(-1 * d.getTimezoneOffset());
     }
-    return d;
+    return d.toISOString().split('T')[0];
   }
 
   ngOnDestroy(): void {

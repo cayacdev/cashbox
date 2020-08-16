@@ -6,12 +6,14 @@ export interface State {
   cashBoxes: CashBox[];
   loading: boolean;
   error: string;
+  selectedCashBox: CashBox;
 }
 
 const initialState: State = {
   cashBoxes: [],
   loading: false,
   error: null,
+  selectedCashBox: null,
 };
 
 function updateCashBoxes(state, index: number, cashBox: CashBox): CashBox[] {
@@ -32,6 +34,12 @@ const cashBoxReducer = createReducer(
   }),
   on(CashBoxAction.setCashBoxes, (state, { cashBoxes }) => {
     return { ...state, loading: false, cashBoxes };
+  }),
+  on(CashBoxAction.fetchSelected, (state) => {
+    return { ...state, loading: true };
+  }),
+  on(CashBoxAction.setSelected, (state, { cashBox }) => {
+    return { ...state, loading: false, selectedCashBox: cashBox };
   }),
   on(CashBoxAction.addCashBox, (state) => {
     return { ...state, loading: true };

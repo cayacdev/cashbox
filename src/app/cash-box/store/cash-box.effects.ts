@@ -4,9 +4,10 @@ import * as CashBoxAction from './cash-box.actions';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { EMPTY, of } from 'rxjs';
+import { combineLatest, EMPTY, of } from 'rxjs';
 import { Router } from '@angular/router';
 import { CashBox } from '../cash-box.model';
+import { BudgetPlan } from '../../budget-plan/budget-plan.model';
 
 @Injectable()
 export class CashBoxEffects {
@@ -20,6 +21,27 @@ export class CashBoxEffects {
       }),
       map((result) => {
         return CashBoxAction.setCashBoxes({ cashBoxes: result });
+      }),
+      catchError(() => EMPTY)
+    )
+  );
+
+  fetchSelectedCashBox$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(CashBoxAction.fetchSelected),
+      switchMap(({ cashBoxId }) => {
+        return combineLatest([
+          this.http.get<CashBox>(
+            `${environment.backendDomain}/api/cash-boxes/${cashBoxId}`
+          ),
+          this.http.get<BudgetPlan>(
+            `${environment.backendDomain}/api/cash-boxes/${cashBoxId}/plans/active`
+          ),
+        ]);
+      }),
+      map((value) => {
+        value[0].activeBudgetPlan = value[1];
+        return CashBoxAction.setSelected({ cashBox: value[0] });
       }),
       catchError(() => EMPTY)
     )

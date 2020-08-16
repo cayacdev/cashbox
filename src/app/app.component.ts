@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import * as AuthActions from './auth/store/auth.actions';
 import * as fromApp from './store/app.reducer';
+import * as CashBoxActions from './cash-box/store/cash-box.actions';
 
 @Component({
   selector: 'app-root',
@@ -13,5 +14,6 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.store.dispatch(new AuthActions.AutoLogin());
+    this.store.dispatch(CashBoxActions.fetchCashBoxes());
   }
 }

@@ -3,7 +3,7 @@ export class BudgetPlanEntry {
     public id: number,
     public date: Date,
     public description: string,
-    public userName: string,
+    public user: { name: string },
     public value: number
   ) {}
 }
