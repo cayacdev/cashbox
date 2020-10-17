@@ -53,7 +53,7 @@ const handleError = (errorRes: any) => {
 
 @Injectable()
 export class AuthEffects {
-  readonly ENDPOINT_AUTH = `${environment.backendDomain}/auth/v1`;
+  readonly ENDPOINT_AUTH = `${environment.backendDomain}/v1/auth`;
 
   @Effect({ dispatch: false })
   authSignup = this.actions$.pipe(
