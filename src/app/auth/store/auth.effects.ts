@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { catchError, map, switchMap, tap } from 'rxjs/operators';
+import { catchError, map, switchMap, take, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
@@ -12,7 +12,7 @@ import { environment } from '../../../environments/environment';
 
 export interface AuthResponseData {
   status: string;
-  token: string;
+  access_token: string;
   expires_in: string;
 }
 
@@ -53,18 +53,17 @@ const handleError = (errorRes: any) => {
 
 @Injectable()
 export class AuthEffects {
+  readonly ENDPOINT_AUTH = `${environment.backendDomain}/v1/auth`;
+
   @Effect({ dispatch: false })
   authSignup = this.actions$.pipe(
     ofType(AuthActions.SIGNUP_START),
     switchMap((signupAction: AuthActions.SignupStart) => {
       return this.http
-        .post<AuthResponseData>(
-          `${environment.backendDomain}/api/auth/signup`,
-          {
-            email: signupAction.payload.email,
-            password: signupAction.payload.password,
-          }
-        )
+        .post<AuthResponseData>(`${this.ENDPOINT_AUTH}/signup`, {
+          email: signupAction.payload.email,
+          password: signupAction.payload.password,
+        })
         .pipe(
           tap(() => {
             this.router.navigate(['/auth/login']);
@@ -81,7 +80,7 @@ export class AuthEffects {
     ofType(AuthActions.LOGIN_START),
     switchMap((authData: AuthActions.LoginStart) => {
       return this.http
-        .post<AuthResponseData>(`${environment.backendDomain}/api/auth/login`, {
+        .post<AuthResponseData>(`${this.ENDPOINT_AUTH}/login`, {
           email: authData.payload.email,
           password: authData.payload.password,
         })
@@ -93,7 +92,7 @@ export class AuthEffects {
             return handleAuthentication(
               +resData.expires_in,
               authData.payload.email,
-              resData.token
+              resData.access_token
             );
           }),
           catchError((errorRes) => {
@@ -156,6 +155,22 @@ export class AuthEffects {
       this.authService.clearLogoutTimer();
       localStorage.removeItem('userData');
       this.router.navigate(['/auth']);
+    })
+  );
+
+  @Effect({ dispatch: false })
+  changePassword = this.actions$.pipe(
+    ofType(AuthActions.CHANGE_PASSWORD),
+    tap((action: AuthActions.ChangePassword) => {
+      this.http
+        .put(`${this.ENDPOINT_AUTH}/changePassword`, {
+          oldPassword: action.payload.oldPassword,
+          password: action.payload.password,
+        })
+        .pipe(take(1))
+        .subscribe(() => {
+          this.router.navigate(['/']);
+        });
     })
   );
 

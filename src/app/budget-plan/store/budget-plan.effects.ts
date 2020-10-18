@@ -10,12 +10,18 @@ import * as BudgetPlanAction from './budget-plan.actions';
 
 @Injectable()
 export class BudgetPlanEffects {
+  constructor(
+    private actions$: Actions,
+    private http: HttpClient,
+    private router: Router
+  ) {}
+
   fetchCashBoxes$ = createEffect(() =>
     this.actions$.pipe(
       ofType(BudgetPlanAction.fetchBudgetPlans),
       switchMap(({ cashBoxId }) => {
         return this.http.get<BudgetPlan[]>(
-          `${environment.backendDomain}/api/cash-boxes/${cashBoxId}/plans`
+          `${BudgetPlanEffects.getEndpoint(cashBoxId)}`
         );
       }),
       map((result) => {
@@ -30,7 +36,7 @@ export class BudgetPlanEffects {
       ofType(BudgetPlanAction.fetchEntries),
       switchMap(({ budgetPlanId, cashBoxId }) => {
         return this.http.get<BudgetPlan>(
-          `${environment.backendDomain}/api/cash-boxes/${cashBoxId}/plans/${budgetPlanId}`
+          `${BudgetPlanEffects.getEndpoint(cashBoxId)}/${budgetPlanId}`
         );
       }),
       map((budgetPlan) => {
@@ -42,15 +48,74 @@ export class BudgetPlanEffects {
     )
   );
 
-  createCashBox$ = createEffect(() =>
+  createEntry$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(BudgetPlanAction.createEntry),
+      switchMap(({ cashBoxId, budgetPlanId, entry }) => {
+        return this.http
+          .post(
+            `${BudgetPlanEffects.getEntryEndpoint(
+              cashBoxId,
+              budgetPlanId
+            )}/entries`,
+            entry
+          )
+          .pipe(
+            map(() => {
+              return BudgetPlanAction.fetchEntries({ cashBoxId, budgetPlanId });
+            })
+          );
+      })
+    )
+  );
+
+  updateEntry$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(BudgetPlanAction.updateEntry),
+      switchMap(({ cashBoxId, budgetPlanId, index, entry }) => {
+        return this.http
+          .put(
+            `${BudgetPlanEffects.getEntryEndpoint(
+              cashBoxId,
+              budgetPlanId
+            )}/entries/${index}`,
+            entry
+          )
+          .pipe(
+            map(() => {
+              return BudgetPlanAction.fetchEntries({ cashBoxId, budgetPlanId });
+            })
+          );
+      })
+    )
+  );
+
+  deleteEntry$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(BudgetPlanAction.deleteEntry),
+      switchMap(({ cashBoxId, budgetPlanId, index }) => {
+        return this.http
+          .delete(
+            `${BudgetPlanEffects.getEntryEndpoint(
+              cashBoxId,
+              budgetPlanId
+            )}/entries/${index}`
+          )
+          .pipe(
+            map(() => {
+              return BudgetPlanAction.fetchEntries({ cashBoxId, budgetPlanId });
+            })
+          );
+      })
+    )
+  );
+
+  createBudgetPlan$ = createEffect(() =>
     this.actions$.pipe(
       ofType(BudgetPlanAction.addBudgetPlan),
       switchMap(({ cashBoxId, budgetPlan }) => {
         return this.http
-          .post(
-            `${environment.backendDomain}/api/cash-boxes/${cashBoxId}/plans`,
-            budgetPlan
-          )
+          .post(`${BudgetPlanEffects.getEndpoint(cashBoxId)}`, budgetPlan)
           .pipe(
             catchError((error: HttpErrorResponse) => {
               return of(
@@ -71,13 +136,13 @@ export class BudgetPlanEffects {
     )
   );
 
-  updateCashBox$ = createEffect(() =>
+  updateBudgetPlan$ = createEffect(() =>
     this.actions$.pipe(
       ofType(BudgetPlanAction.updateBudgetPlan),
       switchMap(({ cashBoxId, budgetPlan, index }) => {
         return this.http
           .put(
-            `${environment.backendDomain}/api/cash-boxes/${cashBoxId}/plans/${index}`,
+            `${BudgetPlanEffects.getEndpoint(cashBoxId)}/${index}`,
             budgetPlan
           )
           .pipe(
@@ -112,13 +177,13 @@ export class BudgetPlanEffects {
     { dispatch: false }
   );
 
-  deleteCashBox$ = createEffect(
+  deleteBudgetPlan$ = createEffect(
     () => {
       return this.actions$.pipe(
         ofType(BudgetPlanAction.deleteBudgetPlan),
         switchMap(({ index, cashBoxId }) => {
           return this.http.delete(
-            `${environment.backendDomain}/api/cash-boxes/${cashBoxId}/plans/${index}`
+            `${BudgetPlanEffects.getEndpoint(cashBoxId)}/${index}`
           );
         })
       );
@@ -126,9 +191,14 @@ export class BudgetPlanEffects {
     { dispatch: false }
   );
 
-  constructor(
-    private actions$: Actions,
-    private http: HttpClient,
-    private router: Router
-  ) {}
+  private static getEndpoint(cashBoxId: number): string {
+    return `${environment.backendDomain}/v1/cash-boxes/${cashBoxId}/plans`;
+  }
+
+  private static getEntryEndpoint(
+    cashBoxId: number,
+    budgetPlanId: number
+  ): string {
+    return `${this.getEndpoint(cashBoxId)}/${budgetPlanId}`;
+  }
 }

@@ -46,6 +46,15 @@ const budgetPlanReducer = createReducer(
     plans[indexToUpdate] = updatedBudgetPlan;
     return { ...state, loading: false, budgetPlans: plans };
   }),
+  // on(BudgetPlanAction.createEntry, (state, { budgetPlanId, entry }) => {
+  //   return { ...state };
+  // }),
+  // on(BudgetPlanAction.updateEntry, (state, { entry }) => {
+  //   return { ...state };
+  // }),
+  // on(BudgetPlanAction.deleteEntry, (state, { entry }) => {
+  //   return { ...state };
+  // }),
   on(BudgetPlanAction.addBudgetPlan, (state) => {
     return { ...state, loading: true };
   }),

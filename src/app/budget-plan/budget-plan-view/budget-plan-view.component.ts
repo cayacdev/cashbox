@@ -5,6 +5,16 @@ import { BudgetPlan } from '../budget-plan.model';
 import { BudgetPlanEntry } from '../budget-plan-entry.model';
 import { Store } from '@ngrx/store';
 import * as fromApp from '../../store/app.reducer';
+import { MatDialog } from '@angular/material/dialog';
+import {
+  BudgetPlanEntryDialogComponent,
+  BudgetPlanEntryDialogData,
+} from '../budget-plan-entry-dialog/budget-plan-entry-dialog.component';
+import * as BudgetPlanAction from '../store/budget-plan.actions';
+import {
+  DeleteDialogComponent,
+  DeleteDialogData,
+} from '../../shared/delete-dialog/delete-dialog.component';
 
 @Component({
   selector: 'app-cash-box-budget-plan-view',
@@ -13,23 +23,40 @@ import * as fromApp from '../../store/app.reducer';
 })
 export class BudgetPlanViewComponent implements OnInit {
   @Input() budgetPlan: BudgetPlan;
+  @Input() cashBoxId: number;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   entries = new MatTableDataSource<BudgetPlanEntry>();
-  displayedColumns = ['date', 'user', 'description', 'value'];
+  displayedColumns = ['date', 'user', 'description', 'value', 'actions'];
 
-  constructor(private store: Store<fromApp.AppState>) {}
+  constructor(
+    private store: Store<fromApp.AppState>,
+    private dialog: MatDialog
+  ) {}
 
   ngOnInit(): void {
-    if (this.budgetPlan.entries) {
+    this.entries.sortingDataAccessor = (item, property): string | number => {
+      switch (property) {
+        case 'date':
+          return new Date(item.date).getTime();
+        default:
+          return item[property];
+      }
+    };
+
+    if (!!this.budgetPlan.entries) {
       this.entries.data = this.budgetPlan.entries;
-    } else {
-      const id = this.budgetPlan.id;
-      this.store.select('budgetPlan').subscribe((state) => {
-        this.entries.data = state.budgetPlans.find(
-          (plan) => plan.id === id
-        ).entries;
-      });
     }
+    const id = this.budgetPlan.id;
+    this.store.select('budgetPlan').subscribe((state) => {
+      this.entries.data =
+        state.budgetPlans.find((plan) => plan.id === id)?.entries ?? [];
+    });
+    this.store.dispatch(
+      BudgetPlanAction.fetchEntries({
+        cashBoxId: this.cashBoxId,
+        budgetPlanId: id,
+      })
+    );
 
     this.entries.sort = this.sort;
   }
@@ -38,5 +65,36 @@ export class BudgetPlanViewComponent implements OnInit {
     return this.entries.data
       ?.map((t) => t.value)
       .reduce((acc, value) => acc + value, 0);
+  }
+
+  onEdit(element: any): void {
+    this.dialog.open(BudgetPlanEntryDialogComponent, {
+      data: {
+        data: element,
+        budgetPlanId: this.budgetPlan.id,
+        cashBoxId: this.cashBoxId,
+      } as BudgetPlanEntryDialogData,
+    });
+  }
+
+  onDelete(element: any): void {
+    const dialogRef = this.dialog.open(DeleteDialogComponent, {
+      data: {
+        data: element,
+        headline: element.id,
+      } as DeleteDialogData,
+    });
+
+    dialogRef.afterClosed().subscribe((data) => {
+      if (data === element) {
+        this.store.dispatch(
+          BudgetPlanAction.deleteEntry({
+            cashBoxId: this.cashBoxId,
+            budgetPlanId: this.budgetPlan.id,
+            index: element.id,
+          })
+        );
+      }
+    });
   }
 }

@@ -36,6 +36,7 @@ export class CashBoxListComponent implements OnInit, OnDestroy {
       this.isLoading = state.loading;
     });
 
+    this.store.dispatch(CashBoxActions.fetchCashBoxes());
     this.dataSource.sort = this.sort;
   }
 

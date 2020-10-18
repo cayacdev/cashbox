@@ -1,5 +1,7 @@
 <button class="toolbar-button" mat-stroked-button color="primary" routerLink="new">Create new Cash Box</button>
-<table style="width: 100%" mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort *ngIf="!isLoading">
+<table style="width: 100%" mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort
+       matSortActive="name" matSortDirection="asc"
+       [hidden]="isLoading">
 
   <ng-container matColumnDef="name">
     <th mat-header-cell *matHeaderCellDef mat-sort-header> Name</th>

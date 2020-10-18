@@ -22,6 +22,30 @@ export const fetchEntries = createAction(
   props<{ cashBoxId: number; budgetPlanId: number }>()
 );
 
+export const createEntry = createAction(
+  '[BudgetPlan] create entry',
+  props<{ cashBoxId: number; budgetPlanId: number; entry: BudgetPlanEntry }>()
+);
+
+export const updateEntry = createAction(
+  '[BudgetPlan] update entry',
+  props<{
+    cashBoxId: number;
+    budgetPlanId: number;
+    index: number;
+    entry: BudgetPlanEntry;
+  }>()
+);
+
+export const deleteEntry = createAction(
+  '[BudgetPlan] delete entry',
+  props<{
+    cashBoxId: number;
+    budgetPlanId: number;
+    index: number;
+  }>()
+);
+
 export const addBudgetPlan = createAction(
   '[BudgetPlan] add',
   props<{ cashBoxId: number; budgetPlan: BudgetPlan }>()

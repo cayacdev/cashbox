@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import * as fromApp from '../../store/app.reducer';
 import { Store } from '@ngrx/store';
 import { BudgetPlan } from '../budget-plan.model';
@@ -28,7 +28,7 @@ export class BudgetPlanListComponent implements OnInit, OnDestroy {
   isLoading: boolean;
   private sub: Subscription;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
-  cashBoxId: number;
+  @Input() cashBoxId: number;
 
   selectedBudgetPlan: BudgetPlan;
 
@@ -40,7 +40,6 @@ export class BudgetPlanListComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.cashBoxId = this.activatedRoute.snapshot.data.cashBox.id;
     this.sub = this.store.select('budgetPlan').subscribe((state) => {
       this.dataSource.data = state.budgetPlans;
       this.isLoading = state.loading;
@@ -49,19 +48,11 @@ export class BudgetPlanListComponent implements OnInit, OnDestroy {
   }
 
   onView(element: BudgetPlan): void {
-    if (element && !element.entries) {
-      this.store.dispatch(
-        BudgetPlanAction.fetchEntries({
-          cashBoxId: this.cashBoxId,
-          budgetPlanId: element.id,
-        })
-      );
-    }
     this.selectedBudgetPlan = element;
   }
 
   onEdit(element: BudgetPlan): void {
-    this.router.navigate(['budget-plans', element.id, 'edit'], {
+    this.router.navigate(['..', 'budget-plans', element.id, 'edit'], {
       relativeTo: this.activatedRoute,
     });
   }
