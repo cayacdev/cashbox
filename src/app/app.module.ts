@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { DEFAULT_CURRENCY_CODE, NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -44,6 +44,7 @@ import { UserModule } from './user/user.module';
       useClass: AuthInterceptorService,
       multi: true,
     },
+    { provide: DEFAULT_CURRENCY_CODE, useValue: 'EUR' },
   ],
   bootstrap: [AppComponent],
 })
