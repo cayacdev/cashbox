@@ -17,14 +17,7 @@ import * as BudgetPlanAction from '../store/budget-plan.actions';
 })
 export class BudgetPlanListComponent implements OnInit, OnDestroy {
   dataSource = new MatTableDataSource<BudgetPlan>();
-  displayedColumns = [
-    'name',
-    'start_date',
-    'end_date',
-    'budget',
-    'active',
-    'actions',
-  ];
+  displayedColumns = ['name', 'date', 'budget', 'actions'];
   isLoading: boolean;
   private sub: Subscription;
   @ViewChild(MatSort, { static: true }) sort: MatSort;

@@ -19,4 +19,36 @@ button.toolbar-button {
   margin: 2rem auto;
 }
 
-// @import '~@angular/material/core/theming/theming/'
+@import '~@angular/material/core/style/variables';
+
+.table-container {
+  width: 100%;
+  max-width: 100%;
+  overflow: auto;
+
+  table {
+    width: 100%;
+  }
+
+  .mat-column-actions {
+    text-align: center;
+    @media screen and ($mat-xsmall) {
+      width: 5rem;
+    }
+  }
+
+  @media screen and ($mat-xsmall) {
+    .mat-cell, .mat-header-cell, .mat-footer-cell {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+
+    th.mat-header-cell:last-of-type, td.mat-cell:last-of-type, td.mat-footer-cell:last-of-type {
+      padding-right: 0;
+    }
+
+    th.mat-header-cell:first-of-type, td.mat-cell:first-of-type, td.mat-footer-cell:first-of-type {
+      padding-left: 0;
+    }
+  }
+}
