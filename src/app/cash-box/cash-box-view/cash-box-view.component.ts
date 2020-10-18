@@ -4,6 +4,7 @@ import { CashBox } from '../cash-box.model';
 import { Store } from '@ngrx/store';
 import * as fromApp from '../../store/app.reducer';
 import { Subscription } from 'rxjs';
+import { BudgetPlan } from '../../budget-plan/budget-plan.model';
 
 @Component({
   selector: 'app-cash-box-view',
@@ -12,6 +13,7 @@ import { Subscription } from 'rxjs';
 })
 export class CashBoxViewComponent implements OnInit, OnDestroy {
   cashBox: CashBox;
+  budgetPlan: BudgetPlan;
   isLoading: boolean;
   private sub: Subscription;
 
@@ -24,6 +26,10 @@ export class CashBoxViewComponent implements OnInit, OnDestroy {
     this.sub = this.store.select('cashBoxes').subscribe((state) => {
       this.cashBox = state.selectedCashBox;
       this.isLoading = state.loading;
+      this.budgetPlan = {
+        ...state.selectedCashBox?.activeBudgetPlan,
+        entries: undefined,
+      };
     });
   }
 

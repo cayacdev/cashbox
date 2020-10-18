@@ -1,20 +1,11 @@
-<mat-tab-group *ngIf="cashBox">
-  <mat-tab label="Overview">
-    <button class="toolbar-button" mat-stroked-button color="primary" routerLink="edit">Edit</button>
-    <h1>{{cashBox.name}}</h1>
-    <p>{{cashBox.description}}</p>
-    <!-- FIXME -->
-    <app-cash-box-budget-plan-view [budgetPlan]="cashBox.activeBudgetPlan"></app-cash-box-budget-plan-view>
-  </mat-tab>
-  <mat-tab label="Reports">
-    Add some cool reports here
-  </mat-tab>
-  <mat-tab label="Budget Plans">
-    <app-cash-box-budget-plan-list></app-cash-box-budget-plan-list>
-  </mat-tab>
-  <mat-tab label="Members">
-    Add member list here
-  </mat-tab>
-</mat-tab-group>
+<ng-container *ngIf="cashBox">
+  <button class="toolbar-button" mat-stroked-button color="primary" routerLink="edit">Edit</button>
+  <h1>{{cashBox.name}}</h1>
+  <p>{{cashBox.description}}</p>
+
+  <app-cash-box-budget-plan-view *ngIf="cashBox"
+                                 [budgetPlan]="budgetPlan" [cashBoxId]="cashBox.id"></app-cash-box-budget-plan-view>
+
+</ng-container>
 
 

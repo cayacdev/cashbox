@@ -6,12 +6,14 @@ import { RouterModule } from '@angular/router';
 import { BudgetPlanRoutingModule } from './budget-plan-routing.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
+import { BudgetPlanEntryDialogComponent } from './budget-plan-entry-dialog/budget-plan-entry-dialog.component';
 
 @NgModule({
   declarations: [
     BudgetPlanViewComponent,
     BudgetPlanListComponent,
     BudgetPlanEditComponent,
+    BudgetPlanEntryDialogComponent,
   ],
   imports: [
     SharedModule,

@@ -4,9 +4,11 @@ import { AuthGuard } from '../auth/auth.guard';
 import { CashBoxComponent } from './cash-box.component';
 import { CashBoxListComponent } from './cash-box-list/cash-box-list.component';
 import { CashBoxEditComponent } from './cash-box-edit/cash-box-edit.component';
-import { CashBoxViewComponent } from './cash-box-view/cash-box-view.component';
 import { CashBoxResolver } from './cash-box.resolver';
 import { BudgetPlansResolver } from '../budget-plan/budget-plans-resolver.service';
+import { CashBoxOverviewComponent } from './cash-box-overview/cash-box-overview.component';
+import { CashBoxViewComponent } from './cash-box-view/cash-box-view.component';
+import { CashBoxPlansComponent } from './cash-box-plans/cash-box-plans.component';
 
 const routes: Routes = [
   {
@@ -18,8 +20,18 @@ const routes: Routes = [
       { path: 'new', component: CashBoxEditComponent },
       {
         path: ':id',
-        component: CashBoxViewComponent,
+        component: CashBoxOverviewComponent,
         resolve: { cashBox: CashBoxResolver, budgetPlans: BudgetPlansResolver },
+        children: [
+          {
+            path: 'view',
+            component: CashBoxViewComponent,
+          },
+          {
+            path: 'plans',
+            component: CashBoxPlansComponent,
+          },
+        ],
       },
       {
         path: ':id/edit',

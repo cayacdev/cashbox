@@ -1,0 +1,32 @@
+<h1 mat-dialog-title>Test</h1>
+
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <p>
+    <mat-form-field>
+      <input type="text" matInput placeholder="description" formControlName="description" #inputDescription>
+      <mat-hint align="end">{{inputDescription.value?.length || 0}}/255</mat-hint>
+    </mat-form-field>
+  </p>
+
+  <p>
+    <mat-form-field>
+      <input type="number" matInput placeholder="value" formControlName="value">
+    </mat-form-field>
+  </p>
+
+  <p>
+    <mat-form-field appearance="fill">
+      <mat-label>Choose a date</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="date">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+  </p>
+
+  <div mat-dialog-actions>
+    <button mat-raised-button type="submit" color="primary" [mat-dialog-close]="data.data">Create / Update</button>
+    <button mat-button mat-dialog-close>No Thanks</button>
+  </div>
+</form>
+
+

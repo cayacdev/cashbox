@@ -1,10 +1,11 @@
 <ng-container *ngIf="selectedBudgetPlan">
   <button class="toolbar-button" mat-stroked-button color="primary" (click)="onView(null)">Back to list</button>
-  <app-cash-box-budget-plan-view [budgetPlan]="selectedBudgetPlan"></app-cash-box-budget-plan-view>
+  <app-cash-box-budget-plan-view [budgetPlan]="selectedBudgetPlan"
+                                 [cashBoxId]="cashBoxId"></app-cash-box-budget-plan-view>
 </ng-container>
 
 <ng-container *ngIf="!selectedBudgetPlan && !isLoading">
-  <button class="toolbar-button" mat-stroked-button color="primary" routerLink="budget-plans/new">Create new Budget
+  <button class="toolbar-button" mat-stroked-button color="primary" routerLink="../budget-plans/new">Create new Budget
     Plan
   </button>
   <table style="width: 100%" mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>

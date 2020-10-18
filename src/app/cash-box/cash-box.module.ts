@@ -8,6 +8,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { CashBoxViewComponent } from './cash-box-view/cash-box-view.component';
 import { BudgetPlanModule } from '../budget-plan/budget-plan.module';
 import { SharedModule } from '../shared/shared.module';
+import { CashBoxOverviewComponent } from './cash-box-overview/cash-box-overview.component';
+import { CashBoxPlansComponent } from './cash-box-plans/cash-box-plans.component';
 
 @NgModule({
   declarations: [
@@ -15,6 +17,8 @@ import { SharedModule } from '../shared/shared.module';
     CashBoxListComponent,
     CashBoxEditComponent,
     CashBoxViewComponent,
+    CashBoxOverviewComponent,
+    CashBoxPlansComponent,
   ],
   imports: [
     SharedModule,
