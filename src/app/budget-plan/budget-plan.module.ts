@@ -4,7 +4,6 @@ import { BudgetPlanListComponent } from './budget-plan-list/budget-plan-list.com
 import { BudgetPlanEditComponent } from './budget-plan-edit/budget-plan-edit.component';
 import { RouterModule } from '@angular/router';
 import { BudgetPlanRoutingModule } from './budget-plan-routing.module';
-import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
 import { BudgetPlanEntryDialogComponent } from './budget-plan-entry-dialog/budget-plan-entry-dialog.component';
 
@@ -15,12 +14,7 @@ import { BudgetPlanEntryDialogComponent } from './budget-plan-entry-dialog/budge
     BudgetPlanEditComponent,
     BudgetPlanEntryDialogComponent,
   ],
-  imports: [
-    SharedModule,
-    RouterModule,
-    BudgetPlanRoutingModule,
-    ReactiveFormsModule,
-  ],
+  imports: [SharedModule, RouterModule, BudgetPlanRoutingModule],
   exports: [BudgetPlanViewComponent, BudgetPlanListComponent],
 })
 export class BudgetPlanModule {}

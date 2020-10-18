@@ -4,7 +4,6 @@ import { CashBoxRoutingModule } from './cash-box-routing.module';
 import { MaterialModule } from '../shared/material.module';
 import { CashBoxComponent } from './cash-box.component';
 import { CashBoxEditComponent } from './cash-box-edit/cash-box-edit.component';
-import { ReactiveFormsModule } from '@angular/forms';
 import { CashBoxViewComponent } from './cash-box-view/cash-box-view.component';
 import { BudgetPlanModule } from '../budget-plan/budget-plan.module';
 import { SharedModule } from '../shared/shared.module';
@@ -24,7 +23,6 @@ import { CashBoxPlansComponent } from './cash-box-plans/cash-box-plans.component
     SharedModule,
     CashBoxRoutingModule,
     MaterialModule,
-    ReactiveFormsModule,
     BudgetPlanModule,
   ],
 })

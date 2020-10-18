@@ -18,6 +18,7 @@ import { AuthInterceptorService } from './auth/auth-interceptor.service';
 import { environment } from '../environments/environment';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { BudgetPlanEffects } from './budget-plan/store/budget-plan.effects';
+import { UserModule } from './user/user.module';
 
 @NgModule({
   declarations: [AppComponent, MainComponent],
@@ -27,6 +28,7 @@ import { BudgetPlanEffects } from './budget-plan/store/budget-plan.effects';
     AppRoutingModule,
     AuthModule,
     CashBoxModule,
+    UserModule,
     BrowserAnimationsModule,
     MaterialModule,
     StoreModule.forRoot(fromApp.appReducer),

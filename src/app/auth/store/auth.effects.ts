@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { catchError, map, switchMap, tap } from 'rxjs/operators';
+import { catchError, map, switchMap, take, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
@@ -155,6 +155,22 @@ export class AuthEffects {
       this.authService.clearLogoutTimer();
       localStorage.removeItem('userData');
       this.router.navigate(['/auth']);
+    })
+  );
+
+  @Effect({ dispatch: false })
+  changePassword = this.actions$.pipe(
+    ofType(AuthActions.CHANGE_PASSWORD),
+    tap((action: AuthActions.ChangePassword) => {
+      this.http
+        .put(`${this.ENDPOINT_AUTH}/changePassword`, {
+          oldPassword: action.payload.oldPassword,
+          password: action.payload.password,
+        })
+        .pipe(take(1))
+        .subscribe(() => {
+          this.router.navigate(['/']);
+        });
     })
   );
 

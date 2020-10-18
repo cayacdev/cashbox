@@ -7,6 +7,7 @@ export const SIGNUP_START = '[Auth] Signup Start';
 export const CLEAR_ERROR = '[Auth] Clear Error';
 export const AUTO_LOGIN = '[Auth] Auto Login';
 export const LOGOUT = '[Auth] Logout';
+export const CHANGE_PASSWORD = '[Auth] Change Password';
 
 export class AuthenticateSuccess implements Action {
   readonly type = AUTHENTICATE_SUCCESS;
@@ -18,8 +19,7 @@ export class AuthenticateSuccess implements Action {
       expirationDate: Date;
       redirect: boolean;
     }
-  ) {
-  }
+  ) {}
 }
 
 export class Logout implements Action {
@@ -29,22 +29,19 @@ export class Logout implements Action {
 export class LoginStart implements Action {
   readonly type = LOGIN_START;
 
-  constructor(public payload: { email: string; password: string }) {
-  }
+  constructor(public payload: { email: string; password: string }) {}
 }
 
 export class AuthenticateFail implements Action {
   readonly type = AUTHENTICATE_FAIL;
 
-  constructor(public payload: string) {
-  }
+  constructor(public payload: string) {}
 }
 
 export class SignupStart implements Action {
   readonly type = SIGNUP_START;
 
-  constructor(public payload: { email: string; password: string }) {
-  }
+  constructor(public payload: { email: string; password: string }) {}
 }
 
 export class ClearError implements Action {
@@ -55,6 +52,12 @@ export class AutoLogin implements Action {
   readonly type = AUTO_LOGIN;
 }
 
+export class ChangePassword implements Action {
+  readonly type = CHANGE_PASSWORD;
+
+  constructor(public payload: { oldPassword: string; password: string }) {}
+}
+
 export type AuthActions =
   | AuthenticateSuccess
   | Logout
@@ -62,4 +65,5 @@ export type AuthActions =
   | AuthenticateFail
   | SignupStart
   | ClearError
-  | AutoLogin;
+  | AutoLogin
+  | ChangePassword;
