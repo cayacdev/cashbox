@@ -6,6 +6,8 @@ import { RouterModule } from '@angular/router';
 import { BudgetPlanRoutingModule } from './budget-plan-routing.module';
 import { SharedModule } from '../shared/shared.module';
 import { BudgetPlanEntryDialogComponent } from './budget-plan-entry-dialog/budget-plan-entry-dialog.component';
+import { BudgetPlanChartComponent } from './budget-plan-chart/budget-plan-chart.component';
+import { ChartsModule } from 'ng2-charts';
 
 @NgModule({
   declarations: [
@@ -13,8 +15,9 @@ import { BudgetPlanEntryDialogComponent } from './budget-plan-entry-dialog/budge
     BudgetPlanListComponent,
     BudgetPlanEditComponent,
     BudgetPlanEntryDialogComponent,
+    BudgetPlanChartComponent,
   ],
-  imports: [SharedModule, RouterModule, BudgetPlanRoutingModule],
+  imports: [SharedModule, RouterModule, BudgetPlanRoutingModule, ChartsModule],
   exports: [BudgetPlanViewComponent, BudgetPlanListComponent],
 })
 export class BudgetPlanModule {}
