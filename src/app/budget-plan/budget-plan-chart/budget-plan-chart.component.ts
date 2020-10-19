@@ -108,7 +108,12 @@ export class BudgetPlanChartComponent implements OnInit, OnChanges {
     );
 
     const data = [{ x: this.budgetPlan.start_date, y: this.budgetPlan.budget }];
-    this.generateDataFromEntries(grouped, this.budgetPlan.budget, data);
+    this.generateDataFromEntries(
+      this.budgetPlan,
+      grouped,
+      this.budgetPlan.budget,
+      data
+    );
 
     if (this.lineChartData[1]) {
       this.lineChartData[1].data = data;
@@ -146,6 +151,7 @@ export class BudgetPlanChartComponent implements OnInit, OnChanges {
   }
 
   private generateDataFromEntries(
+    budgetPlan: BudgetPlan,
     grouped: { [p: string]: BudgetPlanEntry[] },
     leftover: number,
     data: { x: Date; y: number }[]
@@ -162,6 +168,10 @@ export class BudgetPlanChartComponent implements OnInit, OnChanges {
         y: leftover,
       });
     });
-    data.push({ x: new Date(), y: leftover });
+
+    const today = new Date();
+    if (today < budgetPlan.start_date || today > budgetPlan.end_date) {
+      data.push({ x: new Date(), y: leftover });
+    }
   }
 }
