@@ -14,9 +14,14 @@ export class CashBoxOverviewComponent implements OnInit {
       index: 0,
     },
     {
+      label: 'Report',
+      link: './report',
+      index: 1,
+    },
+    {
       label: 'Budget Plans',
       link: './plans',
-      index: 1,
+      index: 2,
     },
   ];
 

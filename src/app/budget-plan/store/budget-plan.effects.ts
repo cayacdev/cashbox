@@ -5,7 +5,7 @@ import { environment } from '../../../environments/environment';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { EMPTY, of } from 'rxjs';
 import { Router } from '@angular/router';
-import { BudgetPlan } from '../budget-plan.model';
+import { BudgetPlan, BudgetPlanReport } from '../budget-plan.model';
 import * as BudgetPlanAction from './budget-plan.actions';
 
 @Injectable()
@@ -104,6 +104,28 @@ export class BudgetPlanEffects {
           .pipe(
             map(() => {
               return BudgetPlanAction.fetchEntries({ cashBoxId, budgetPlanId });
+            })
+          );
+      })
+    )
+  );
+
+  fetchReport$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(BudgetPlanAction.fetchReport),
+      switchMap(({ cashBoxId, budgetPlanId }) => {
+        return this.http
+          .get<BudgetPlanReport>(
+            `${BudgetPlanEffects.getEndpoint(
+              cashBoxId
+            )}/${budgetPlanId}/reports`
+          )
+          .pipe(
+            map((report) => {
+              return BudgetPlanAction.setReport({
+                report,
+                budgetPlanId,
+              });
             })
           );
       })

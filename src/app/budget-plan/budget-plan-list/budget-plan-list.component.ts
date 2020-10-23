@@ -1,4 +1,11 @@
-import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import * as fromApp from '../../store/app.reducer';
 import { Store } from '@ngrx/store';
 import { BudgetPlan } from '../budget-plan.model';
@@ -24,23 +31,27 @@ export class BudgetPlanListComponent implements OnInit, OnDestroy {
   @Input() cashBoxId: number;
 
   selectedBudgetPlan: BudgetPlan;
+  showReport = false;
 
   constructor(
     private store: Store<fromApp.AppState>,
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private cRef: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
     this.sub = this.store.select('budgetPlan').subscribe((state) => {
       this.dataSource.data = state.budgetPlans;
       this.isLoading = state.loading;
+      this.cRef.detectChanges();
     });
     this.dataSource.sort = this.sort;
   }
 
   onView(element: BudgetPlan): void {
+    this.showReport = false;
     this.selectedBudgetPlan = element;
   }
 

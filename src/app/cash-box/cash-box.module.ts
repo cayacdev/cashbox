@@ -9,6 +9,7 @@ import { BudgetPlanModule } from '../budget-plan/budget-plan.module';
 import { SharedModule } from '../shared/shared.module';
 import { CashBoxOverviewComponent } from './cash-box-overview/cash-box-overview.component';
 import { CashBoxPlansComponent } from './cash-box-plans/cash-box-plans.component';
+import { CashBoxReportComponent } from './cash-box-report/cash-box-report.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { CashBoxPlansComponent } from './cash-box-plans/cash-box-plans.component
     CashBoxViewComponent,
     CashBoxOverviewComponent,
     CashBoxPlansComponent,
+    CashBoxReportComponent,
   ],
   imports: [
     SharedModule,

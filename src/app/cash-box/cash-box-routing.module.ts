@@ -9,6 +9,7 @@ import { BudgetPlansResolver } from '../budget-plan/budget-plans-resolver.servic
 import { CashBoxOverviewComponent } from './cash-box-overview/cash-box-overview.component';
 import { CashBoxViewComponent } from './cash-box-view/cash-box-view.component';
 import { CashBoxPlansComponent } from './cash-box-plans/cash-box-plans.component';
+import { CashBoxReportComponent } from './cash-box-report/cash-box-report.component';
 
 const routes: Routes = [
   {
@@ -26,6 +27,10 @@ const routes: Routes = [
           {
             path: 'view',
             component: CashBoxViewComponent,
+          },
+          {
+            path: 'report',
+            component: CashBoxReportComponent,
           },
           {
             path: 'plans',

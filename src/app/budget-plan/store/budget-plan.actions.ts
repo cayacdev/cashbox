@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { BudgetPlan } from '../budget-plan.model';
+import { BudgetPlan, BudgetPlanReport } from '../budget-plan.model';
 import { BudgetPlanEntry } from '../budget-plan-entry.model';
 
 export const setBudgetPlans = createAction(
@@ -44,6 +44,16 @@ export const deleteEntry = createAction(
     budgetPlanId: number;
     index: number;
   }>()
+);
+
+export const fetchReport = createAction(
+  '[BudgetPlan] fetch report',
+  props<{ cashBoxId: number; budgetPlanId: number }>()
+);
+
+export const setReport = createAction(
+  '[BudgetPlan] set report',
+  props<{ budgetPlanId: number; report: BudgetPlanReport }>()
 );
 
 export const addBudgetPlan = createAction(
