@@ -5,3 +5,12 @@ td.actions {
 td.mat-cell {
   padding: 0.5rem;
 }
+
+.row-link:hover {
+  background-color: rgba(0, 0, 0, .05);
+  cursor: pointer;
+}
+
+.mat-table-sticky {
+  background: none;
+}
