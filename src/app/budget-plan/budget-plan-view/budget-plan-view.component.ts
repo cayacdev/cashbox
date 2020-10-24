@@ -38,6 +38,8 @@ export class BudgetPlanViewComponent implements OnInit {
       switch (property) {
         case 'date':
           return new Date(item.date).getTime();
+        case 'user':
+          return item.user.name;
         default:
           return item[property];
       }
