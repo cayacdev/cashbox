@@ -116,7 +116,8 @@ export class BudgetPlanChartComponent implements OnInit, OnChanges {
     );
 
     if (this.lineChartData[1]) {
-      this.lineChartData[1].data = data;
+      this.lineChartData = this.lineChartData.slice(0, 1);
+      this.lineChartData.push({ data });
     }
   }
 
