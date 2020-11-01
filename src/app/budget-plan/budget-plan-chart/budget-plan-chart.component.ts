@@ -116,7 +116,8 @@ export class BudgetPlanChartComponent implements OnInit, OnChanges {
     );
 
     if (this.lineChartData[1]) {
-      this.lineChartData[1].data = data;
+      this.lineChartData = this.lineChartData.slice(0, 1);
+      this.lineChartData.push({ data });
     }
   }
 
@@ -170,8 +171,11 @@ export class BudgetPlanChartComponent implements OnInit, OnChanges {
     });
 
     const today = new Date();
-    if (today < budgetPlan.start_date || today > budgetPlan.end_date) {
-      data.push({ x: new Date(), y: leftover });
+    if (
+      today >= new Date(budgetPlan.start_date) &&
+      today <= new Date(budgetPlan.end_date)
+    ) {
+      data.push({ x: today, y: leftover });
     }
   }
 }
