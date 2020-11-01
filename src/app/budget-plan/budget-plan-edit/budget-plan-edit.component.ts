@@ -90,9 +90,7 @@ export class BudgetPlanEditComponent implements OnInit, OnDestroy {
 
   private fixDate(date: string): string {
     const d = new Date(date);
-    if (!this.editMode) {
-      d.setMinutes(-1 * d.getTimezoneOffset());
-    }
+    d.setMinutes(-1 * d.getTimezoneOffset());
     return d.toISOString().split('T')[0];
   }
 
