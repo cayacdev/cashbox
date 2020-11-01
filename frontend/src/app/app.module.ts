@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { DEFAULT_CURRENCY_CODE, NgModule } from '@angular/core';
+import { DEFAULT_CURRENCY_CODE, LOCALE_ID, NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -19,6 +19,10 @@ import { environment } from '../environments/environment';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { BudgetPlanEffects } from './budget-plan/store/budget-plan.effects';
 import { UserModule } from './user/user.module';
+import localeDE from '@angular/common/locales/de';
+import { registerLocaleData } from '@angular/common';
+
+registerLocaleData(localeDE);
 
 @NgModule({
   declarations: [AppComponent, MainComponent],
@@ -45,6 +49,7 @@ import { UserModule } from './user/user.module';
       multi: true,
     },
     { provide: DEFAULT_CURRENCY_CODE, useValue: 'EUR' },
+    { provide: LOCALE_ID, useValue: 'de' },
   ],
   bootstrap: [AppComponent],
 })

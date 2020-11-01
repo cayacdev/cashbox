@@ -38,7 +38,7 @@ export class BudgetPlanEntryDialogComponent implements OnInit {
         Validators.maxLength(255),
       ]),
       value: new FormControl(this.data?.data?.value, [Validators.required]),
-      date: new FormControl(this.data.data?.date, [Validators.required]),
+      date: new FormControl(this.data.data?.date ?? new Date(), [Validators.required]),
     });
   }
 
