@@ -6,6 +6,12 @@ tr.mat-footer-row {
   font-weight: bold;
 }
 
-td.actions {
-  width: 15vw;
+th.mat-column-value {
+  display: flex;
+  padding: 21px;
+  justify-content: flex-end;
+}
+
+td.mat-column-value {
+ text-align: right;
 }

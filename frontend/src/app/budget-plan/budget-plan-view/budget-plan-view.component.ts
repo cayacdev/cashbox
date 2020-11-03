@@ -28,6 +28,8 @@ export class BudgetPlanViewComponent implements OnInit {
   entries = new MatTableDataSource<BudgetPlanEntry>();
   displayedColumns = ['date', 'user', 'description', 'value', 'actions'];
 
+  showDescription = false;
+
   constructor(
     private store: Store<fromApp.AppState>,
     private dialog: MatDialog
@@ -98,5 +100,12 @@ export class BudgetPlanViewComponent implements OnInit {
         );
       }
     });
+  }
+
+  getDisplayedColumns() {
+    if (!this.showDescription) {
+      return this.displayedColumns.filter((col) => col !== 'description');
+    }
+    return this.displayedColumns;
   }
 }

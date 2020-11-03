@@ -30,10 +30,12 @@ button.toolbar-button {
     width: 100%;
   }
 
-  .mat-column-actions {
+  .mat-column-actions.mat-cell, .mat-column-actions.mat-header-cell  {
     text-align: center;
     @media screen and ($mat-xsmall) {
-      width: 5rem;
+      width: 5vw;
+      text-align: right;
+      padding-left: 0;
     }
   }
 
