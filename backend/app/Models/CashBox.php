@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -9,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 
 /**
  * Class CashBox
@@ -50,6 +52,18 @@ class CashBox extends Model
     protected $hidden = ['created_at', 'updated_at'];
 
     /**
+     * @param int $id
+     * @return CashBox
+     * @throws AuthorizationException
+     */
+    public static function findCashBox(int $id)
+    {
+        $cashBox = CashBox::find($id);
+        Gate::authorize('cashBoxMember', $cashBox);
+        return $cashBox;
+    }
+
+    /**
      * @return BelongsToMany
      */
     public function users()
@@ -63,6 +77,14 @@ class CashBox extends Model
     public function budgetPlans()
     {
         return $this->hasMany('App\Models\CashBoxBudgetPlan');
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function predefinedEntryDescriptions()
+    {
+        return $this->hasMany('App\Models\PredefinedEntryDescription');
     }
 
     /**
