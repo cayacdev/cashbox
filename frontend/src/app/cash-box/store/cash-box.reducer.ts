@@ -6,26 +6,35 @@ export interface State {
   cashBoxes: CashBox[];
   loading: boolean;
   error: string;
-  selectedCashBox: CashBox;
+  selectedCashBoxId: number;
 }
 
 const initialState: State = {
   cashBoxes: [],
   loading: false,
   error: null,
-  selectedCashBox: null,
+  selectedCashBoxId: null,
 };
 
-function updateCashBoxes(state, index: number, cashBox: CashBox): CashBox[] {
-  const updatedCashBox = {
-    ...state.cashBoxes[index],
-    ...cashBox,
-  };
-
-  const updatedCashBoxes = [...state.cashBoxes];
-  updatedCashBoxes[index] = updatedCashBox;
+function updateOrCreate(state, id: number, cashBox: CashBox): CashBox[] {
+  let updatedCashBoxes = [...state.cashBoxes];
+  const index = state.cashBoxes.findIndex((c) => c.id == id);
+  if (index !== -1) {
+    updatedCashBoxes[index] = {
+      ...state.cashBoxes[index],
+      ...cashBox,
+    };
+  } else {
+    updatedCashBoxes = [...updatedCashBoxes, { ...cashBox, id }];
+  }
   return updatedCashBoxes;
 }
+
+const mergeById = (array1, array2) =>
+  array1.map((itm) => ({
+    ...array2.find((item) => item.id === itm.id && item),
+    ...itm,
+  }));
 
 const cashBoxReducer = createReducer(
   initialState,
@@ -33,28 +42,37 @@ const cashBoxReducer = createReducer(
     return { ...state, loading: true };
   }),
   on(CashBoxAction.setCashBoxes, (state, { cashBoxes }) => {
-    return { ...state, loading: false, cashBoxes };
+    return {
+      ...state,
+      loading: false,
+      cashBoxes: mergeById([...cashBoxes], [...state.cashBoxes]),
+    };
   }),
-  on(CashBoxAction.fetchSelected, (state) => {
+  on(CashBoxAction.fetchCashBoxDetails, (state) => {
     return { ...state, loading: true };
   }),
   on(CashBoxAction.setSelected, (state, { cashBox }) => {
-    return { ...state, loading: false, selectedCashBox: cashBox };
+    return {
+      ...state,
+      loading: false,
+      selectedCashBoxId: cashBox.id,
+      cashBoxes: updateOrCreate(state, cashBox.id, cashBox),
+    };
   }),
   on(CashBoxAction.addCashBox, (state) => {
     return { ...state, loading: true };
   }),
-  on(CashBoxAction.updateCashBox, (state, { index, cashBox }) => {
+  on(CashBoxAction.updateCashBox, (state, { cashBoxId, cashBox }) => {
     return {
       ...state,
       loading: true,
-      cashBoxes: updateCashBoxes(state, index, cashBox),
+      cashBoxes: updateOrCreate(state, cashBoxId, cashBox),
     };
   }),
-  on(CashBoxAction.deleteCashBox, (state, { index }) => {
+  on(CashBoxAction.deleteCashBox, (state, { cashBoxId }) => {
     return {
       ...state,
-      cashBoxes: state.cashBoxes.filter((cashBox) => cashBox.id !== index),
+      cashBoxes: state.cashBoxes.filter((cashBox) => cashBox.id !== cashBoxId),
     };
   }),
   on(CashBoxAction.updateCashBoxSuccess, (state, { cashBox }) => {
@@ -66,6 +84,16 @@ const cashBoxReducer = createReducer(
   }),
   on(CashBoxAction.updateCashBoxFail, (state, { error }) => {
     return { ...state, loading: false, error };
+  }),
+  on(CashBoxAction.setCashBoxSettings, (state, { cashBoxId, settings }) => {
+    const cashBox = {
+      id: cashBoxId,
+      settings,
+    };
+    return {
+      ...state,
+      cashBoxes: updateOrCreate(state, cashBoxId, cashBox),
+    };
   })
 );
 

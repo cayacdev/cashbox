@@ -49,7 +49,7 @@ export class CashBoxEditComponent implements OnInit, OnDestroy {
       this.store.dispatch(
         CashBoxActions.updateCashBox({
           cashBox: this.form.value,
-          index: this.cashBox.id,
+          cashBoxId: this.cashBox.id,
         })
       );
     }

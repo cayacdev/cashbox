@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import * as fromApp from '../../store/app.reducer';
+import * as CashBoxSelectors from '../store/cash-box.selector';
 
 @Component({
   selector: 'app-cash-box-report',
@@ -24,7 +25,7 @@ export class CashBoxReportComponent implements OnInit {
       map((data) => data.cashBox.id)
     );
     this.budgetPlanId$ = this.store
-      .select('cashBoxes')
-      .pipe(map((state) => state.selectedCashBox.activeBudgetPlan.id));
+      .select(CashBoxSelectors.getActiveCashBox)
+      .pipe(map((cashBox) => cashBox.activeBudgetPlan.id));
   }
 }

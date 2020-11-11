@@ -108,17 +108,6 @@ class CashBoxBudgetPlanEntryController extends Controller
 
     /**
      * @param int $id
-     * @return CashBox
-     * @throws AuthorizationException
-     */
-    private function findCashBox(int $id) {
-        $cashBox = CashBox::find($id);
-        Gate::authorize('cashBoxMember', $cashBox);
-        return $cashBox;
-    }
-
-    /**
-     * @param int $id
      * @return CashBoxBudgetPlanEntry
      * @throws AuthorizationException
      */
@@ -136,7 +125,7 @@ class CashBoxBudgetPlanEntryController extends Controller
      */
     public function getPlanThroughCashBox(string $cashBoxId, string $cashBoxBudgetPlanId)
     {
-        $cashBox = $this->findCashBox($cashBoxId);
+        $cashBox = CashBox::findCashBox($cashBoxId);
         return $cashBox->budgetPlans()->where('id', '=', $cashBoxBudgetPlanId)->first();
     }
 }
