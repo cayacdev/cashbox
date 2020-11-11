@@ -10,7 +10,6 @@ use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
@@ -73,7 +72,7 @@ class CashBoxController extends Controller
      */
     public function show(string $id)
     {
-        $cashBox = $this->find($id);
+        $cashBox = CashBox::findCashBox($id);
         return response()->json($cashBox);
     }
 
@@ -90,7 +89,7 @@ class CashBoxController extends Controller
     {
         $this->validateCashBox($request);
 
-        $cashBox = $this->find($id);
+        $cashBox = CashBox::findCashBox($id);
         if (!$cashBox->update($request->all())) {
             throw new HttpException(Response::HTTP_INTERNAL_SERVER_ERROR);
         }
@@ -107,7 +106,7 @@ class CashBoxController extends Controller
      */
     public function destroy(string $id)
     {
-        $cashBox = $this->find($id);
+        $cashBox = CashBox::findCashBox($id);
 
         if (!$cashBox->delete()) {
             throw new HttpException(Response::HTTP_INTERNAL_SERVER_ERROR);
@@ -126,16 +125,5 @@ class CashBoxController extends Controller
             'name' => 'required|max:255',
             'description' => 'max:255',
         ]);
-    }
-
-    /**
-     * @param int $id
-     * @return CashBox|mixed
-     * @throws AuthorizationException
-     */
-    private function find(int $id) {
-        $cashBox = CashBox::find($id);
-        Gate::authorize('cashBoxMember', $cashBox);
-        return $cashBox;
     }
 }

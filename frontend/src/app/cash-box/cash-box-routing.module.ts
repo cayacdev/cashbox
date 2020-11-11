@@ -10,6 +10,7 @@ import { CashBoxOverviewComponent } from './cash-box-overview/cash-box-overview.
 import { CashBoxViewComponent } from './cash-box-view/cash-box-view.component';
 import { CashBoxPlansComponent } from './cash-box-plans/cash-box-plans.component';
 import { CashBoxReportComponent } from './cash-box-report/cash-box-report.component';
+import { CashBoxSettingsComponent } from './cash-box-settings/cash-box-settings.component';
 
 const routes: Routes = [
   {
@@ -35,6 +36,10 @@ const routes: Routes = [
           {
             path: 'plans',
             component: CashBoxPlansComponent,
+          },
+          {
+            path: 'settings',
+            component: CashBoxSettingsComponent,
           },
         ],
       },

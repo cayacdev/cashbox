@@ -10,7 +10,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\ValidationException;
 use Laravel\Lumen\Http\ResponseFactory;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -39,7 +38,7 @@ class CashBoxBudgetPlanController extends Controller
      */
     public function index(string $cashBoxId)
     {
-        $cashBox = $this->findCashBox($cashBoxId);
+        $cashBox = CashBox::findCashBox($cashBoxId);
         return response()->json($cashBox->budgetPlans()->get());
     }
 
@@ -54,7 +53,7 @@ class CashBoxBudgetPlanController extends Controller
      */
     public function store(string $cashBoxId, Request $request)
     {
-        $cashBox = $this->findCashBox($cashBoxId);
+        $cashBox = CashBox::findCashBox($cashBoxId);
 
         $this->validateCashBoxBudgetPlan($request);
         $plan = new CashBoxBudgetPlan($request->all());
@@ -168,7 +167,7 @@ class CashBoxBudgetPlanController extends Controller
      */
     public function active(string $cashBoxId)
     {
-        $cashBox = $this->findCashBox($cashBoxId);
+        $cashBox = CashBox::findCashBox($cashBoxId);
         $activePlan = $cashBox->getActivePlan()->first();
 
         if ($activePlan) {
@@ -193,17 +192,6 @@ class CashBoxBudgetPlanController extends Controller
     }
 
     /**
-     * @param int $id
-     * @return CashBox
-     * @throws AuthorizationException
-     */
-    private function findCashBox(int $id) {
-        $cashBox = CashBox::find($id);
-        Gate::authorize('cashBoxMember', $cashBox);
-        return $cashBox;
-    }
-
-    /**
      * @param string $cashBoxId
      * @param string $id
      * @return CashBoxBudgetPlan|Model|HasMany|object
@@ -211,7 +199,7 @@ class CashBoxBudgetPlanController extends Controller
      */
     public function getPlanThroughCashBox(string $cashBoxId, string $id)
     {
-        $cashBox = $this->findCashBox($cashBoxId);
+        $cashBox = CashBox::findCashBox($cashBoxId);
         return $cashBox->budgetPlans()->where('id', '=', $id)->first();
     }
 

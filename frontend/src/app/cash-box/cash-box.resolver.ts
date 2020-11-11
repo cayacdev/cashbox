@@ -26,7 +26,7 @@ export class CashBoxResolver implements Resolve<CashBox> {
     state: RouterStateSnapshot
   ): Observable<CashBox> | Promise<CashBox> | CashBox {
     const id = route.paramMap.get('id');
-    this.store.dispatch(CashBoxAction.fetchSelected({ cashBoxId: +id }));
+    this.store.dispatch(CashBoxAction.fetchCashBoxDetails({ cashBoxId: +id }));
 
     return this.store.select('cashBoxes').pipe(
       take(1),

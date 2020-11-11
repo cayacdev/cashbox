@@ -5,7 +5,7 @@ import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { combineLatest, EMPTY, of } from 'rxjs';
 import { Router } from '@angular/router';
-import { CashBox } from '../cash-box.model';
+import { CashBox, PredefinedDescription } from '../cash-box.model';
 import { BudgetPlan } from '../../budget-plan/budget-plan.model';
 import { environment } from '../../../environments/environment';
 
@@ -28,7 +28,7 @@ export class CashBoxEffects {
 
   fetchSelectedCashBox$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(CashBoxAction.fetchSelected),
+      ofType(CashBoxAction.fetchCashBoxDetails),
       switchMap(({ cashBoxId }) => {
         return combineLatest([
           this.http.get<CashBox>(`${this.ENDPOINT_CASH_BOX}/${cashBoxId}`),
@@ -66,9 +66,9 @@ export class CashBoxEffects {
   updateCashBox$ = createEffect(() =>
     this.actions$.pipe(
       ofType(CashBoxAction.updateCashBox),
-      switchMap(({ cashBox, index }) => {
+      switchMap(({ cashBox, cashBoxId }) => {
         return this.http
-          .put(`${this.ENDPOINT_CASH_BOX}/${index}`, cashBox)
+          .put(`${this.ENDPOINT_CASH_BOX}/${cashBoxId}`, cashBox)
           .pipe(
             catchError((error: HttpErrorResponse) => {
               return of(
@@ -99,13 +99,97 @@ export class CashBoxEffects {
     () => {
       return this.actions$.pipe(
         ofType(CashBoxAction.deleteCashBox),
-        switchMap(({ index }) => {
-          return this.http.delete(`${this.ENDPOINT_CASH_BOX}/${index}`);
+        switchMap(({ cashBoxId }) => {
+          return this.http.delete(`${this.ENDPOINT_CASH_BOX}/${cashBoxId}`);
         })
       );
     },
     { dispatch: false }
   );
+
+  fetchCashBoxSettings$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(CashBoxAction.fetchCashBoxSettings),
+      switchMap(({ cashBoxId }) => {
+        return combineLatest([
+          this.http.get<PredefinedDescription[]>(
+            `${this.ENDPOINT_CASH_BOX}/${cashBoxId}/settings/descriptions`
+          ),
+        ]).pipe(
+          map((settings) => {
+            return CashBoxAction.setCashBoxSettings({
+              cashBoxId,
+              settings: { descriptions: settings[0] },
+            });
+          }),
+          catchError(() => {
+            return of(CashBoxAction.loadCashBoxSettingsFail());
+          })
+        );
+      })
+    );
+  });
+
+  addCashBoxDescription$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(CashBoxAction.addCashBoxDescription),
+      switchMap(({ cashBoxId, value }) => {
+        return this.http
+          .post(
+            `${this.ENDPOINT_CASH_BOX}/${cashBoxId}/settings/descriptions`,
+            { value }
+          )
+          .pipe(
+            map(() => {
+              return CashBoxAction.updateCashBoxDescriptionSuccess({
+                cashBoxId,
+              });
+            }),
+            catchError(() => {
+              return of(
+                CashBoxAction.updateCashBoxDescriptionFail({ cashBoxId })
+              );
+            })
+          );
+      })
+    );
+  });
+
+  removeCashBoxDescription$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(CashBoxAction.removeCashBoxDescription),
+      switchMap(({ cashBoxId, descriptionId }) => {
+        return this.http
+          .delete(
+            `${this.ENDPOINT_CASH_BOX}/${cashBoxId}/settings/descriptions/${descriptionId}`
+          )
+          .pipe(
+            map(() => {
+              return CashBoxAction.updateCashBoxDescriptionSuccess({
+                cashBoxId,
+              });
+            }),
+            catchError(() => {
+              return of(
+                CashBoxAction.updateCashBoxDescriptionFail({ cashBoxId })
+              );
+            })
+          );
+      })
+    );
+  });
+
+  updateCashBoxDescriptions$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(
+        CashBoxAction.updateCashBoxDescriptionSuccess,
+        CashBoxAction.updateCashBoxDescriptionFail
+      ),
+      map(({ cashBoxId }) => {
+        return CashBoxAction.fetchCashBoxSettings({ cashBoxId });
+      })
+    );
+  });
 
   constructor(
     private actions$: Actions,

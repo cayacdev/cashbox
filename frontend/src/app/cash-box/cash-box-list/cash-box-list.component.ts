@@ -59,7 +59,7 @@ export class CashBoxListComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe((result) => {
       if (result === element) {
         this.store.dispatch(
-          CashBoxActions.deleteCashBox({ index: element.id })
+          CashBoxActions.deleteCashBox({ cashBoxId: element.id })
         );
       }
     });

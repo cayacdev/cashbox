@@ -3,7 +3,13 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
   <p>
     <mat-form-field>
-      <input type="text" matInput placeholder="description" formControlName="description" #inputDescription>
+      <input type="text" matInput [matAutocomplete]="auto" placeholder="description" formControlName="description"
+             #inputDescription>
+      <mat-autocomplete #auto="matAutocomplete">
+        <mat-option *ngFor="let option of filteredDescriptions$ | async" [value]="option.value">
+          {{option.value}}
+        </mat-option>
+      </mat-autocomplete>
       <mat-hint align="end">{{inputDescription.value?.length || 0}}/255</mat-hint>
     </mat-form-field>
   </p>
@@ -24,7 +30,9 @@
   </p>
 
   <div mat-dialog-actions>
-    <button mat-raised-button type="submit" color="primary" [mat-dialog-close]="data.data">Create / Update</button>
+    <button mat-raised-button type="submit" color="primary" [mat-dialog-close]="data.data" [disabled]="!form.valid">
+      Create / Update
+    </button>
     <button mat-button mat-dialog-close>No Thanks</button>
   </div>
 </form>

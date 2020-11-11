@@ -48,6 +48,14 @@ Route::group([
         Route::put('{id}', 'CashBoxBudgetPlanController@update');
         Route::delete('{id}', 'CashBoxBudgetPlanController@destroy');
     });
+    Route::group(['prefix' => '{cashBoxId}/settings'], function ($router) {
+        Route::group(['prefix' => 'descriptions'], function ($router) {
+            Route::get('', 'PredefinedEntryDescriptionController@index');
+            Route::post('', 'PredefinedEntryDescriptionController@store');
+            Route::put('{id}', 'PredefinedEntryDescriptionController@update');
+            Route::delete('{id}', 'PredefinedEntryDescriptionController@destroy');
+        });
+    });
     Route::get('', 'CashBoxController@index');
     Route::get('{id}', 'CashBoxController@show');
     Route::post('', 'CashBoxController@store');
