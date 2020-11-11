@@ -23,6 +23,11 @@ export class CashBoxOverviewComponent implements OnInit {
       link: './plans',
       index: 2,
     },
+    {
+      label: 'Settings',
+      link: './settings',
+      index: 3,
+    },
   ];
 
   constructor(private router: Router, private activatedRoute: ActivatedRoute) {}

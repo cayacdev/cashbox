@@ -16,16 +16,25 @@ const initialState: State = {
   selectedCashBox: null,
 };
 
-function updateCashBoxes(state, index: number, cashBox: CashBox): CashBox[] {
-  const updatedCashBox = {
-    ...state.cashBoxes[index],
-    ...cashBox,
-  };
-
-  const updatedCashBoxes = [...state.cashBoxes];
-  updatedCashBoxes[index] = updatedCashBox;
+function updateOrCreate(state, id: number, cashBox: CashBox): CashBox[] {
+  let updatedCashBoxes = [...state.cashBoxes];
+  const index = state.cashBoxes.findIndex((c) => c.id == id);
+  if (index !== -1) {
+    updatedCashBoxes[index] = {
+      ...state.cashBoxes[index],
+      ...cashBox,
+    };
+  } else {
+    updatedCashBoxes = [...updatedCashBoxes, { ...cashBox, id }];
+  }
   return updatedCashBoxes;
 }
+
+const mergeById = (array1, array2) =>
+  array1.map((itm) => ({
+    ...array2.find((item) => item.id === itm.id && item),
+    ...itm,
+  }));
 
 const cashBoxReducer = createReducer(
   initialState,
@@ -33,24 +42,32 @@ const cashBoxReducer = createReducer(
     return { ...state, loading: true };
   }),
   on(CashBoxAction.setCashBoxes, (state, { cashBoxes }) => {
-    return { ...state, loading: false, cashBoxes };
+    return {
+      ...state,
+      loading: false,
+      cashBoxes: mergeById([...cashBoxes], [...state.cashBoxes]),
+    };
   }),
+  // TODO rename this method to fetchCashBoxDetails
   on(CashBoxAction.fetchSelected, (state) => {
     return { ...state, loading: true };
   }),
   on(CashBoxAction.setSelected, (state, { cashBox }) => {
+    // TODO: change this to set the id of the cash box so the selected box can be fetched in the array
     return { ...state, loading: false, selectedCashBox: cashBox };
   }),
   on(CashBoxAction.addCashBox, (state) => {
     return { ...state, loading: true };
   }),
+  // FIXME: the cash box id is given but it is used as a index
   on(CashBoxAction.updateCashBox, (state, { index, cashBox }) => {
     return {
       ...state,
       loading: true,
-      cashBoxes: updateCashBoxes(state, index, cashBox),
+      cashBoxes: updateOrCreate(state, index, cashBox),
     };
   }),
+  // FIXME: the cash box id is given but it is used as a index
   on(CashBoxAction.deleteCashBox, (state, { index }) => {
     return {
       ...state,
@@ -66,6 +83,16 @@ const cashBoxReducer = createReducer(
   }),
   on(CashBoxAction.updateCashBoxFail, (state, { error }) => {
     return { ...state, loading: false, error };
+  }),
+  on(CashBoxAction.setCashBoxSettings, (state, { cashBoxId, settings }) => {
+    const cashBox = {
+      id: cashBoxId,
+      settings,
+    };
+    return {
+      ...state,
+      cashBoxes: updateOrCreate(state, cashBoxId, cashBox),
+    };
   })
 );
 

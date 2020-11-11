@@ -14,8 +14,10 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule, MatRippleModule } from '@angular/material/core';
-import { MatMenu, MatMenuItem, MatMenuModule } from '@angular/material/menu';
+import { MatNativeDateModule, MatOptionModule } from '@angular/material/core';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 const modules = [
   LayoutModule,
@@ -35,6 +37,9 @@ const modules = [
   MatDatepickerModule,
   MatNativeDateModule,
   MatMenuModule,
+  MatChipsModule,
+  MatOptionModule,
+  MatAutocompleteModule,
 ];
 
 @NgModule({

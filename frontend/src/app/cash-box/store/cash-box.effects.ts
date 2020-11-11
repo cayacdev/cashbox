@@ -5,7 +5,7 @@ import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { combineLatest, EMPTY, of } from 'rxjs';
 import { Router } from '@angular/router';
-import { CashBox } from '../cash-box.model';
+import { CashBox, PredefinedDescription } from '../cash-box.model';
 import { BudgetPlan } from '../../budget-plan/budget-plan.model';
 import { environment } from '../../../environments/environment';
 
@@ -106,6 +106,90 @@ export class CashBoxEffects {
     },
     { dispatch: false }
   );
+
+  fetchCashBoxSettings$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(CashBoxAction.fetchCashBoxSettings),
+      switchMap(({ cashBoxId }) => {
+        return combineLatest([
+          this.http.get<PredefinedDescription[]>(
+            `${this.ENDPOINT_CASH_BOX}/${cashBoxId}/settings/descriptions`
+          ),
+        ]).pipe(
+          map((settings) => {
+            return CashBoxAction.setCashBoxSettings({
+              cashBoxId,
+              settings: { descriptions: settings[0] },
+            });
+          }),
+          catchError(() => {
+            return of(CashBoxAction.loadCashBoxSettingsFail());
+          })
+        );
+      })
+    );
+  });
+
+  addCashBoxDescription$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(CashBoxAction.addCashBoxDescription),
+      switchMap(({ cashBoxId, value }) => {
+        return this.http
+          .post(
+            `${this.ENDPOINT_CASH_BOX}/${cashBoxId}/settings/descriptions`,
+            { value }
+          )
+          .pipe(
+            map(() => {
+              return CashBoxAction.updateCashBoxDescriptionSuccess({
+                cashBoxId,
+              });
+            }),
+            catchError(() => {
+              return of(
+                CashBoxAction.updateCashBoxDescriptionFail({ cashBoxId })
+              );
+            })
+          );
+      })
+    );
+  });
+
+  removeCashBoxDescription$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(CashBoxAction.removeCashBoxDescription),
+      switchMap(({ cashBoxId, descriptionId }) => {
+        return this.http
+          .delete(
+            `${this.ENDPOINT_CASH_BOX}/${cashBoxId}/settings/descriptions/${descriptionId}`
+          )
+          .pipe(
+            map(() => {
+              return CashBoxAction.updateCashBoxDescriptionSuccess({
+                cashBoxId,
+              });
+            }),
+            catchError(() => {
+              return of(
+                CashBoxAction.updateCashBoxDescriptionFail({ cashBoxId })
+              );
+            })
+          );
+      })
+    );
+  });
+
+  updateCashBoxDescriptions$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(
+        CashBoxAction.updateCashBoxDescriptionSuccess,
+        CashBoxAction.updateCashBoxDescriptionFail
+      ),
+      map(({ cashBoxId }) => {
+        return CashBoxAction.fetchCashBoxSettings({ cashBoxId });
+      })
+    );
+  });
 
   constructor(
     private actions$: Actions,
