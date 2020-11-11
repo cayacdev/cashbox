@@ -5,8 +5,8 @@
     <mat-form-field>
       <input type="text" matInput [matAutocomplete]="auto" placeholder="description" formControlName="description"
              #inputDescription>
-      <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
-        <mat-option *ngFor="let option of filteredDescriptions$ | async" [value]="option">
+      <mat-autocomplete #auto="matAutocomplete">
+        <mat-option *ngFor="let option of filteredDescriptions$ | async" [value]="option.value">
           {{option.value}}
         </mat-option>
       </mat-autocomplete>
@@ -30,7 +30,9 @@
   </p>
 
   <div mat-dialog-actions>
-    <button mat-raised-button type="submit" color="primary" [mat-dialog-close]="data.data">Create / Update</button>
+    <button mat-raised-button type="submit" color="primary" [mat-dialog-close]="data.data" [disabled]="!form.valid">
+      Create / Update
+    </button>
     <button mat-button mat-dialog-close>No Thanks</button>
   </div>
 </form>

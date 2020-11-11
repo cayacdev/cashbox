@@ -93,10 +93,6 @@ export class BudgetPlanEntryDialogComponent implements OnInit {
     }
   }
 
-  displayFn(description: PredefinedDescription): string {
-    return description?.value;
-  }
-
   private _filter(value: string): Observable<PredefinedDescription[]> {
     return this.descriptions$.pipe(
       map((list) => {
