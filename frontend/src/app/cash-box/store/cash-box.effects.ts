@@ -28,7 +28,7 @@ export class CashBoxEffects {
 
   fetchSelectedCashBox$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(CashBoxAction.fetchSelected),
+      ofType(CashBoxAction.fetchCashBoxDetails),
       switchMap(({ cashBoxId }) => {
         return combineLatest([
           this.http.get<CashBox>(`${this.ENDPOINT_CASH_BOX}/${cashBoxId}`),
@@ -66,9 +66,9 @@ export class CashBoxEffects {
   updateCashBox$ = createEffect(() =>
     this.actions$.pipe(
       ofType(CashBoxAction.updateCashBox),
-      switchMap(({ cashBox, index }) => {
+      switchMap(({ cashBox, cashBoxId }) => {
         return this.http
-          .put(`${this.ENDPOINT_CASH_BOX}/${index}`, cashBox)
+          .put(`${this.ENDPOINT_CASH_BOX}/${cashBoxId}`, cashBox)
           .pipe(
             catchError((error: HttpErrorResponse) => {
               return of(
@@ -99,8 +99,8 @@ export class CashBoxEffects {
     () => {
       return this.actions$.pipe(
         ofType(CashBoxAction.deleteCashBox),
-        switchMap(({ index }) => {
-          return this.http.delete(`${this.ENDPOINT_CASH_BOX}/${index}`);
+        switchMap(({ cashBoxId }) => {
+          return this.http.delete(`${this.ENDPOINT_CASH_BOX}/${cashBoxId}`);
         })
       );
     },

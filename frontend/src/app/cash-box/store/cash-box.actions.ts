@@ -9,12 +9,12 @@ export const setCashBoxes = createAction(
 export const fetchCashBoxes = createAction('[CashBox] fetch');
 
 export const setSelected = createAction(
-  '[CashBox] set selected',
+  '[CashBox] set selected cash box',
   props<{ cashBox: CashBox }>()
 );
 
-export const fetchSelected = createAction(
-  '[CashBox] fetch selected',
+export const fetchCashBoxDetails = createAction(
+  '[CashBox] fetch cash box details',
   props<{ cashBoxId: number }>()
 );
 
@@ -25,12 +25,12 @@ export const addCashBox = createAction(
 
 export const updateCashBox = createAction(
   '[CashBox] update',
-  props<{ index: number; cashBox: CashBox }>()
+  props<{ cashBoxId: number; cashBox: CashBox }>()
 );
 
 export const deleteCashBox = createAction(
   '[CashBox] delete',
-  props<{ index: number }>()
+  props<{ cashBoxId: number }>()
 );
 
 export const updateCashBoxFail = createAction(

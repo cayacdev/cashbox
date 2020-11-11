@@ -6,14 +6,14 @@ export interface State {
   cashBoxes: CashBox[];
   loading: boolean;
   error: string;
-  selectedCashBox: CashBox;
+  selectedCashBoxId: number;
 }
 
 const initialState: State = {
   cashBoxes: [],
   loading: false,
   error: null,
-  selectedCashBox: null,
+  selectedCashBoxId: null,
 };
 
 function updateOrCreate(state, id: number, cashBox: CashBox): CashBox[] {
@@ -48,30 +48,31 @@ const cashBoxReducer = createReducer(
       cashBoxes: mergeById([...cashBoxes], [...state.cashBoxes]),
     };
   }),
-  // TODO rename this method to fetchCashBoxDetails
-  on(CashBoxAction.fetchSelected, (state) => {
+  on(CashBoxAction.fetchCashBoxDetails, (state) => {
     return { ...state, loading: true };
   }),
   on(CashBoxAction.setSelected, (state, { cashBox }) => {
-    // TODO: change this to set the id of the cash box so the selected box can be fetched in the array
-    return { ...state, loading: false, selectedCashBox: cashBox };
+    return {
+      ...state,
+      loading: false,
+      selectedCashBoxId: cashBox.id,
+      cashBoxes: updateOrCreate(state, cashBox.id, cashBox),
+    };
   }),
   on(CashBoxAction.addCashBox, (state) => {
     return { ...state, loading: true };
   }),
-  // FIXME: the cash box id is given but it is used as a index
-  on(CashBoxAction.updateCashBox, (state, { index, cashBox }) => {
+  on(CashBoxAction.updateCashBox, (state, { cashBoxId, cashBox }) => {
     return {
       ...state,
       loading: true,
-      cashBoxes: updateOrCreate(state, index, cashBox),
+      cashBoxes: updateOrCreate(state, cashBoxId, cashBox),
     };
   }),
-  // FIXME: the cash box id is given but it is used as a index
-  on(CashBoxAction.deleteCashBox, (state, { index }) => {
+  on(CashBoxAction.deleteCashBox, (state, { cashBoxId }) => {
     return {
       ...state,
-      cashBoxes: state.cashBoxes.filter((cashBox) => cashBox.id !== index),
+      cashBoxes: state.cashBoxes.filter((cashBox) => cashBox.id !== cashBoxId),
     };
   }),
   on(CashBoxAction.updateCashBoxSuccess, (state, { cashBox }) => {
