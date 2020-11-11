@@ -3,7 +3,13 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
   <p>
     <mat-form-field>
-      <input type="text" matInput placeholder="description" formControlName="description" #inputDescription>
+      <input type="text" matInput [matAutocomplete]="auto" placeholder="description" formControlName="description"
+             #inputDescription>
+      <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+        <mat-option *ngFor="let option of filteredDescriptions$ | async" [value]="option">
+          {{option.value}}
+        </mat-option>
+      </mat-autocomplete>
       <mat-hint align="end">{{inputDescription.value?.length || 0}}/255</mat-hint>
     </mat-form-field>
   </p>

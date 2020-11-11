@@ -5,6 +5,10 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import * as fromApp from '../../store/app.reducer';
 import * as BudgetPlanActions from '../store/budget-plan.actions';
+import * as CashBoxActions from '../../cash-box/store/cash-box.actions';
+import { Observable } from 'rxjs';
+import { PredefinedDescription } from '../../cash-box/cash-box.model';
+import { filter, map, startWith, switchMap } from 'rxjs/operators';
 
 export interface BudgetPlanEntryDialogData {
   data: BudgetPlanEntry;
@@ -20,6 +24,8 @@ export interface BudgetPlanEntryDialogData {
 export class BudgetPlanEntryDialogComponent implements OnInit {
   form: FormGroup;
   element: BudgetPlanEntry;
+  private descriptions$: Observable<PredefinedDescription[]>;
+  filteredDescriptions$: Observable<PredefinedDescription[]>;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: BudgetPlanEntryDialogData,
@@ -29,6 +35,27 @@ export class BudgetPlanEntryDialogComponent implements OnInit {
   ngOnInit(): void {
     this.element = this.data.data;
     this.initForm();
+
+    this.descriptions$ = this.store.select('cashBoxes').pipe(
+      map((state) => {
+        const cashBox = state.cashBoxes.find(
+          (c) => c.id === this.data.cashBoxId
+        );
+        return cashBox?.settings?.descriptions;
+      })
+    );
+
+    this.store.dispatch(
+      CashBoxActions.fetchCashBoxSettings({
+        cashBoxId: this.data.cashBoxId,
+      })
+    );
+
+    this.filteredDescriptions$ = this.form.get('description').valueChanges.pipe(
+      startWith(''),
+      filter((value) => typeof value === 'string'),
+      switchMap((value) => this._filter(value))
+    );
   }
 
   private initForm(): void {
@@ -38,7 +65,9 @@ export class BudgetPlanEntryDialogComponent implements OnInit {
         Validators.maxLength(255),
       ]),
       value: new FormControl(this.data?.data?.value, [Validators.required]),
-      date: new FormControl(this.data.data?.date ?? new Date(), [Validators.required]),
+      date: new FormControl(this.data.data?.date ?? new Date(), [
+        Validators.required,
+      ]),
     });
   }
 
@@ -62,6 +91,20 @@ export class BudgetPlanEntryDialogComponent implements OnInit {
     } else {
       this.store.dispatch(BudgetPlanActions.createEntry(body));
     }
+  }
+
+  displayFn(description: PredefinedDescription): string {
+    return description?.value;
+  }
+
+  private _filter(value: string): Observable<PredefinedDescription[]> {
+    return this.descriptions$.pipe(
+      map((list) => {
+        return list?.filter((option) => {
+          return option.value.toLowerCase().includes(value.toLowerCase());
+        });
+      })
+    );
   }
 
   private fixDate(date: string): string {
