@@ -16,6 +16,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule, MatOptionModule } from '@angular/material/core';
 import { MatMenuModule } from '@angular/material/menu';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
@@ -37,6 +39,8 @@ const modules = [
   MatDatepickerModule,
   MatNativeDateModule,
   MatMenuModule,
+  MatSlideToggleModule,
+  FlexLayoutModule,
   MatChipsModule,
   MatOptionModule,
   MatAutocompleteModule,

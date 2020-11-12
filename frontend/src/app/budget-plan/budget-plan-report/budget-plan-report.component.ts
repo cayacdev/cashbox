@@ -1,29 +1,47 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewChecked,
+  Component,
+  Input,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import * as BudgetPlanAction from '../store/budget-plan.actions';
 import { Store } from '@ngrx/store';
 import * as fromApp from '../../store/app.reducer';
-import { BudgetPlanReport } from '../budget-plan.model';
+import { BudgetPlan, BudgetPlanReport } from '../budget-plan.model';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { ChartOptions } from 'chart.js';
+import { BudgetPlanEntry } from '../budget-plan-entry.model';
 
 @Component({
   selector: 'app-budget-plan-report',
   templateUrl: './budget-plan-report.component.html',
   styleUrls: ['./budget-plan-report.component.scss'],
 })
-export class BudgetPlanReportComponent implements OnInit {
+export class BudgetPlanReportComponent implements OnInit, AfterViewChecked {
   @Input() cashBoxId: number;
   @Input() budgetPlanId: number;
   name: string;
   report: BudgetPlanReport;
 
-  @ViewChild('paidByUserSort', { static: true }) paidByUserSort: MatSort;
+  @ViewChild('paidByUserSort', { static: false }) paidByUserSort: MatSort;
   paidByUserEntries = new MatTableDataSource<any>();
   paidByUserDisplayedColumns = ['name', 'value'];
 
-  @ViewChild('debtsSort', { static: true }) debtsSort: MatSort;
+  @ViewChild('debtsSort', { static: false }) debtsSort: MatSort;
   debtsEntries = new MatTableDataSource<any>();
   debtsDisplayedColumns = ['debtor', 'creditor', 'value'];
+
+  @ViewChild('paidByDescriptionSort', { static: false })
+  paidByDescriptionSort: MatSort;
+  paidByDescriptionEntries = new MatTableDataSource<any>();
+  paidByDescriptionDisplayedColumns = ['description', 'value'];
+
+  public barChartOptions: ChartOptions = {
+    responsive: true,
+    scales: { yAxes: [{ ticks: { beginAtZero: true } }] },
+  };
 
   constructor(private store: Store<fromApp.AppState>) {}
 
@@ -34,6 +52,11 @@ export class BudgetPlanReportComponent implements OnInit {
       this.report = plan?.report;
       this.paidByUserEntries.data = this.report?.paidByUser ?? [];
       this.debtsEntries.data = this.report?.debtsByUser ?? [];
+      if (plan) {
+        this.paidByDescriptionEntries.data = this.calculatePaidByDescription(
+          plan
+        );
+      }
     });
     this.store.dispatch(
       BudgetPlanAction.fetchReport({
@@ -41,8 +64,45 @@ export class BudgetPlanReportComponent implements OnInit {
         budgetPlanId: this.budgetPlanId,
       })
     );
+  }
 
+  private calculatePaidByDescription(
+    plan: BudgetPlan
+  ): { description: string; value: number }[] {
+    return this.groupByDescription(plan.entries);
+  }
+
+  private groupByDescription(
+    entries: BudgetPlanEntry[]
+  ): { description: string; value: number }[] {
+    return entries.reduce((previousValue, entry) => {
+      const index = previousValue.findIndex(
+        (row) => row.description === entry.description
+      );
+      if (index === -1) {
+        previousValue.push({
+          description: entry.description,
+          value: entry.value,
+        });
+      } else {
+        previousValue[index].value += entry.value;
+      }
+
+      return previousValue;
+    }, []);
+  }
+
+  getLabels() {
+    return this.paidByDescriptionEntries.data.map((entry) => entry.description);
+  }
+
+  getData() {
+    return this.paidByDescriptionEntries.data.map((entry) => entry.value);
+  }
+
+  ngAfterViewChecked(): void {
     this.paidByUserEntries.sort = this.paidByUserSort;
     this.debtsEntries.sort = this.debtsSort;
+    this.paidByDescriptionEntries.sort = this.paidByDescriptionSort;
   }
 }

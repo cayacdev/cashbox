@@ -9,3 +9,18 @@ tr.mat-footer-row {
 td.actions {
   width: 15vw;
 }
+
+div.content {
+  div {
+    padding: 10px;
+  }
+
+  .mat-card {
+    height: 90%;
+  }
+}
+
+.card-slide-toggle {
+  width: 100%;
+  text-align: right;
+}
