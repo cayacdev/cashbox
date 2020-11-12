@@ -8,10 +8,11 @@ import {
 import * as BudgetPlanAction from '../store/budget-plan.actions';
 import { Store } from '@ngrx/store';
 import * as fromApp from '../../store/app.reducer';
-import { BudgetPlanReport } from '../budget-plan.model';
+import { BudgetPlan, BudgetPlanReport } from '../budget-plan.model';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ChartOptions } from 'chart.js';
+import { BudgetPlanEntry } from '../budget-plan-entry.model';
 
 @Component({
   selector: 'app-budget-plan-report',
@@ -32,6 +33,11 @@ export class BudgetPlanReportComponent implements OnInit, AfterViewChecked {
   debtsEntries = new MatTableDataSource<any>();
   debtsDisplayedColumns = ['debtor', 'creditor', 'value'];
 
+  @ViewChild('paidByDescriptionSort', { static: false })
+  paidByDescriptionSort: MatSort;
+  paidByDescriptionEntries = new MatTableDataSource<any>();
+  paidByDescriptionDisplayedColumns = ['description', 'value'];
+
   public barChartOptions: ChartOptions = {
     responsive: true,
     scales: { yAxes: [{ ticks: { beginAtZero: true } }] },
@@ -46,6 +52,11 @@ export class BudgetPlanReportComponent implements OnInit, AfterViewChecked {
       this.report = plan?.report;
       this.paidByUserEntries.data = this.report?.paidByUser ?? [];
       this.debtsEntries.data = this.report?.debtsByUser ?? [];
+      if (plan) {
+        this.paidByDescriptionEntries.data = this.calculatePaidByDescription(
+          plan
+        );
+      }
     });
     this.store.dispatch(
       BudgetPlanAction.fetchReport({
@@ -55,8 +66,43 @@ export class BudgetPlanReportComponent implements OnInit, AfterViewChecked {
     );
   }
 
+  private calculatePaidByDescription(
+    plan: BudgetPlan
+  ): { description: string; value: number }[] {
+    return this.groupByDescription(plan.entries);
+  }
+
+  private groupByDescription(
+    entries: BudgetPlanEntry[]
+  ): { description: string; value: number }[] {
+    return entries.reduce((previousValue, entry) => {
+      const index = previousValue.findIndex(
+        (row) => row.description === entry.description
+      );
+      if (index === -1) {
+        previousValue.push({
+          description: entry.description,
+          value: entry.value,
+        });
+      } else {
+        previousValue[index].value += entry.value;
+      }
+
+      return previousValue;
+    }, []);
+  }
+
+  getLabels() {
+    return this.paidByDescriptionEntries.data.map((entry) => entry.description);
+  }
+
+  getData() {
+    return this.paidByDescriptionEntries.data.map((entry) => entry.value);
+  }
+
   ngAfterViewChecked(): void {
     this.paidByUserEntries.sort = this.paidByUserSort;
     this.debtsEntries.sort = this.debtsSort;
+    this.paidByDescriptionEntries.sort = this.paidByDescriptionSort;
   }
 }
