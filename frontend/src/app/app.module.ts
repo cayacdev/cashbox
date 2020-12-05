@@ -21,6 +21,7 @@ import { BudgetPlanEffects } from './budget-plan/store/budget-plan.effects';
 import { UserModule } from './user/user.module';
 import localeDE from '@angular/common/locales/de';
 import { registerLocaleData } from '@angular/common';
+import { NotFoundRoutingModule } from './not-found-routing.module';
 
 registerLocaleData(localeDE);
 
@@ -41,6 +42,7 @@ registerLocaleData(localeDE);
       maxAge: 25, // Retains last 25 states
       logOnly: environment.production, // Restrict extension to log-only mode
     }),
+    NotFoundRoutingModule,
   ],
   providers: [
     {
