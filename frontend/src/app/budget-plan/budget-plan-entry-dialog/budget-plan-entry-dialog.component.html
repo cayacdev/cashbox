@@ -1,6 +1,13 @@
 <h1 mat-dialog-title>Test</h1>
 
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+  <p>
+    <mat-form-field>
+      <input type="number" matInput placeholder="value" formControlName="value">
+    </mat-form-field>
+  </p>
+
   <p>
     <mat-form-field>
       <input type="text" matInput [matAutocomplete]="auto" placeholder="description" formControlName="description"
@@ -11,12 +18,6 @@
         </mat-option>
       </mat-autocomplete>
       <mat-hint align="end">{{inputDescription.value?.length || 0}}/255</mat-hint>
-    </mat-form-field>
-  </p>
-
-  <p>
-    <mat-form-field>
-      <input type="number" matInput placeholder="value" formControlName="value">
     </mat-form-field>
   </p>
 
