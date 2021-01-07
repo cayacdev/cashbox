@@ -12,7 +12,7 @@
     <mat-form-field>
       <input type="text" matInput [matAutocomplete]="auto" placeholder="description" formControlName="description"
              #inputDescription>
-      <mat-autocomplete #auto="matAutocomplete">
+      <mat-autocomplete #auto="matAutocomplete" class="pre-defined-descriptions-panel">
         <mat-option *ngFor="let option of filteredDescriptions$ | async" [value]="option.value">
           {{option.value}}
         </mat-option>

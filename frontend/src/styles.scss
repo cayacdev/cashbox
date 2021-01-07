@@ -30,7 +30,7 @@ button.toolbar-button {
     width: 100%;
   }
 
-  .mat-column-actions.mat-cell, .mat-column-actions.mat-header-cell  {
+  .mat-column-actions.mat-cell, .mat-column-actions.mat-header-cell {
     text-align: center;
     @media screen and ($mat-xsmall) {
       width: 5vw;
@@ -52,5 +52,11 @@ button.toolbar-button {
     th.mat-header-cell:first-of-type, td.mat-cell:first-of-type, td.mat-footer-cell:first-of-type {
       padding-left: 0;
     }
+  }
+}
+
+.mat-autocomplete-panel.pre-defined-descriptions-panel {
+  @media (max-height: 500px) {
+    height: 50vh;
   }
 }
