@@ -42,6 +42,7 @@ export class BudgetPlanReportComponent implements OnInit, AfterViewChecked {
     responsive: true,
     scales: { yAxes: [{ ticks: { beginAtZero: true } }] },
   };
+  pieChartOptions: any = { responsive: true, maintainAspectRatio: true };
 
   constructor(private store: Store<fromApp.AppState>) {}
 
@@ -72,10 +73,8 @@ export class BudgetPlanReportComponent implements OnInit, AfterViewChecked {
     return this.groupByDescription(plan.entries);
   }
 
-  private groupByDescription(
-    entries: BudgetPlanEntry[]
-  ): { description: string; value: number }[] {
-    return entries.reduce((previousValue, entry) => {
+  private groupByDescription(entries: BudgetPlanEntry[]): DataSet[] {
+    let groups = entries.reduce((previousValue, entry) => {
       const index = previousValue.findIndex(
         (row) => row.description === entry.description
       );
@@ -88,6 +87,26 @@ export class BudgetPlanReportComponent implements OnInit, AfterViewChecked {
         previousValue[index].value += entry.value;
       }
 
+      return previousValue;
+    }, []);
+
+    groups = groups.sort((a: DataSet, b: DataSet) => {
+      return b.value - a.value;
+    });
+
+    return groups.reduce((previousValue: DataSet[], dataSet: DataSet) => {
+      if (previousValue.length < 5) {
+        previousValue.push(dataSet);
+      } else {
+        const index = previousValue.findIndex(
+          (row) => row.description === 'Misc'
+        );
+        if (index === -1) {
+          previousValue.push({ description: 'Misc', value: dataSet.value });
+        } else {
+          previousValue[index].value += dataSet.value;
+        }
+      }
       return previousValue;
     }, []);
   }
@@ -105,4 +124,9 @@ export class BudgetPlanReportComponent implements OnInit, AfterViewChecked {
     this.debtsEntries.sort = this.debtsSort;
     this.paidByDescriptionEntries.sort = this.paidByDescriptionSort;
   }
+}
+
+class DataSet {
+  description: string;
+  value: number;
 }
