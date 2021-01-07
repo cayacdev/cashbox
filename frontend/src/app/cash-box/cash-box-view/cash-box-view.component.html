@@ -3,9 +3,13 @@
   <h1>{{cashBox.name}}</h1>
   <p>{{cashBox.description}}</p>
 
-  <app-cash-box-budget-plan-view *ngIf="cashBox"
-                                 [budgetPlan]="budgetPlan" [cashBoxId]="cashBox.id"></app-cash-box-budget-plan-view>
+  <app-cash-box-budget-plan-view
+    *ngIf="budgetPlan"
+    [budgetPlan]="budgetPlan"
+    [cashBoxId]="cashBox.id">
+  </app-cash-box-budget-plan-view>
 
+  <h2 *ngIf="!budgetPlan">No active budget plan</h2>
 </ng-container>
 
 

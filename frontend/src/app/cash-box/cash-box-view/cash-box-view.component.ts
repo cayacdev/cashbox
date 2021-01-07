@@ -29,7 +29,7 @@ export class CashBoxViewComponent implements OnInit, OnDestroy {
       .subscribe((cashBox) => {
         this.isLoading = !!!cashBox;
         this.cashBox = cashBox;
-        if (cashBox) {
+        if (cashBox?.activeBudgetPlan) {
           this.budgetPlan = { ...cashBox.activeBudgetPlan, entries: undefined };
         }
       });
