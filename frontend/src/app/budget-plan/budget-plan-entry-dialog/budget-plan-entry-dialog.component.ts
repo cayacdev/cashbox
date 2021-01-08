@@ -12,7 +12,7 @@ import { Store } from '@ngrx/store';
 import * as fromApp from '../../store/app.reducer';
 import * as BudgetPlanActions from '../store/budget-plan.actions';
 import * as CashBoxActions from '../../cash-box/store/cash-box.actions';
-import { Observable } from 'rxjs';
+import { combineLatest, fromEvent, Observable } from 'rxjs';
 import { PredefinedDescription } from '../../cash-box/cash-box.model';
 import { delay, filter, map, startWith, switchMap } from 'rxjs/operators';
 import { MatAutocomplete } from '@angular/material/autocomplete';
@@ -118,17 +118,19 @@ export class BudgetPlanEntryDialogComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.autocomplete.opened.pipe(delay(100)).subscribe(() => {
-      const panel: HTMLElement = document.getElementsByClassName(
-        'pre-defined-descriptions-panel'
-      )[0] as HTMLElement;
+    combineLatest([this.autocomplete.opened, fromEvent(window, 'resize')])
+      .pipe(delay(100))
+      .subscribe(() => {
+        const panel: HTMLElement = document.getElementsByClassName(
+          'pre-defined-descriptions-panel'
+        )[0] as HTMLElement;
 
-      const boundingRect: DOMRect = panel.getBoundingClientRect();
-      if (boundingRect.top < 0) {
-        panel.style.maxHeight = `${boundingRect.height + boundingRect.top}px`;
-      } else if (boundingRect.bottom > window.innerHeight) {
-        panel.style.maxHeight = `${window.innerWidth - boundingRect.top}px`;
-      }
-    });
+        const boundingRect: DOMRect = panel.getBoundingClientRect();
+        if (boundingRect.top < 0) {
+          panel.style.maxHeight = `${boundingRect.height + boundingRect.top}px`;
+        } else if (boundingRect.bottom > window.innerHeight) {
+          panel.style.maxHeight = `${window.innerHeight - boundingRect.top}px`;
+        }
+      });
   }
 }
