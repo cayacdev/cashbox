@@ -1,4 +1,10 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  Inject,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { BudgetPlanEntry } from '../budget-plan-entry.model';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
@@ -8,7 +14,8 @@ import * as BudgetPlanActions from '../store/budget-plan.actions';
 import * as CashBoxActions from '../../cash-box/store/cash-box.actions';
 import { Observable } from 'rxjs';
 import { PredefinedDescription } from '../../cash-box/cash-box.model';
-import { filter, map, startWith, switchMap } from 'rxjs/operators';
+import { delay, filter, map, startWith, switchMap } from 'rxjs/operators';
+import { MatAutocomplete } from '@angular/material/autocomplete';
 
 export interface BudgetPlanEntryDialogData {
   data: BudgetPlanEntry;
@@ -21,11 +28,12 @@ export interface BudgetPlanEntryDialogData {
   templateUrl: './budget-plan-entry-dialog.component.html',
   styleUrls: ['./budget-plan-entry-dialog.component.scss'],
 })
-export class BudgetPlanEntryDialogComponent implements OnInit {
+export class BudgetPlanEntryDialogComponent implements OnInit, AfterViewInit {
   form: FormGroup;
   element: BudgetPlanEntry;
   private descriptions$: Observable<PredefinedDescription[]>;
   filteredDescriptions$: Observable<PredefinedDescription[]>;
+  @ViewChild('auto') autocomplete: MatAutocomplete;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: BudgetPlanEntryDialogData,
@@ -107,5 +115,20 @@ export class BudgetPlanEntryDialogComponent implements OnInit {
     const d = new Date(date);
     d.setMinutes(-1 * d.getTimezoneOffset());
     return d.toISOString().split('T')[0];
+  }
+
+  ngAfterViewInit(): void {
+    this.autocomplete.opened.pipe(delay(100)).subscribe(() => {
+      const panel: HTMLElement = document.getElementsByClassName(
+        'pre-defined-descriptions-panel'
+      )[0] as HTMLElement;
+
+      const boundingRect: DOMRect = panel.getBoundingClientRect();
+      if (boundingRect.top < 0) {
+        panel.style.maxHeight = `${boundingRect.height + boundingRect.top}px`;
+      } else if (boundingRect.bottom > window.innerHeight) {
+        panel.style.maxHeight = `${window.innerWidth - boundingRect.top}px`;
+      }
+    });
   }
 }
