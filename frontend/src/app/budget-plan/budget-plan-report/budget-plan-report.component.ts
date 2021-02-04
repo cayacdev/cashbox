@@ -42,7 +42,10 @@ export class BudgetPlanReportComponent implements OnInit, AfterViewChecked {
     responsive: true,
     scales: { yAxes: [{ ticks: { beginAtZero: true } }] },
   };
-  pieChartOptions: any = { responsive: true, maintainAspectRatio: true };
+  pieChartOptions: any = {
+    responsive: true,
+    maintainAspectRatio: true,
+  };
 
   constructor(private store: Store<fromApp.AppState>) {}
 
