@@ -1,10 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { BudgetPlan } from '../../model/budget-plan.model';
+import { BudgetPlan } from '../../../model/budget-plan.model';
 import { Store } from '@ngrx/store';
-import * as fromApp from '../../store/app.reducer';
+import * as fromApp from '../../../store/app.reducer';
 import { ActivatedRoute } from '@angular/router';
-import * as BudgetPlanAction from '../store/budget-plan.actions';
+import * as BudgetPlanAction from '../../store/budget-plan.actions';
 import { Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
 

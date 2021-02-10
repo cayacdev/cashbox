@@ -1,20 +1,20 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
-import { BudgetPlan } from '../../model/budget-plan.model';
-import { BudgetPlanEntry } from '../budget-plan-entry.model';
+import { BudgetPlan } from '../../../../model/budget-plan.model';
+import { BudgetPlanEntry } from '../../../../model/budget-plan-entry.model';
 import { Store } from '@ngrx/store';
-import * as fromApp from '../../store/app.reducer';
+import * as fromApp from '../../../../store/app.reducer';
 import { MatDialog } from '@angular/material/dialog';
 import {
   BudgetPlanEntryDialogComponent,
   BudgetPlanEntryDialogData,
-} from '../budget-plan-entry-dialog/budget-plan-entry-dialog.component';
-import * as BudgetPlanAction from '../store/budget-plan.actions';
+} from '../../../components/budget-plan-entry-dialog/budget-plan-entry-dialog.component';
+import * as BudgetPlanAction from '../../../store/budget-plan.actions';
 import {
   DeleteDialogComponent,
   DeleteDialogData,
-} from '../../shared/delete-dialog/delete-dialog.component';
+} from '../../../../shared/delete-dialog/delete-dialog.component';
 
 @Component({
   selector: 'app-cash-box-budget-plan-view',

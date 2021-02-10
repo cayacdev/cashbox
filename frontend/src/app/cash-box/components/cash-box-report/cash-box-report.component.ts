@@ -3,8 +3,8 @@ import { Observable } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
-import * as fromApp from '../../store/app.reducer';
-import * as CashBoxSelectors from '../store/cash-box.selector';
+import * as fromApp from '../../../store/app.reducer';
+import * as CashBoxSelectors from '../../store/cash-box.selector';
 
 @Component({
   selector: 'app-cash-box-report',

@@ -3,13 +3,13 @@ import {
   Resolve,
   RouterStateSnapshot,
 } from '@angular/router';
-import { CashBox } from '../model/cash-box.model';
+import { CashBox } from '../../model/cash-box.model';
 import { Observable, of } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import * as fromApp from '../store/app.reducer';
+import * as fromApp from '../../store/app.reducer';
 import { map, switchMap, take } from 'rxjs/operators';
-import * as CashBoxAction from './store/cash-box.actions';
+import * as CashBoxAction from '../store/cash-box.actions';
 import { Actions, ofType } from '@ngrx/effects';
 
 @Injectable({

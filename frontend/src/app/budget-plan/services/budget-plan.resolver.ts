@@ -3,13 +3,13 @@ import {
   Resolve,
   RouterStateSnapshot,
 } from '@angular/router';
-import { BudgetPlan } from '../model/budget-plan.model';
+import { BudgetPlan } from '../../model/budget-plan.model';
 import { Observable, of } from 'rxjs';
 import { Store } from '@ngrx/store';
-import * as fromApp from '../store/app.reducer';
+import * as fromApp from '../../store/app.reducer';
 import { map, switchMap, take } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import * as BudgetPlanAction from './store/budget-plan.actions';
+import * as BudgetPlanAction from '../store/budget-plan.actions';
 import { Actions, ofType } from '@ngrx/effects';
 
 @Injectable({ providedIn: 'root' })

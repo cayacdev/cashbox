@@ -6,14 +6,14 @@ import {
   ViewChild,
 } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { BudgetPlanEntry } from '../budget-plan-entry.model';
+import { BudgetPlanEntry } from '../../../model/budget-plan-entry.model';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import * as fromApp from '../../store/app.reducer';
-import * as BudgetPlanActions from '../store/budget-plan.actions';
-import * as CashBoxActions from '../../cash-box/store/cash-box.actions';
+import * as fromApp from '../../../store/app.reducer';
+import * as BudgetPlanActions from '../../store/budget-plan.actions';
+import * as CashBoxActions from '../../../cash-box/store/cash-box.actions';
 import { combineLatest, fromEvent, Observable } from 'rxjs';
-import { PredefinedDescription } from '../../model/cash-box.model';
+import { PredefinedDescription } from '../../../model/cash-box.model';
 import { delay, filter, map, startWith, switchMap } from 'rxjs/operators';
 import { MatAutocomplete } from '@angular/material/autocomplete';
 

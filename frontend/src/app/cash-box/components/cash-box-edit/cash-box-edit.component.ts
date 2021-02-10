@@ -1,11 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import * as fromApp from '../../store/app.reducer';
-import * as CashBoxActions from '../store/cash-box.actions';
+import * as fromApp from '../../../store/app.reducer';
+import * as CashBoxActions from '../../store/cash-box.actions';
 import { Store } from '@ngrx/store';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { CashBox } from '../../model/cash-box.model';
+import { CashBox } from '../../../model/cash-box.model';
 
 @Component({
   selector: 'app-cash-box-edit',

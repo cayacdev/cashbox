@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import * as CashBoxAction from '../store/cash-box.actions';
+import * as CashBoxAction from '../../store/cash-box.actions';
 import { Store } from '@ngrx/store';
-import * as fromApp from '../../store/app.reducer';
+import * as fromApp from '../../../store/app.reducer';
 import { map, take } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 import {
   CashBoxSettings,
   PredefinedDescription,
-} from '../../model/cash-box.model';
+} from '../../../model/cash-box.model';
 import { combineLatest, Observable } from 'rxjs';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';

@@ -6,9 +6,9 @@ import {
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import * as fromApp from '../store/app.reducer';
+import * as fromApp from '../../store/app.reducer';
 import { map, take, tap } from 'rxjs/operators';
-import * as BudgetPlanAction from '../budget-plan/store/budget-plan.actions';
+import * as BudgetPlanAction from '../store/budget-plan.actions';
 import { Actions } from '@ngrx/effects';
 
 @Injectable({

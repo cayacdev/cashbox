@@ -1,11 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { CashBox } from '../../model/cash-box.model';
+import { CashBox } from '../../../model/cash-box.model';
 import { Store } from '@ngrx/store';
-import * as fromApp from '../../store/app.reducer';
+import * as fromApp from '../../../store/app.reducer';
 import { Subscription } from 'rxjs';
-import { BudgetPlan } from '../../model/budget-plan.model';
-import * as CashBoxSelectors from '../store/cash-box.selector';
+import { BudgetPlan } from '../../../model/budget-plan.model';
+import * as CashBoxSelectors from '../../store/cash-box.selector';
 
 @Component({
   selector: 'app-cash-box-view',

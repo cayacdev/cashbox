@@ -5,14 +5,17 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import * as BudgetPlanAction from '../store/budget-plan.actions';
+import * as BudgetPlanAction from '../../../store/budget-plan.actions';
 import { Store } from '@ngrx/store';
-import * as fromApp from '../../store/app.reducer';
-import { BudgetPlan, BudgetPlanReport } from '../../model/budget-plan.model';
+import * as fromApp from '../../../../store/app.reducer';
+import {
+  BudgetPlan,
+  BudgetPlanReport,
+} from '../../../../model/budget-plan.model';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ChartOptions } from 'chart.js';
-import { BudgetPlanEntry } from '../budget-plan-entry.model';
+import { BudgetPlanEntry } from '../../../../model/budget-plan-entry.model';
 
 @Component({
   selector: 'app-budget-plan-report',
