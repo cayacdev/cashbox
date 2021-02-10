@@ -1,5 +1,5 @@
 import { RouterModule, Routes } from '@angular/router';
-import { CashBoxComponent } from '../cash-box/cash-box.component';
+import { CashBoxRouterOutletComponent } from '../cash-box/components/cash-box-router-outlet/cash-box-router-outlet.component';
 import { AuthGuard } from '../auth/auth.guard';
 import { NgModule } from '@angular/core';
 import { BudgetPlanViewComponent } from './shared/components/budget-plan-view/budget-plan-view.component';
@@ -10,7 +10,7 @@ import { BudgetPlanResolver } from './services/budget-plan.resolver';
 const routes: Routes = [
   {
     path: 'cash-boxes/:id/budget-plans',
-    component: CashBoxComponent,
+    component: CashBoxRouterOutletComponent,
     canActivate: [AuthGuard],
     resolve: { cashBoxId: CashBoxIdResolver },
     children: [

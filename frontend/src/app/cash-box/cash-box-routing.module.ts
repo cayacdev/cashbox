@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from '../auth/auth.guard';
-import { CashBoxComponent } from './cash-box.component';
+import { CashBoxRouterOutletComponent } from './components/cash-box-router-outlet/cash-box-router-outlet.component';
 import { CashBoxListComponent } from './components/cash-box-list/cash-box-list.component';
 import { CashBoxEditComponent } from './components/cash-box-edit/cash-box-edit.component';
 import { CashBoxResolver } from './services/cash-box.resolver';
@@ -15,7 +15,7 @@ import { CashBoxSettingsComponent } from './components/cash-box-settings/cash-bo
 const routes: Routes = [
   {
     path: 'cash-boxes',
-    component: CashBoxComponent,
+    component: CashBoxRouterOutletComponent,
     canActivate: [AuthGuard],
     children: [
       { path: '', component: CashBoxListComponent },
