@@ -49,7 +49,7 @@ export class CashBoxSettingsComponent implements OnInit {
     });
   }
 
-  remove(description: PredefinedDescription) {
+  remove(description: PredefinedDescription): void {
     this.cashBoxId$.pipe(take(1)).subscribe((id) => {
       this.store.dispatch(
         CashBoxAction.removeCashBoxDescription({
@@ -60,7 +60,7 @@ export class CashBoxSettingsComponent implements OnInit {
     });
   }
 
-  add($event: MatChipInputEvent) {
+  add($event: MatChipInputEvent): void {
     const input = $event.input;
 
     if (!input.value) {

@@ -59,7 +59,7 @@ export const loadCashBoxSettingsFail = createAction(
 
 export const addCashBoxDescription = createAction(
   '[CashBox] add cash box description',
-  props<{ cashBoxId: number; value: String }>()
+  props<{ cashBoxId: number; value: string }>()
 );
 
 export const removeCashBoxDescription = createAction(

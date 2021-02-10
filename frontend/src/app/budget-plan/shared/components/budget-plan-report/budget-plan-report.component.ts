@@ -1,17 +1,8 @@
-import {
-  AfterViewChecked,
-  Component,
-  Input,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
+import { AfterViewChecked, Component, Input, OnInit, ViewChild } from '@angular/core';
 import * as BudgetPlanAction from '../../../store/budget-plan.actions';
 import { Store } from '@ngrx/store';
 import * as fromApp from '../../../../store/app.reducer';
-import {
-  BudgetPlan,
-  BudgetPlanReport,
-} from '../../../../model/budget-plan.model';
+import { BudgetPlan, BudgetPlanReport } from '../../../../model/budget-plan.model';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ChartOptions } from 'chart.js';
@@ -29,23 +20,23 @@ export class BudgetPlanReportComponent implements OnInit, AfterViewChecked {
   report: BudgetPlanReport;
 
   @ViewChild('paidByUserSort', { static: false }) paidByUserSort: MatSort;
-  paidByUserEntries = new MatTableDataSource<any>();
+  paidByUserEntries = new MatTableDataSource<{ name: string; value: number }>();
   paidByUserDisplayedColumns = ['name', 'value'];
 
   @ViewChild('debtsSort', { static: false }) debtsSort: MatSort;
-  debtsEntries = new MatTableDataSource<any>();
+  debtsEntries = new MatTableDataSource<unknown>();
   debtsDisplayedColumns = ['debtor', 'creditor', 'value'];
 
   @ViewChild('paidByDescriptionSort', { static: false })
   paidByDescriptionSort: MatSort;
-  paidByDescriptionEntries = new MatTableDataSource<any>();
+  paidByDescriptionEntries = new MatTableDataSource<{ description: string; value: number }>();
   paidByDescriptionDisplayedColumns = ['description', 'value'];
 
   public barChartOptions: ChartOptions = {
     responsive: true,
     scales: { yAxes: [{ ticks: { beginAtZero: true } }] },
   };
-  pieChartOptions: any = {
+  pieChartOptions: unknown = {
     responsive: true,
     maintainAspectRatio: true,
   };
@@ -60,9 +51,7 @@ export class BudgetPlanReportComponent implements OnInit, AfterViewChecked {
       this.paidByUserEntries.data = this.report?.paidByUser ?? [];
       this.debtsEntries.data = this.report?.debtsByUser ?? [];
       if (plan) {
-        this.paidByDescriptionEntries.data = this.calculatePaidByDescription(
-          plan
-        );
+        this.paidByDescriptionEntries.data = this.calculatePaidByDescription(plan);
       }
     });
     this.store.dispatch(
@@ -73,17 +62,13 @@ export class BudgetPlanReportComponent implements OnInit, AfterViewChecked {
     );
   }
 
-  private calculatePaidByDescription(
-    plan: BudgetPlan
-  ): { description: string; value: number }[] {
+  private calculatePaidByDescription(plan: BudgetPlan): { description: string; value: number }[] {
     return this.groupByDescription(plan.entries);
   }
 
   private groupByDescription(entries: BudgetPlanEntry[]): DataSet[] {
     let groups = entries.reduce((previousValue, entry) => {
-      const index = previousValue.findIndex(
-        (row) => row.description === entry.description
-      );
+      const index = previousValue.findIndex((row) => row.description === entry.description);
       if (index === -1) {
         previousValue.push({
           description: entry.description,
@@ -104,9 +89,7 @@ export class BudgetPlanReportComponent implements OnInit, AfterViewChecked {
       if (previousValue.length < 5) {
         previousValue.push(dataSet);
       } else {
-        const index = previousValue.findIndex(
-          (row) => row.description === 'Misc'
-        );
+        const index = previousValue.findIndex((row) => row.description === 'Misc');
         if (index === -1) {
           previousValue.push({ description: 'Misc', value: dataSet.value });
         } else {
@@ -117,11 +100,11 @@ export class BudgetPlanReportComponent implements OnInit, AfterViewChecked {
     }, []);
   }
 
-  getLabels() {
+  getLabels(): string[] {
     return this.paidByDescriptionEntries.data.map((entry) => entry.description);
   }
 
-  getData() {
+  getData(): unknown[] {
     return this.paidByDescriptionEntries.data.map((entry) => entry.value);
   }
 

@@ -6,7 +6,7 @@ import * as AuthActions from './store/auth.actions';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private tokenExpirationTimer: any;
+  private tokenExpirationTimer: number;
 
   constructor(private store: Store<fromApp.AppState>) {}
 

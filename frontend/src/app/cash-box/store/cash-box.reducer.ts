@@ -18,7 +18,7 @@ const initialState: State = {
 
 function updateOrCreate(state, id: number, cashBox: CashBox): CashBox[] {
   let updatedCashBoxes = [...state.cashBoxes];
-  const index = state.cashBoxes.findIndex((c) => c.id == id);
+  const index = state.cashBoxes.findIndex((c) => c.id === id);
   if (index !== -1) {
     updatedCashBoxes[index] = {
       ...state.cashBoxes[index],

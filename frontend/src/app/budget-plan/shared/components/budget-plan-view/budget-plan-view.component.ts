@@ -71,7 +71,7 @@ export class BudgetPlanViewComponent implements OnInit {
       .reduce((acc, value) => acc + value, 0);
   }
 
-  onEdit(element: any): void {
+  onEdit(element: BudgetPlanEntry): void {
     this.dialog.open(BudgetPlanEntryDialogComponent, {
       data: {
         data: element,
@@ -81,11 +81,11 @@ export class BudgetPlanViewComponent implements OnInit {
     });
   }
 
-  onDelete(element: any): void {
+  onDelete(element: BudgetPlanEntry): void {
     const dialogRef = this.dialog.open(DeleteDialogComponent, {
       data: {
         data: element,
-        headline: element.id,
+        headline: `${element.id}`,
       } as DeleteDialogData,
     });
 
@@ -102,7 +102,7 @@ export class BudgetPlanViewComponent implements OnInit {
     });
   }
 
-  getDisplayedColumns() {
+  getDisplayedColumns(): string[] {
     if (!this.showDescription) {
       return this.displayedColumns.filter((col) => col !== 'description');
     }

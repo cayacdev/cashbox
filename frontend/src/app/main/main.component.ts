@@ -5,6 +5,7 @@ import { map, shareReplay, take } from 'rxjs/operators';
 import * as fromApp from '../store/app.reducer';
 import { Store } from '@ngrx/store';
 import * as AuthActions from '../auth/store/auth.actions';
+import { MatSidenav } from '@angular/material/sidenav';
 
 @Component({
   selector: 'app-cash-box',
@@ -19,7 +20,7 @@ export class MainComponent implements OnInit, OnDestroy {
       shareReplay()
     );
 
-  @ViewChild('drawer') drawer: any;
+  @ViewChild('drawer') drawer: MatSidenav;
   isAuthenticated = false;
   private authSub: Subscription;
 
