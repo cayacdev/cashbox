@@ -10,7 +10,7 @@ import { BaseChartDirective, Color } from 'ng2-charts';
 import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { map, shareReplay, take } from 'rxjs/operators';
-import { BudgetPlan } from '../budget-plan.model';
+import { BudgetPlan } from '../../model/budget-plan.model';
 import { BudgetPlanEntry } from '../budget-plan-entry.model';
 
 @Component({

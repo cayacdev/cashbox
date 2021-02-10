@@ -1,4 +1,4 @@
-import { BudgetPlan } from '../budget-plan/budget-plan.model';
+import { BudgetPlan } from './budget-plan.model';
 
 export class CashBox {
   constructor(

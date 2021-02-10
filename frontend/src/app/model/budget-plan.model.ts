@@ -1,4 +1,4 @@
-import { BudgetPlanEntry } from './budget-plan-entry.model';
+import { BudgetPlanEntry } from '../budget-plan/budget-plan-entry.model';
 
 export class BudgetPlan {
   constructor(

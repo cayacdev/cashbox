@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { CashBox, CashBoxSettings } from '../cash-box.model';
+import { CashBox, CashBoxSettings } from '../../model/cash-box.model';
 
 export const setCashBoxes = createAction(
   '[CashBox] set',

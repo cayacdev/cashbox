@@ -5,7 +5,7 @@ import { environment } from '../../../environments/environment';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { EMPTY, of } from 'rxjs';
 import { Router } from '@angular/router';
-import { BudgetPlan, BudgetPlanReport } from '../budget-plan.model';
+import { BudgetPlan, BudgetPlanReport } from '../../model/budget-plan.model';
 import * as BudgetPlanAction from './budget-plan.actions';
 
 @Injectable()

@@ -3,7 +3,7 @@ import {
   Resolve,
   RouterStateSnapshot,
 } from '@angular/router';
-import { CashBox } from './cash-box.model';
+import { CashBox } from '../model/cash-box.model';
 import { Observable, of } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';

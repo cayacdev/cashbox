@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import * as fromApp from '../../store/app.reducer';
 import { Store } from '@ngrx/store';
-import { BudgetPlan } from '../budget-plan.model';
+import { BudgetPlan } from '../../model/budget-plan.model';
 import { MatTableDataSource } from '@angular/material/table';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';

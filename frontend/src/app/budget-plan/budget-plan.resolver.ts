@@ -3,7 +3,7 @@ import {
   Resolve,
   RouterStateSnapshot,
 } from '@angular/router';
-import { BudgetPlan } from './budget-plan.model';
+import { BudgetPlan } from '../model/budget-plan.model';
 import { Observable, of } from 'rxjs';
 import { Store } from '@ngrx/store';
 import * as fromApp from '../store/app.reducer';

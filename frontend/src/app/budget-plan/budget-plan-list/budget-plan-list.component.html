@@ -1,5 +1,8 @@
 <ng-container *ngIf="selectedBudgetPlan">
-  <button class="toolbar-button" mat-stroked-button color="primary" (click)="onView(null)">Back to list</button>
+  <button style="margin:1rem;" mat-stroked-button color="primary" (click)="onView(null)">
+    <mat-icon>arrow_back</mat-icon>
+    Back to list
+  </button>
   <button class="toolbar-button" mat-stroked-button color="primary" (click)="showReport = !showReport">Show report
   </button>
   <app-cash-box-budget-plan-view *ngIf="!showReport" [budgetPlan]="selectedBudgetPlan"

@@ -5,8 +5,8 @@ import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { combineLatest, EMPTY, of } from 'rxjs';
 import { Router } from '@angular/router';
-import { CashBox, PredefinedDescription } from '../cash-box.model';
-import { BudgetPlan } from '../../budget-plan/budget-plan.model';
+import { CashBox, PredefinedDescription } from '../../model/cash-box.model';
+import { BudgetPlan } from '../../model/budget-plan.model';
 import { environment } from '../../../environments/environment';
 
 @Injectable()

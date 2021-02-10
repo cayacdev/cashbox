@@ -13,7 +13,7 @@ import * as fromApp from '../../store/app.reducer';
 import * as BudgetPlanActions from '../store/budget-plan.actions';
 import * as CashBoxActions from '../../cash-box/store/cash-box.actions';
 import { combineLatest, fromEvent, Observable } from 'rxjs';
-import { PredefinedDescription } from '../../cash-box/cash-box.model';
+import { PredefinedDescription } from '../../model/cash-box.model';
 import { delay, filter, map, startWith, switchMap } from 'rxjs/operators';
 import { MatAutocomplete } from '@angular/material/autocomplete';
 

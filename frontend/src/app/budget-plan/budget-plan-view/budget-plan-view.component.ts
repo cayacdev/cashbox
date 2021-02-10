@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
-import { BudgetPlan } from '../budget-plan.model';
+import { BudgetPlan } from '../../model/budget-plan.model';
 import { BudgetPlanEntry } from '../budget-plan-entry.model';
 import { Store } from '@ngrx/store';
 import * as fromApp from '../../store/app.reducer';

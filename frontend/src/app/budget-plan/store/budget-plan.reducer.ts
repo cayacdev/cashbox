@@ -1,4 +1,4 @@
-import { BudgetPlan } from '../budget-plan.model';
+import { BudgetPlan } from '../../model/budget-plan.model';
 import { Action, createReducer, on } from '@ngrx/store';
 import * as BudgetPlanAction from './budget-plan.actions';
 

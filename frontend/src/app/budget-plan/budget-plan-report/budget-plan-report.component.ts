@@ -8,7 +8,7 @@ import {
 import * as BudgetPlanAction from '../store/budget-plan.actions';
 import { Store } from '@ngrx/store';
 import * as fromApp from '../../store/app.reducer';
-import { BudgetPlan, BudgetPlanReport } from '../budget-plan.model';
+import { BudgetPlan, BudgetPlanReport } from '../../model/budget-plan.model';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ChartOptions } from 'chart.js';

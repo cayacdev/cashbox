@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { BudgetPlan, BudgetPlanReport } from '../budget-plan.model';
+import { BudgetPlan, BudgetPlanReport } from '../../model/budget-plan.model';
 import { BudgetPlanEntry } from '../budget-plan-entry.model';
 
 export const setBudgetPlans = createAction(

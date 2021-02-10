@@ -1,4 +1,4 @@
-import { CashBox } from '../cash-box.model';
+import { CashBox } from '../../model/cash-box.model';
 import { Action, createReducer, on } from '@ngrx/store';
 import * as CashBoxAction from './cash-box.actions';
 
