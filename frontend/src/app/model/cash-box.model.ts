@@ -5,6 +5,8 @@ export class CashBox {
     public id: number,
     public name?: string,
     public description?: string,
+    public activeBudgetPlanId?: number,
+    // TODO: deprecated
     public activeBudgetPlan?: BudgetPlan,
     public settings?: CashBoxSettings
   ) {}

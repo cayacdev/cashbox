@@ -3,11 +3,12 @@
   <mat-form-field class="example-chip-list">
     <mat-chip-list #chipList>
       <mat-chip *ngFor="let description of settings.descriptions" [selectable]="false"
-                [removable]="true" (removed)="remove(description)">
+                [removable]="true" (removed)="remove(description)" [disabled]="isLoading$ | async">
         {{description.value}}
         <mat-icon matChipRemove>cancel</mat-icon>
       </mat-chip>
       <input placeholder="Predefined entry descriptions"
+             [disabled]="isLoading$ | async"
              [matChipInputFor]="chipList"
              [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
              [matChipInputAddOnBlur]="true"

@@ -1,12 +1,33 @@
-import { CashBox } from '../../model/cash-box.model';
+import { CashBox, CashBoxSettings } from '../../model/cash-box.model';
 import { Action, createReducer, on } from '@ngrx/store';
 import * as CashBoxAction from './cash-box.actions';
 
+// TODO move this globally so this is reusable
+export const enum LoadingState {
+  INIT = 'INIT',
+  LOADING = 'LOADING',
+  LOADED = 'LOADED',
+}
+
+export interface ErrorState {
+  errorMsg: string;
+}
+
+export type CallState = LoadingState | ErrorState;
+
+// TODO: move to 'state' file
 export interface State {
   cashBoxes: CashBox[];
   loading: boolean;
   error: string;
   selectedCashBoxId: number;
+
+  // new
+  loadCashBoxState: CallState;
+
+  // TODO: better move cash box setting here?
+  settings: { [cashBoxId: number]: CashBoxSettings };
+  loadCashBoxSettingState: CallState;
 }
 
 const initialState: State = {
@@ -14,86 +35,45 @@ const initialState: State = {
   loading: false,
   error: null,
   selectedCashBoxId: null,
+
+  // new
+  loadCashBoxState: LoadingState.INIT,
+  loadCashBoxSettingState: LoadingState.INIT,
+  settings: {},
 };
-
-function updateOrCreate(state, id: number, cashBox: CashBox): CashBox[] {
-  let updatedCashBoxes = [...state.cashBoxes];
-  const index = state.cashBoxes.findIndex((c) => c.id === id);
-  if (index !== -1) {
-    updatedCashBoxes[index] = {
-      ...state.cashBoxes[index],
-      ...cashBox,
-    };
-  } else {
-    updatedCashBoxes = [...updatedCashBoxes, { ...cashBox, id }];
-  }
-  return updatedCashBoxes;
-}
-
-const mergeById = (array1, array2) =>
-  array1.map((itm) => ({
-    ...array2.find((item) => item.id === itm.id && item),
-    ...itm,
-  }));
-
 const cashBoxReducer = createReducer(
   initialState,
-  on(CashBoxAction.fetchCashBoxes, (state) => {
-    return { ...state, loading: true };
+  on(CashBoxAction.loadCashBoxes, (state) => {
+    return { ...state, loadCashBoxState: LoadingState.LOADING };
   }),
-  on(CashBoxAction.setCashBoxes, (state, { cashBoxes }) => {
-    return {
-      ...state,
-      loading: false,
-      cashBoxes: mergeById([...cashBoxes], [...state.cashBoxes]),
-    };
+  on(CashBoxAction.loadCashBoxesSuccess, (state, { cashBoxes }) => {
+    return { ...state, cashBoxes, loadCashBoxState: LoadingState.LOADED };
   }),
-  on(CashBoxAction.fetchCashBoxDetails, (state) => {
-    return { ...state, loading: true };
+  on(CashBoxAction.addCashBox, CashBoxAction.updateCashBox, CashBoxAction.deleteCashBox, (state) => {
+    return { ...state, loadCashBoxState: LoadingState.LOADING };
+  }),
+  on(CashBoxAction.updateCashBoxFail, (state) => {
+    return { ...state, loadCashBoxState: { errorMsg: 'Failed to update cash boxes' } };
+  }),
+  on(CashBoxAction.loadCashBoxSettingsFail, (state) => {
+    return { ...state, loadCashBoxState: { errorMsg: 'Failed to load cash boxes settings' } };
   }),
   on(CashBoxAction.setSelected, (state, { cashBox }) => {
-    return {
-      ...state,
-      loading: false,
-      selectedCashBoxId: cashBox.id,
-      cashBoxes: updateOrCreate(state, cashBox.id, cashBox),
-    };
+    return { ...state, selectedCashBoxId: cashBox.id };
   }),
-  on(CashBoxAction.addCashBox, (state) => {
-    return { ...state, loading: true };
+
+  // TODO: move to own reducer
+  on(CashBoxAction.loadCashBoxSettings, (state) => {
+    return { ...state, loadCashBoxSettingState: LoadingState.LOADING };
   }),
-  on(CashBoxAction.updateCashBox, (state, { cashBoxId, cashBox }) => {
-    return {
-      ...state,
-      loading: true,
-      cashBoxes: updateOrCreate(state, cashBoxId, cashBox),
-    };
+  on(CashBoxAction.addCashBoxDescription, CashBoxAction.removeCashBoxDescription, (state) => {
+    return { ...state, loadCashBoxSettingState: LoadingState.LOADING };
   }),
-  on(CashBoxAction.deleteCashBox, (state, { cashBoxId }) => {
-    return {
-      ...state,
-      cashBoxes: state.cashBoxes.filter((cashBox) => cashBox.id !== cashBoxId),
-    };
+  on(CashBoxAction.loadCashBoxSettingsSuccess, (state, { cashBoxId, settings }) => {
+    return { ...state, settings: { ...settings, [cashBoxId]: settings }, loadCashBoxSettingState: LoadingState.LOADED };
   }),
-  on(CashBoxAction.updateCashBoxSuccess, (state, { cashBox }) => {
-    return {
-      ...state,
-      loading: false,
-      cashBoxes: [...state.cashBoxes, cashBox],
-    };
-  }),
-  on(CashBoxAction.updateCashBoxFail, (state, { error }) => {
-    return { ...state, loading: false, error };
-  }),
-  on(CashBoxAction.setCashBoxSettings, (state, { cashBoxId, settings }) => {
-    const cashBox = {
-      id: cashBoxId,
-      settings,
-    };
-    return {
-      ...state,
-      cashBoxes: updateOrCreate(state, cashBoxId, cashBox),
-    };
+  on(CashBoxAction.loadCashBoxSettingsFail, (state) => {
+    return { ...state, loadCashBoxSettingState: { errorMsg: 'Failed to load cash box settings' } };
   })
 );
 

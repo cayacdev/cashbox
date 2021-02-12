@@ -9,6 +9,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { DeleteDialogComponent } from '../../../shared/delete-dialog/delete-dialog.component';
+import { LoadingState } from '../../store/cash-box.reducer';
 
 @Component({
   selector: 'app-cash-box-list',
@@ -33,10 +34,12 @@ export class CashBoxListComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.sub = this.store.select('cashBoxes').subscribe((state) => {
       this.dataSource.data = state.cashBoxes;
-      this.isLoading = state.loading;
+      this.isLoading = state.loadCashBoxState === LoadingState.LOADING;
+      console.log(state.loadCashBoxState);
+      //console.log(LoadingState.LOADING);
     });
 
-    this.store.dispatch(CashBoxActions.fetchCashBoxes());
+    this.store.dispatch(CashBoxActions.loadCashBoxes());
     this.dataSource.sort = this.sort;
   }
 
@@ -58,9 +61,7 @@ export class CashBoxListComponent implements OnInit, OnDestroy {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result === element) {
-        this.store.dispatch(
-          CashBoxActions.deleteCashBox({ cashBoxId: element.id })
-        );
+        this.store.dispatch(CashBoxActions.deleteCashBox({ cashBox: element }));
       }
     });
   }

@@ -1,8 +1,4 @@
-import {
-  ActivatedRouteSnapshot,
-  Resolve,
-  RouterStateSnapshot,
-} from '@angular/router';
+import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
 import { CashBox } from '../../model/cash-box.model';
 import { Observable, of } from 'rxjs';
 import { Injectable } from '@angular/core';
@@ -16,17 +12,11 @@ import { Actions, ofType } from '@ngrx/effects';
   providedIn: 'root',
 })
 export class CashBoxResolver implements Resolve<CashBox> {
-  constructor(
-    private store: Store<fromApp.AppState>,
-    private actions$: Actions
-  ) {}
+  constructor(private store: Store<fromApp.AppState>, private actions$: Actions) {}
 
-  resolve(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
-  ): Observable<CashBox> | Promise<CashBox> | CashBox {
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<CashBox> | Promise<CashBox> | CashBox {
     const id = route.paramMap.get('id');
-    this.store.dispatch(CashBoxAction.fetchCashBoxDetails({ cashBoxId: +id }));
+    // this.store.dispatch(CashBoxAction.fetchCashBoxDetails({ cashBoxId: +id }));
 
     return this.store.select('cashBoxes').pipe(
       take(1),
@@ -38,9 +28,9 @@ export class CashBoxResolver implements Resolve<CashBox> {
         if (cashBox) {
           return of(cashBox);
         } else {
-          this.store.dispatch(CashBoxAction.fetchCashBoxes());
+          this.store.dispatch(CashBoxAction.loadCashBoxes());
           return this.actions$.pipe(
-            ofType(CashBoxAction.setCashBoxes),
+            ofType(CashBoxAction.loadCashBoxesSuccess),
             take(1),
             map((result) => {
               return result.cashBoxes.find((c) => c.id === +id);

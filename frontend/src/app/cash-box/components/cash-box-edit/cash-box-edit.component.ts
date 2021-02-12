@@ -20,10 +20,7 @@ export class CashBoxEditComponent implements OnInit, OnDestroy {
   private cashBox: CashBox;
   private sub: Subscription;
 
-  constructor(
-    private store: Store<fromApp.AppState>,
-    private activatedRoute: ActivatedRoute
-  ) {}
+  constructor(private store: Store<fromApp.AppState>, private activatedRoute: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.cashBox = this.activatedRoute.snapshot.data.cashBox;
@@ -42,14 +39,11 @@ export class CashBoxEditComponent implements OnInit, OnDestroy {
       return;
     }
     if (!this.editMode) {
-      this.store.dispatch(
-        CashBoxActions.addCashBox({ cashBox: this.form.value })
-      );
+      this.store.dispatch(CashBoxActions.addCashBox({ cashBox: this.form.value }));
     } else {
       this.store.dispatch(
         CashBoxActions.updateCashBox({
-          cashBox: this.form.value,
-          cashBoxId: this.cashBox.id,
+          cashBox: { ...this.form.value, id: this.cashBox.id },
         })
       );
     }
@@ -57,13 +51,8 @@ export class CashBoxEditComponent implements OnInit, OnDestroy {
 
   private initForm(): void {
     this.form = new FormGroup({
-      name: new FormControl(this.cashBox?.name, [
-        Validators.required,
-        Validators.maxLength(255),
-      ]),
-      description: new FormControl(this.cashBox?.description, [
-        Validators.maxLength(255),
-      ]),
+      name: new FormControl(this.cashBox?.name, [Validators.required, Validators.maxLength(255)]),
+      description: new FormControl(this.cashBox?.description, [Validators.maxLength(255)]),
     });
   }
 

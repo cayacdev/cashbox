@@ -1,10 +1,4 @@
-import {
-  AfterViewInit,
-  Component,
-  Inject,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
+import { AfterViewInit, Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { BudgetPlanEntry } from '../../../model/budget-plan-entry.model';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
@@ -46,15 +40,13 @@ export class BudgetPlanEntryDialogComponent implements OnInit, AfterViewInit {
 
     this.descriptions$ = this.store.select('cashBoxes').pipe(
       map((state) => {
-        const cashBox = state.cashBoxes.find(
-          (c) => c.id === this.data.cashBoxId
-        );
+        const cashBox = state.cashBoxes.find((c) => c.id === this.data.cashBoxId);
         return cashBox?.settings?.descriptions;
       })
     );
 
     this.store.dispatch(
-      CashBoxActions.fetchCashBoxSettings({
+      CashBoxActions.loadCashBoxSettings({
         cashBoxId: this.data.cashBoxId,
       })
     );
@@ -68,14 +60,9 @@ export class BudgetPlanEntryDialogComponent implements OnInit, AfterViewInit {
 
   private initForm(): void {
     this.form = new FormGroup({
-      description: new FormControl(this.data?.data?.description, [
-        Validators.required,
-        Validators.maxLength(255),
-      ]),
+      description: new FormControl(this.data?.data?.description, [Validators.required, Validators.maxLength(255)]),
       value: new FormControl(this.data?.data?.value, [Validators.required]),
-      date: new FormControl(this.data.data?.date ?? new Date(), [
-        Validators.required,
-      ]),
+      date: new FormControl(this.data.data?.date ?? new Date(), [Validators.required]),
     });
   }
 
@@ -121,9 +108,7 @@ export class BudgetPlanEntryDialogComponent implements OnInit, AfterViewInit {
     combineLatest([this.autocomplete.opened, fromEvent(window, 'resize')])
       .pipe(delay(100))
       .subscribe(() => {
-        const panel: HTMLElement = document.getElementsByClassName(
-          'pre-defined-descriptions-panel'
-        )[0] as HTMLElement;
+        const panel: HTMLElement = document.getElementsByClassName('pre-defined-descriptions-panel')[0] as HTMLElement;
 
         const boundingRect: DOMRect = panel.getBoundingClientRect();
         if (boundingRect.top < 0) {
