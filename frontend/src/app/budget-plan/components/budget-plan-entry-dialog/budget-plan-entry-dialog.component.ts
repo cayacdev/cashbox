@@ -29,10 +29,7 @@ export class BudgetPlanEntryDialogComponent implements OnInit, AfterViewInit {
   filteredDescriptions$: Observable<PredefinedDescription[]>;
   @ViewChild('auto') autocomplete: MatAutocomplete;
 
-  constructor(
-    @Inject(MAT_DIALOG_DATA) public data: BudgetPlanEntryDialogData,
-    private readonly store: Store<fromApp.AppState>
-  ) {}
+  constructor(@Inject(MAT_DIALOG_DATA) public data: BudgetPlanEntryDialogData, private readonly store: Store<fromApp.AppState>) {}
 
   ngOnInit(): void {
     this.element = this.data.data;
@@ -78,13 +75,13 @@ export class BudgetPlanEntryDialogComponent implements OnInit, AfterViewInit {
 
     if (this.element) {
       this.store.dispatch(
-        BudgetPlanActions.updateEntry({
+        BudgetPlanActions.updateBudgetPlanEntry({
           ...body,
-          index: this.element.id,
+          budgetPlanEntryId: this.element.id,
         })
       );
     } else {
-      this.store.dispatch(BudgetPlanActions.createEntry(body));
+      this.store.dispatch(BudgetPlanActions.addBudgetPlanEntry(body));
     }
   }
 

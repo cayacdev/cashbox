@@ -1,19 +1,20 @@
-import { AfterViewChecked, Component, Input, OnInit, ViewChild } from '@angular/core';
+import { AfterViewChecked, Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import * as BudgetPlanAction from '../../../store/budget-plan.actions';
 import { Store } from '@ngrx/store';
 import * as fromApp from '../../../../store/app.reducer';
-import { BudgetPlan, BudgetPlanReport } from '../../../../model/budget-plan.model';
+import { BudgetPlanReport } from '../../../../model/budget-plan.model';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ChartOptions } from 'chart.js';
 import { BudgetPlanEntry } from '../../../../model/budget-plan-entry.model';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-budget-plan-report',
   templateUrl: './budget-plan-report.component.html',
   styleUrls: ['./budget-plan-report.component.scss'],
 })
-export class BudgetPlanReportComponent implements OnInit, AfterViewChecked {
+export class BudgetPlanReportComponent implements OnInit, AfterViewChecked, OnDestroy {
   @Input() cashBoxId: number;
   @Input() budgetPlanId: number;
   name: string;
@@ -40,30 +41,33 @@ export class BudgetPlanReportComponent implements OnInit, AfterViewChecked {
     responsive: true,
     maintainAspectRatio: true,
   };
+  private subscription: Subscription;
 
   constructor(private store: Store<fromApp.AppState>) {}
 
   ngOnInit(): void {
-    this.store.select('budgetPlan').subscribe((state) => {
+    this.subscription = this.store.select('budgetPlan').subscribe((state) => {
       const plan = state.budgetPlans.find((p) => p.id === this.budgetPlanId);
       this.name = plan?.name;
-      this.report = plan?.report;
+
+      this.report = state.budgetPlansReports[this.budgetPlanId];
+
       this.paidByUserEntries.data = this.report?.paidByUser ?? [];
       this.debtsEntries.data = this.report?.debtsByUser ?? [];
-      if (plan) {
-        this.paidByDescriptionEntries.data = this.calculatePaidByDescription(plan);
-      }
+
+      const entries = state.budgetPlansEntries[this.budgetPlanId] ?? [];
+      this.paidByDescriptionEntries.data = this.calculatePaidByDescription(entries);
     });
     this.store.dispatch(
-      BudgetPlanAction.fetchReport({
+      BudgetPlanAction.loadBudgetPlanReport({
         cashBoxId: this.cashBoxId,
         budgetPlanId: this.budgetPlanId,
       })
     );
   }
 
-  private calculatePaidByDescription(plan: BudgetPlan): { description: string; value: number }[] {
-    return this.groupByDescription(plan.entries);
+  private calculatePaidByDescription(entries: BudgetPlanEntry[]): { description: string; value: number }[] {
+    return this.groupByDescription(entries);
   }
 
   private groupByDescription(entries: BudgetPlanEntry[]): DataSet[] {
@@ -112,6 +116,10 @@ export class BudgetPlanReportComponent implements OnInit, AfterViewChecked {
     this.paidByUserEntries.sort = this.paidByUserSort;
     this.debtsEntries.sort = this.debtsSort;
     this.paidByDescriptionEntries.sort = this.paidByDescriptionSort;
+  }
+
+  ngOnDestroy(): void {
+    this.subscription?.unsubscribe();
   }
 }
 

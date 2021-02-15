@@ -8,7 +8,7 @@ import { CashBoxSettings, PredefinedDescription } from '../../../model/cash-box.
 import { combineLatest, Observable } from 'rxjs';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import { LoadingState } from '../../store/cash-box.reducer';
+import { LoadingState } from '../../../store/state';
 
 @Component({
   selector: 'app-cash-box-settings',

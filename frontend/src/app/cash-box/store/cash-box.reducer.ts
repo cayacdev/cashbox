@@ -1,33 +1,22 @@
 import { CashBox, CashBoxSettings } from '../../model/cash-box.model';
 import { Action, createReducer, on } from '@ngrx/store';
 import * as CashBoxAction from './cash-box.actions';
-
-// TODO move this globally so this is reusable
-export const enum LoadingState {
-  INIT = 'INIT',
-  LOADING = 'LOADING',
-  LOADED = 'LOADED',
-}
-
-export interface ErrorState {
-  errorMsg: string;
-}
-
-export type CallState = LoadingState | ErrorState;
+import { CallState, LoadingState } from '../../store/state';
 
 // TODO: move to 'state' file
 export interface State {
   cashBoxes: CashBox[];
-  loading: boolean;
-  error: string;
   selectedCashBoxId: number;
 
-  // new
   loadCashBoxState: CallState;
 
   // TODO: better move cash box setting here?
   settings: { [cashBoxId: number]: CashBoxSettings };
   loadCashBoxSettingState: CallState;
+
+  // todo old
+  loading: boolean;
+  error: string;
 }
 
 const initialState: State = {
@@ -49,6 +38,9 @@ const cashBoxReducer = createReducer(
   on(CashBoxAction.loadCashBoxesSuccess, (state, { cashBoxes }) => {
     return { ...state, cashBoxes, loadCashBoxState: LoadingState.LOADED };
   }),
+  on(CashBoxAction.loadCashBoxesFail, (state, { error }) => {
+    return { ...state, loadCashBoxState: { errorMsg: 'Failed to load cash boxes' } };
+  }),
   on(CashBoxAction.addCashBox, CashBoxAction.updateCashBox, CashBoxAction.deleteCashBox, (state) => {
     return { ...state, loadCashBoxState: LoadingState.LOADING };
   }),
@@ -58,8 +50,8 @@ const cashBoxReducer = createReducer(
   on(CashBoxAction.loadCashBoxSettingsFail, (state) => {
     return { ...state, loadCashBoxState: { errorMsg: 'Failed to load cash boxes settings' } };
   }),
-  on(CashBoxAction.setSelected, (state, { cashBox }) => {
-    return { ...state, selectedCashBoxId: cashBox.id };
+  on(CashBoxAction.setSelected, (state, { cashBoxId }) => {
+    return { ...state, selectedCashBoxId: cashBoxId };
   }),
 
   // TODO: move to own reducer

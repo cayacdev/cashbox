@@ -17,7 +17,7 @@ export const loadCashBoxesSuccess = createAction(LOAD_CASH_BOXES_SUCCESS, props<
 
 export const loadCashBoxesFail = createAction(LOAD_CASH_BOXES_FAIL, props<{ error: string }>());
 
-export const setSelected = createAction(SET_SELECTED, props<{ cashBox: CashBox }>());
+export const setSelected = createAction(SET_SELECTED, props<{ cashBoxId: number }>());
 
 export const addCashBox = createAction(ADD, props<{ cashBox: CashBox }>());
 

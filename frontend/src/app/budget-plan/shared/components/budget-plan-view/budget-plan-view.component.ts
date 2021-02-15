@@ -11,10 +11,7 @@ import {
   BudgetPlanEntryDialogData,
 } from '../../../components/budget-plan-entry-dialog/budget-plan-entry-dialog.component';
 import * as BudgetPlanAction from '../../../store/budget-plan.actions';
-import {
-  DeleteDialogComponent,
-  DeleteDialogData,
-} from '../../../../shared/delete-dialog/delete-dialog.component';
+import { DeleteDialogComponent, DeleteDialogData } from '../../../../shared/delete-dialog/delete-dialog.component';
 
 @Component({
   selector: 'app-cash-box-budget-plan-view',
@@ -30,10 +27,7 @@ export class BudgetPlanViewComponent implements OnInit {
 
   showDescription = false;
 
-  constructor(
-    private store: Store<fromApp.AppState>,
-    private dialog: MatDialog
-  ) {}
+  constructor(private store: Store<fromApp.AppState>, private dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.entries.sortingDataAccessor = (item, property): string | number => {
@@ -52,11 +46,10 @@ export class BudgetPlanViewComponent implements OnInit {
     }
     const id = this.budgetPlan.id;
     this.store.select('budgetPlan').subscribe((state) => {
-      this.entries.data =
-        state.budgetPlans.find((plan) => plan.id === id)?.entries ?? [];
+      this.entries.data = state.budgetPlansEntries[id] ?? [];
     });
     this.store.dispatch(
-      BudgetPlanAction.fetchEntries({
+      BudgetPlanAction.loadBudgetPlanEntries({
         cashBoxId: this.cashBoxId,
         budgetPlanId: id,
       })
@@ -66,9 +59,7 @@ export class BudgetPlanViewComponent implements OnInit {
   }
 
   getTotalCost(): number {
-    return this.entries.data
-      ?.map((t) => t.value)
-      .reduce((acc, value) => acc + value, 0);
+    return this.entries.data?.map((t) => t.value).reduce((acc, value) => acc + value, 0);
   }
 
   onEdit(element: BudgetPlanEntry): void {
@@ -92,10 +83,10 @@ export class BudgetPlanViewComponent implements OnInit {
     dialogRef.afterClosed().subscribe((data) => {
       if (data === element) {
         this.store.dispatch(
-          BudgetPlanAction.deleteEntry({
+          BudgetPlanAction.deleteBudgetPlanEntry({
             cashBoxId: this.cashBoxId,
             budgetPlanId: this.budgetPlan.id,
-            index: element.id,
+            budgetPlanEntryId: element.id,
           })
         );
       }

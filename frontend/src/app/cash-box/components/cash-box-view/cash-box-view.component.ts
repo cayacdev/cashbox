@@ -3,9 +3,10 @@ import { ActivatedRoute } from '@angular/router';
 import { CashBox } from '../../../model/cash-box.model';
 import { Store } from '@ngrx/store';
 import * as fromApp from '../../../store/app.reducer';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { BudgetPlan } from '../../../model/budget-plan.model';
-import * as CashBoxSelectors from '../../store/cash-box.selector';
+import { selectActiveBudgetPlan } from '../../../budget-plan/store/budget-plan.selectors';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-cash-box-view',
@@ -13,26 +14,17 @@ import * as CashBoxSelectors from '../../store/cash-box.selector';
   styleUrls: ['./cash-box-view.component.scss'],
 })
 export class CashBoxViewComponent implements OnInit, OnDestroy {
-  cashBox: CashBox;
+  cashBox$: Observable<CashBox>;
   budgetPlan: BudgetPlan;
-  isLoading: boolean;
   private sub: Subscription;
 
-  constructor(
-    private activatedRoute: ActivatedRoute,
-    private store: Store<fromApp.AppState>
-  ) {}
+  constructor(private activatedRoute: ActivatedRoute, private store: Store<fromApp.AppState>) {}
 
   ngOnInit(): void {
-    this.sub = this.store
-      .select(CashBoxSelectors.getActiveCashBox)
-      .subscribe((cashBox) => {
-        this.isLoading = !!!cashBox;
-        this.cashBox = cashBox;
-        if (cashBox?.activeBudgetPlan) {
-          this.budgetPlan = { ...cashBox.activeBudgetPlan, entries: undefined };
-        }
-      });
+    this.cashBox$ = this.store.select('cashBoxes').pipe(map((state) => state.cashBoxes.find((box) => box.id === state.selectedCashBoxId)));
+    this.sub = this.store.select(selectActiveBudgetPlan).subscribe((budgetPlan) => {
+      this.budgetPlan = budgetPlan;
+    });
   }
 
   ngOnDestroy(): void {
