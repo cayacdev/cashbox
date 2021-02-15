@@ -1,95 +1,120 @@
-import { BudgetPlan } from '../budget-plan.model';
+import { BudgetPlan, BudgetPlanReport } from '../../model/budget-plan.model';
 import { Action, createReducer, on } from '@ngrx/store';
 import * as BudgetPlanAction from './budget-plan.actions';
+import {
+  addBudgetPlan,
+  addBudgetPlanEntry,
+  deleteBudgetPlan,
+  deleteBudgetPlanEntry,
+  loadActiveBudgetPlan,
+  loadActiveBudgetPlanFail,
+  loadActiveBudgetPlanSuccess,
+  loadBudgetPlans,
+  loadBudgetPlansFail,
+  loadBudgetPlansSuccess,
+  setSelectedBudgetPlan,
+  updateBudgetPlan,
+  updateBudgetPlanEntry,
+  updateBudgetPlanEntryFail,
+  updateBudgetPlanFail,
+} from './budget-plan.actions';
+import { BudgetPlanEntry } from '../../model/budget-plan-entry.model';
+import { CallState, LoadingState } from '../../store/state';
 
 export interface State {
   budgetPlans: BudgetPlan[];
+  activeBudgetPlanId: number;
+  selectedBudgetPlanId: number;
+  budgetPlansEntries: { [budgetPlanId: number]: BudgetPlanEntry[] };
+  budgetPlansReports: { [budgetPlanId: number]: BudgetPlanReport };
+
+  loadBudgetPlansState: CallState;
+  loadActiveBudgetPlanState: CallState;
+  loadBudgetPlanEntriesState: CallState;
+  loadBudgetPlanReportsState: CallState;
+
+  // todo deprecated
   loading: boolean;
   error: string;
 }
 
-function update(state, index: number, budgetPlan: BudgetPlan): BudgetPlan[] {
-  const updatedBudgetPlan = {
-    ...state.budgetPlans[index],
-    ...budgetPlan,
-  };
+const initialState: State = {
+  budgetPlans: [],
+  activeBudgetPlanId: null,
+  selectedBudgetPlanId: null,
+  budgetPlansEntries: {},
+  budgetPlansReports: {},
+  loadBudgetPlansState: LoadingState.INIT,
+  loadActiveBudgetPlanState: LoadingState.INIT,
+  loadBudgetPlanEntriesState: LoadingState.INIT,
+  loadBudgetPlanReportsState: LoadingState.INIT,
 
-  const updatedBudgetPlans = [...state.budgetPlans];
-  updatedBudgetPlans[index] = updatedBudgetPlan;
-  return updatedBudgetPlans;
-}
-
-const initialState: State = { budgetPlans: [], loading: false, error: null };
+  // todo deprecated
+  loading: false,
+  error: null,
+};
 
 const budgetPlanReducer = createReducer(
   initialState,
-  on(BudgetPlanAction.fetchBudgetPlans, (state) => {
-    return { ...state, loading: true };
+  on(loadBudgetPlans, (state) => {
+    return { ...state, loadBudgetPlansState: LoadingState.LOADING };
   }),
-  on(BudgetPlanAction.setBudgetPlans, (state, { budgetPlans }) => {
-    return { ...state, loading: false, budgetPlans };
+  on(loadBudgetPlansSuccess, (state, { budgetPlans }) => {
+    return { ...state, loadBudgetPlansState: LoadingState.LOADED, budgetPlans };
   }),
-  on(BudgetPlanAction.fetchEntries, (state) => {
-    return { ...state, loading: true };
+  on(loadBudgetPlansFail, (state) => {
+    return { ...state, loadBudgetPlansState: { errorMsg: 'Failed to load budget plans' } };
   }),
-  on(BudgetPlanAction.setEntries, (state, { budgetPlanId, entries }) => {
-    const indexToUpdate = state.budgetPlans.findIndex(
-      (plan) => plan.id === budgetPlanId
-    );
+  on(addBudgetPlan, updateBudgetPlan, deleteBudgetPlan, (state) => {
+    return { ...state, loadBudgetPlansState: LoadingState.LOADING };
+  }),
+  on(updateBudgetPlanFail, (state) => {
+    return { ...state, loadBudgetPlansState: { errorMsg: 'Failed to update budget plan' } };
+  }),
+  on(setSelectedBudgetPlan, (state, { id }) => {
+    return { ...state, selectedBudgetPlanId: id };
+  }),
 
-    const updatedBudgetPlan = {
-      ...state.budgetPlans[indexToUpdate],
-      entries,
-    };
+  // todo feature active budget plan
 
-    const plans = [...state.budgetPlans];
-    plans[indexToUpdate] = updatedBudgetPlan;
-    return { ...state, loading: false, budgetPlans: plans };
+  on(loadActiveBudgetPlan, (state) => {
+    return { ...state, loadActiveBudgetPlanState: LoadingState.LOADING };
   }),
-  on(BudgetPlanAction.fetchReport, (state) => {
-    return { ...state, loading: true };
+  on(loadActiveBudgetPlanSuccess, (state, { budgetPlan }) => {
+    return { ...state, loadActiveBudgetPlanState: LoadingState.LOADED, activeBudgetPlanId: budgetPlan?.id };
   }),
-  on(BudgetPlanAction.setReport, (state, { budgetPlanId, report }) => {
-    const indexToUpdate = state.budgetPlans.findIndex(
-      (plan) => plan.id === budgetPlanId
-    );
+  on(loadActiveBudgetPlanFail, (state) => {
+    return { ...state, loadActiveBudgetPlanState: { errorMsg: 'Failed to load active budget plan' } };
+  }),
 
-    const updatedBudgetPlan = {
-      ...state.budgetPlans[indexToUpdate],
-      report,
-    };
+  // todo feature budget plan entries
 
-    const plans = [...state.budgetPlans];
-    plans[indexToUpdate] = updatedBudgetPlan;
-    return { ...state, loading: false, budgetPlans: plans };
+  on(BudgetPlanAction.loadBudgetPlanEntries, (state) => {
+    return { ...state, loadBudgetPlanEntriesState: LoadingState.LOADING };
   }),
-  on(BudgetPlanAction.addBudgetPlan, (state) => {
-    return { ...state, loading: true };
+  on(BudgetPlanAction.loadBudgetPlanEntriesSuccess, (state, { budgetPlanId, entries }) => {
+    return { ...state, loadBudgetPlanEntriesState: LoadingState.LOADED, budgetPlansEntries: { [budgetPlanId]: entries } };
   }),
-  on(BudgetPlanAction.updateBudgetPlan, (state, { index, budgetPlan }) => {
-    return {
-      ...state,
-      loading: true,
-      budgetPlans: update(state, index, budgetPlan),
-    };
+  on(BudgetPlanAction.loadBudgetPlanEntriesFail, (state, { error }) => {
+    return { ...state, loadBudgetPlanEntriesState: { errorMsg: 'Failed to load budget plan entries' } };
   }),
-  on(BudgetPlanAction.deleteBudgetPlan, (state, { index }) => {
-    return {
-      ...state,
-      budgetPlans: state.budgetPlans.filter(
-        (budgetPlan) => budgetPlan.id !== index
-      ),
-    };
+  on(addBudgetPlanEntry, updateBudgetPlanEntry, deleteBudgetPlanEntry, (state) => {
+    return { ...state, loadBudgetPlanEntriesState: LoadingState.LOADING };
   }),
-  on(BudgetPlanAction.updateBudgetPlanSuccess, (state, { budgetPlan }) => {
-    return {
-      ...state,
-      loading: false,
-      budgetPlans: [...state.budgetPlans, budgetPlan],
-    };
+  on(updateBudgetPlanEntryFail, (state) => {
+    return { ...state, loadBudgetPlanEntriesState: { errorMsg: 'Failed to update budget plan' } };
   }),
-  on(BudgetPlanAction.updateBudgetPlanFail, (state, { error }) => {
-    return { ...state, loading: false, error };
+
+  // todo feature budget plan report
+
+  on(BudgetPlanAction.loadBudgetPlanReport, (state) => {
+    return { ...state, loadBudgetPlanReportsState: LoadingState.LOADING };
+  }),
+  on(BudgetPlanAction.loadBudgetPlanReportSuccess, (state, { budgetPlanId, report }) => {
+    return { ...state, loadBudgetPlanReportsState: LoadingState.LOADED, budgetPlansReports: { [budgetPlanId]: report } };
+  }),
+  on(BudgetPlanAction.loadBudgetPlanReportFail, (state, { error }) => {
+    return { ...state, loadBudgetPlanReportsState: { errorMsg: 'Failed to load budget plan report' } };
   })
 );
 

@@ -1,20 +1,24 @@
 import { NgModule } from '@angular/core';
-import { CashBoxListComponent } from './cash-box-list/cash-box-list.component';
+import { CashBoxListComponent } from './components/cash-box-list/cash-box-list.component';
 import { CashBoxRoutingModule } from './cash-box-routing.module';
 import { MaterialModule } from '../shared/material.module';
-import { CashBoxComponent } from './cash-box.component';
-import { CashBoxEditComponent } from './cash-box-edit/cash-box-edit.component';
-import { CashBoxViewComponent } from './cash-box-view/cash-box-view.component';
+import { CashBoxRouterOutletComponent } from './components/cash-box-router-outlet/cash-box-router-outlet.component';
+import { CashBoxEditComponent } from './components/cash-box-edit/cash-box-edit.component';
+import { CashBoxViewComponent } from './components/cash-box-view/cash-box-view.component';
 import { BudgetPlanModule } from '../budget-plan/budget-plan.module';
 import { SharedModule } from '../shared/shared.module';
-import { CashBoxOverviewComponent } from './cash-box-overview/cash-box-overview.component';
-import { CashBoxPlansComponent } from './cash-box-plans/cash-box-plans.component';
-import { CashBoxReportComponent } from './cash-box-report/cash-box-report.component';
-import { CashBoxSettingsComponent } from './cash-box-settings/cash-box-settings.component';
+import { CashBoxOverviewComponent } from './components/cash-box-overview/cash-box-overview.component';
+import { CashBoxPlansComponent } from './components/cash-box-plans/cash-box-plans.component';
+import { CashBoxReportComponent } from './components/cash-box-report/cash-box-report.component';
+import { CashBoxSettingsComponent } from './components/cash-box-settings/cash-box-settings.component';
+import { StoreModule } from '@ngrx/store';
+import { cashBoxSettingsFeatureKey, reducer } from './store/cash-box-settings/cash-box-settings.reducer';
+import { EffectsModule } from '@ngrx/effects';
+import { CashBoxSettingsEffects } from './store/cash-box-settings/cash-box-settings.effects';
 
 @NgModule({
   declarations: [
-    CashBoxComponent,
+    CashBoxRouterOutletComponent,
     CashBoxListComponent,
     CashBoxEditComponent,
     CashBoxViewComponent,
@@ -28,6 +32,8 @@ import { CashBoxSettingsComponent } from './cash-box-settings/cash-box-settings.
     CashBoxRoutingModule,
     MaterialModule,
     BudgetPlanModule,
+    StoreModule.forFeature(cashBoxSettingsFeatureKey, reducer),
+    EffectsModule.forFeature([CashBoxSettingsEffects]),
   ],
 })
 export class CashBoxModule {}
