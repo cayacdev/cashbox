@@ -1,7 +1,7 @@
-import { CashBox, CashBoxSettings } from '../../model/cash-box.model';
+import { CashBox } from '../../../model/cash-box.model';
 import { Action, createReducer, on } from '@ngrx/store';
 import * as CashBoxAction from './cash-box.actions';
-import { CallState, LoadingState } from '../../store/state';
+import { CallState, LoadingState } from '../../../store/state';
 
 // TODO: move to 'state' file
 export interface State {
@@ -11,8 +11,6 @@ export interface State {
   loadCashBoxState: CallState;
 
   // TODO: better move cash box setting here?
-  settings: { [cashBoxId: number]: CashBoxSettings };
-  loadCashBoxSettingState: CallState;
 
   // todo old
   loading: boolean;
@@ -21,14 +19,12 @@ export interface State {
 
 const initialState: State = {
   cashBoxes: [],
-  loading: false,
-  error: null,
+  loadCashBoxState: LoadingState.INIT,
   selectedCashBoxId: null,
 
-  // new
-  loadCashBoxState: LoadingState.INIT,
-  loadCashBoxSettingState: LoadingState.INIT,
-  settings: {},
+  // old
+  loading: false,
+  error: null,
 };
 const cashBoxReducer = createReducer(
   initialState,
@@ -47,25 +43,8 @@ const cashBoxReducer = createReducer(
   on(CashBoxAction.updateCashBoxFail, (state) => {
     return { ...state, loadCashBoxState: { errorMsg: 'Failed to update cash boxes' } };
   }),
-  on(CashBoxAction.loadCashBoxSettingsFail, (state) => {
-    return { ...state, loadCashBoxState: { errorMsg: 'Failed to load cash boxes settings' } };
-  }),
   on(CashBoxAction.setSelected, (state, { cashBoxId }) => {
     return { ...state, selectedCashBoxId: cashBoxId };
-  }),
-
-  // TODO: move to own reducer
-  on(CashBoxAction.loadCashBoxSettings, (state) => {
-    return { ...state, loadCashBoxSettingState: LoadingState.LOADING };
-  }),
-  on(CashBoxAction.addCashBoxDescription, CashBoxAction.removeCashBoxDescription, (state) => {
-    return { ...state, loadCashBoxSettingState: LoadingState.LOADING };
-  }),
-  on(CashBoxAction.loadCashBoxSettingsSuccess, (state, { cashBoxId, settings }) => {
-    return { ...state, settings: { ...settings, [cashBoxId]: settings }, loadCashBoxSettingState: LoadingState.LOADED };
-  }),
-  on(CashBoxAction.loadCashBoxSettingsFail, (state) => {
-    return { ...state, loadCashBoxSettingState: { errorMsg: 'Failed to load cash box settings' } };
   })
 );
 

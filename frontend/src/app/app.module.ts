@@ -13,7 +13,7 @@ import { StoreModule } from '@ngrx/store';
 import * as fromApp from './store/app.reducer';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { CashBoxModule } from './cash-box/cash-box.module';
-import { CashBoxEffects } from './cash-box/store/cash-box.effects';
+import { CashBoxEffects } from './cash-box/store/cash-boxes/cash-box.effects';
 import { AuthInterceptorService } from './auth/auth-interceptor.service';
 import { environment } from '../environments/environment';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';

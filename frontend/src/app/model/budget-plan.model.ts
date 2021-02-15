@@ -11,8 +11,7 @@ export class BudgetPlan {
     public end_date: Date,
     // tslint:enable
     public budget: number,
-    public entries: BudgetPlanEntry[],
-    public report: BudgetPlanReport
+    public entries: BudgetPlanEntry[]
   ) {}
 }
 

@@ -5,8 +5,8 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import * as fromApp from '../../store/app.reducer';
 import { map, switchMap, take } from 'rxjs/operators';
-import * as CashBoxAction from '../store/cash-box.actions';
-import * as CashBoxActions from '../store/cash-box.actions';
+import * as CashBoxAction from '../store/cash-boxes/cash-box.actions';
+import * as CashBoxActions from '../store/cash-boxes/cash-box.actions';
 import { Actions, ofType } from '@ngrx/effects';
 import { loadActiveBudgetPlan } from '../../budget-plan/store/budget-plan.actions';
 

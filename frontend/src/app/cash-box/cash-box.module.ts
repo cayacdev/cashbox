@@ -11,6 +11,10 @@ import { CashBoxOverviewComponent } from './components/cash-box-overview/cash-bo
 import { CashBoxPlansComponent } from './components/cash-box-plans/cash-box-plans.component';
 import { CashBoxReportComponent } from './components/cash-box-report/cash-box-report.component';
 import { CashBoxSettingsComponent } from './components/cash-box-settings/cash-box-settings.component';
+import { StoreModule } from '@ngrx/store';
+import { cashBoxSettingsFeatureKey, reducer } from './store/cash-box-settings/cash-box-settings.reducer';
+import { EffectsModule } from '@ngrx/effects';
+import { CashBoxSettingsEffects } from './store/cash-box-settings/cash-box-settings.effects';
 
 @NgModule({
   declarations: [
@@ -28,6 +32,8 @@ import { CashBoxSettingsComponent } from './components/cash-box-settings/cash-bo
     CashBoxRoutingModule,
     MaterialModule,
     BudgetPlanModule,
+    StoreModule.forFeature(cashBoxSettingsFeatureKey, reducer),
+    EffectsModule.forFeature([CashBoxSettingsEffects]),
   ],
 })
 export class CashBoxModule {}

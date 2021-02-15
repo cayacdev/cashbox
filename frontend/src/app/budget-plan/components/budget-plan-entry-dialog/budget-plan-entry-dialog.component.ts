@@ -5,11 +5,12 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import * as fromApp from '../../../store/app.reducer';
 import * as BudgetPlanActions from '../../store/budget-plan.actions';
-import * as CashBoxActions from '../../../cash-box/store/cash-box.actions';
 import { combineLatest, fromEvent, Observable } from 'rxjs';
 import { PredefinedDescription } from '../../../model/cash-box.model';
 import { delay, filter, map, startWith, switchMap } from 'rxjs/operators';
 import { MatAutocomplete } from '@angular/material/autocomplete';
+import { loadCashBoxSettings } from '../../../cash-box/store/cash-box-settings/cash-box-settings.actions';
+import { selectCashBoxSettings } from '../../../cash-box/store/cash-box-settings/cash-box-settings.selectors';
 
 export interface BudgetPlanEntryDialogData {
   data: BudgetPlanEntry;
@@ -35,15 +36,10 @@ export class BudgetPlanEntryDialogComponent implements OnInit, AfterViewInit {
     this.element = this.data.data;
     this.initForm();
 
-    this.descriptions$ = this.store.select('cashBoxes').pipe(
-      map((state) => {
-        const cashBox = state.cashBoxes.find((c) => c.id === this.data.cashBoxId);
-        return cashBox?.settings?.descriptions;
-      })
-    );
+    this.descriptions$ = this.store.select(selectCashBoxSettings).pipe(map((state) => state.settings[this.data.cashBoxId].descriptions));
 
     this.store.dispatch(
-      CashBoxActions.loadCashBoxSettings({
+      loadCashBoxSettings({
         cashBoxId: this.data.cashBoxId,
       })
     );

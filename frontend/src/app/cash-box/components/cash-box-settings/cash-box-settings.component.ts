@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import * as CashBoxAction from '../../store/cash-box.actions';
 import { Store } from '@ngrx/store';
 import * as fromApp from '../../../store/app.reducer';
 import { map, take } from 'rxjs/operators';
@@ -9,6 +8,12 @@ import { combineLatest, Observable } from 'rxjs';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { LoadingState } from '../../../store/state';
+import {
+  addCashBoxDescription,
+  loadCashBoxSettings,
+  removeCashBoxDescription,
+} from '../../store/cash-box-settings/cash-box-settings.actions';
+import { selectCashBoxSettings } from '../../store/cash-box-settings/cash-box-settings.selectors';
 
 @Component({
   selector: 'app-cash-box-settings',
@@ -28,25 +33,21 @@ export class CashBoxSettingsComponent implements OnInit {
   ngOnInit(): void {
     this.cashBoxId$ = this.activatedRoute.parent.data.pipe(map((data) => data.cashBox.id));
 
-    this.settings$ = combineLatest([this.cashBoxId$, this.store.select('cashBoxes')]).pipe(
-      map((combine) => {
-        const id = combine[0];
-        const state = combine[1];
-        return state.settings[id];
-      })
+    this.settings$ = combineLatest([this.cashBoxId$, this.store.select(selectCashBoxSettings)]).pipe(
+      map(([id, state]) => state.settings[id])
     );
 
-    this.isLoading$ = this.store.select('cashBoxes').pipe(map((state) => state.loadCashBoxSettingState === LoadingState.LOADING));
+    this.isLoading$ = this.store.select(selectCashBoxSettings).pipe(map((state) => state.loadCashBoxSettingState === LoadingState.LOADING));
 
     this.cashBoxId$.pipe(take(1)).subscribe((cashBoxId) => {
-      this.store.dispatch(CashBoxAction.loadCashBoxSettings({ cashBoxId }));
+      this.store.dispatch(loadCashBoxSettings({ cashBoxId }));
     });
   }
 
   remove(description: PredefinedDescription): void {
     this.cashBoxId$.pipe(take(1)).subscribe((id) => {
       this.store.dispatch(
-        CashBoxAction.removeCashBoxDescription({
+        removeCashBoxDescription({
           cashBoxId: id,
           descriptionId: description.id,
         })
@@ -63,7 +64,7 @@ export class CashBoxSettingsComponent implements OnInit {
 
     this.cashBoxId$.pipe(take(1)).subscribe((id) => {
       this.store.dispatch(
-        CashBoxAction.addCashBoxDescription({
+        addCashBoxDescription({
           cashBoxId: id,
           value: input.value.trim(),
         })

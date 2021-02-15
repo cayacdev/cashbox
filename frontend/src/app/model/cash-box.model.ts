@@ -1,14 +1,9 @@
-import { BudgetPlan } from './budget-plan.model';
-
 export class CashBox {
   constructor(
-    public id: number,
+    public id: number, //
     public name?: string,
     public description?: string,
-    public activeBudgetPlanId?: number,
-    // TODO: deprecated
-    public activeBudgetPlan?: BudgetPlan,
-    public settings?: CashBoxSettings
+    public activeBudgetPlanId?: number
   ) {}
 }
 

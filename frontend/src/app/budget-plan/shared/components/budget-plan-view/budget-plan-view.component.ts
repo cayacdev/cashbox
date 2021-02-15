@@ -41,9 +41,6 @@ export class BudgetPlanViewComponent implements OnInit {
       }
     };
 
-    if (!!this.budgetPlan.entries) {
-      this.entries.data = this.budgetPlan.entries;
-    }
     const id = this.budgetPlan.id;
     this.store.select('budgetPlan').subscribe((state) => {
       this.entries.data = state.budgetPlansEntries[id] ?? [];
