@@ -2,7 +2,7 @@ import { createAction, props } from '@ngrx/store';
 import { CashBox } from '../../../model/cash-box.model';
 
 const LOAD_CASH_BOXES = '[CashBox] load cash boxes';
-const SET_SELECTED = '[CashBox] set selected cash box';
+const SET_SELECTED_CASH_BOX = '[CashBox] set selected cash box';
 const LOAD_CASH_BOXES_SUCCESS = '[CashBox] load cash boxes success';
 const LOAD_CASH_BOXES_FAIL = '[CashBox] load cash boxes fail';
 const ADD = '[CashBox] add cash box';
@@ -17,7 +17,7 @@ export const loadCashBoxesSuccess = createAction(LOAD_CASH_BOXES_SUCCESS, props<
 
 export const loadCashBoxesFail = createAction(LOAD_CASH_BOXES_FAIL, props<{ error: string }>());
 
-export const setSelected = createAction(SET_SELECTED, props<{ cashBoxId: number }>());
+export const setSelectedCashBox = createAction(SET_SELECTED_CASH_BOX, props<{ cashBoxId: number }>());
 
 export const addCashBox = createAction(ADD, props<{ cashBox: CashBox }>());
 

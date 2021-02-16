@@ -6,6 +6,7 @@ import { Store } from '@ngrx/store';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { CashBox } from '../../../model/cash-box.model';
+import { ErrorState, LoadingState } from '../../../store/state';
 
 @Component({
   selector: 'app-cash-box-edit',
@@ -25,8 +26,8 @@ export class CashBoxEditComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.cashBox = this.activatedRoute.snapshot.data.cashBox;
     this.sub = this.store.select('cashBoxes').subscribe((state) => {
-      this.isLoading = state.loading;
-      this.error = state.error;
+      this.isLoading = state.loadCashBoxState === LoadingState.LOADING;
+      this.error = (state.loadCashBoxState as ErrorState).errorMsg;
     });
     if (this.cashBox) {
       this.editMode = true;

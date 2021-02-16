@@ -3,28 +3,16 @@ import { Action, createReducer, on } from '@ngrx/store';
 import * as CashBoxAction from './cash-box.actions';
 import { CallState, LoadingState } from '../../../store/state';
 
-// TODO: move to 'state' file
 export interface State {
   cashBoxes: CashBox[];
-  selectedCashBoxId: number;
-
   loadCashBoxState: CallState;
-
-  // TODO: better move cash box setting here?
-
-  // todo old
-  loading: boolean;
-  error: string;
+  selectedCashBoxId: number;
 }
 
 const initialState: State = {
   cashBoxes: [],
   loadCashBoxState: LoadingState.INIT,
   selectedCashBoxId: null,
-
-  // old
-  loading: false,
-  error: null,
 };
 const cashBoxReducer = createReducer(
   initialState,
@@ -43,7 +31,7 @@ const cashBoxReducer = createReducer(
   on(CashBoxAction.updateCashBoxFail, (state) => {
     return { ...state, loadCashBoxState: { errorMsg: 'Failed to update cash boxes' } };
   }),
-  on(CashBoxAction.setSelected, (state, { cashBoxId }) => {
+  on(CashBoxAction.setSelectedCashBox, (state, { cashBoxId }) => {
     return { ...state, selectedCashBoxId: cashBoxId };
   })
 );
