@@ -5,11 +5,11 @@ const LOAD_CASH_BOXES = '[CashBox] load cash boxes';
 const SET_SELECTED_CASH_BOX = '[CashBox] set selected cash box';
 const LOAD_CASH_BOXES_SUCCESS = '[CashBox] load cash boxes success';
 const LOAD_CASH_BOXES_FAIL = '[CashBox] load cash boxes fail';
-const ADD = '[CashBox] add cash box';
-const UPDATE = '[CashBox] update cash box';
-const DELETE = '[CashBox] delete cash box';
-const UPDATE_SUCCESS = '[CashBox] add|update|delete success';
-const UPDATE_FAIL = '[CashBox] add|update|delete fail';
+const ADD_CASH_BOX = '[CashBox] add cash box';
+const UPDATE_CASH_BOX = '[CashBox] update cash box';
+const DELETE_CASH_BOX = '[CashBox] delete cash box';
+const UPDATE_CASH_BOX_SUCCESS = '[CashBox] add|update|delete cash box success';
+const UPDATE_CASH_BOX_FAIL = '[CashBox] add|update|delete cash box fail';
 
 export const loadCashBoxes = createAction(LOAD_CASH_BOXES);
 
@@ -19,12 +19,12 @@ export const loadCashBoxesFail = createAction(LOAD_CASH_BOXES_FAIL, props<{ erro
 
 export const setSelectedCashBox = createAction(SET_SELECTED_CASH_BOX, props<{ cashBoxId: number }>());
 
-export const addCashBox = createAction(ADD, props<{ cashBox: CashBox }>());
+export const addCashBox = createAction(ADD_CASH_BOX, props<{ cashBox: CashBox }>());
 
-export const updateCashBox = createAction(UPDATE, props<{ cashBox: CashBox }>());
+export const updateCashBox = createAction(UPDATE_CASH_BOX, props<{ cashBox: CashBox }>());
 
-export const deleteCashBox = createAction(DELETE, props<{ cashBox: CashBox }>());
+export const deleteCashBox = createAction(DELETE_CASH_BOX, props<{ cashBox: CashBox }>());
 
-export const updateCashBoxSuccess = createAction(UPDATE_SUCCESS);
+export const updateCashBoxSuccess = createAction(UPDATE_CASH_BOX_SUCCESS);
 
-export const updateCashBoxFail = createAction(UPDATE_FAIL, props<{ error: string }>());
+export const updateCashBoxFail = createAction(UPDATE_CASH_BOX_FAIL, props<{ error: string }>());
