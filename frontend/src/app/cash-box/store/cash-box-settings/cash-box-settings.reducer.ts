@@ -30,7 +30,7 @@ export const reducer = createReducer(
     return { ...state, loadCashBoxSettingState: LoadingState.LOADING };
   }),
   on(loadCashBoxSettingsSuccess, (state, { cashBoxId, settings }) => {
-    return { ...state, settings: { ...settings, [cashBoxId]: settings }, loadCashBoxSettingState: LoadingState.LOADED };
+    return { ...state, settings: { ...state.settings, [cashBoxId]: settings }, loadCashBoxSettingState: LoadingState.LOADED };
   }),
   on(loadCashBoxSettingsFail, (state) => {
     return { ...state, loadCashBoxSettingState: { errorMsg: 'Failed to load cash box settings' } };
