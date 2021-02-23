@@ -1,7 +1,8 @@
 <h2>{{budgetPlan.name}}</h2>
-<app-budget-plan-chart [budgetPlan]="budgetPlan" [entries]="entries.data"></app-budget-plan-chart>
+<app-budget-plan-chart [budgetPlan]="budgetPlan" [entries]="entries.data"
+                       *ngIf="entriesLoaded$ | async"></app-budget-plan-chart>
 
-<div class="table-container mat-elevation-z8">
+<div class="table-container mat-elevation-z8" *ngIf="entriesLoaded$ | async">
   <table mat-table [dataSource]="entries" matSort matSortActive="date" matSortDirection="asc">
 
     <ng-container matColumnDef="date">

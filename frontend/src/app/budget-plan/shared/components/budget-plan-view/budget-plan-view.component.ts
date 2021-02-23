@@ -12,6 +12,9 @@ import {
 } from '../../../components/budget-plan-entry-dialog/budget-plan-entry-dialog.component';
 import * as BudgetPlanAction from '../../../store/budget-plan.actions';
 import { DeleteDialogComponent, DeleteDialogData } from '../../../../shared/delete-dialog/delete-dialog.component';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { LoadingState } from '../../../../store/state';
 
 @Component({
   selector: 'app-cash-box-budget-plan-view',
@@ -26,6 +29,7 @@ export class BudgetPlanViewComponent implements OnInit {
   displayedColumns = ['date', 'user', 'description', 'value', 'actions'];
 
   showDescription = false;
+  entriesLoaded$: Observable<boolean>;
 
   constructor(private store: Store<fromApp.AppState>, private dialog: MatDialog) {}
 
@@ -40,6 +44,7 @@ export class BudgetPlanViewComponent implements OnInit {
           return item[property];
       }
     };
+    this.entriesLoaded$ = this.store.select('budgetPlan').pipe(map((state) => state.loadBudgetPlanEntriesState === LoadingState.LOADED));
 
     const id = this.budgetPlan.id;
     this.store.select('budgetPlan').subscribe((state) => {

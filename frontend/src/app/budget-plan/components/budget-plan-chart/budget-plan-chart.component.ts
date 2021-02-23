@@ -1,11 +1,4 @@
-import {
-  Component,
-  Input,
-  OnChanges,
-  OnInit,
-  SimpleChanges,
-  ViewChild,
-} from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { BaseChartDirective, Color } from 'ng2-charts';
 import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
@@ -96,24 +89,19 @@ export class BudgetPlanChartComponent implements OnInit, OnChanges {
       data: [],
       label: 'Real',
     });
+
+    this.updateChartData();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.changeChartData();
+    this.updateChartData();
   }
 
-  private changeChartData(): void {
-    const grouped = this.groupByDate(
-      this.entries.slice().sort(this.compareDate())
-    );
+  private updateChartData(): void {
+    const grouped = this.groupByDate(this.entries.slice().sort(this.compareDate()));
 
     const data = [{ x: this.budgetPlan.start_date, y: this.budgetPlan.budget }];
-    this.generateDataFromEntries(
-      this.budgetPlan,
-      grouped,
-      this.budgetPlan.budget,
-      data
-    );
+    this.generateDataFromEntries(this.budgetPlan, grouped, this.budgetPlan.budget, data);
 
     if (this.lineChartData[1]) {
       this.lineChartData = this.lineChartData.slice(0, 1);
@@ -121,12 +109,9 @@ export class BudgetPlanChartComponent implements OnInit, OnChanges {
     }
   }
 
-  private groupByDate(
-    entries: BudgetPlanEntry[]
-  ): { [p: string]: BudgetPlanEntry[] } {
+  private groupByDate(entries: BudgetPlanEntry[]): { [p: string]: BudgetPlanEntry[] } {
     return entries.reduce((previousValue, entry) => {
-      (previousValue[entry.date.toString()] =
-        previousValue[entry.date.toString()] || []).push(entry);
+      (previousValue[entry.date.toString()] = previousValue[entry.date.toString()] || []).push(entry);
       return previousValue;
     }, {});
   }
@@ -171,10 +156,7 @@ export class BudgetPlanChartComponent implements OnInit, OnChanges {
     });
 
     const today = new Date();
-    if (
-      today >= new Date(budgetPlan.start_date) &&
-      today <= new Date(budgetPlan.end_date)
-    ) {
+    if (today >= new Date(budgetPlan.start_date) && today <= new Date(budgetPlan.end_date)) {
       data.push({ x: today, y: leftover });
     }
   }
