@@ -35,6 +35,8 @@ export class BudgetPlanViewComponent implements OnInit {
   showDescription = false;
   entriesLoaded$: Observable<boolean>;
 
+  activeUserEmail$ = this.store.select('auth').pipe(map((state) => state.user.email));
+
   constructor(private store: Store<fromApp.AppState>, private dialog: MatDialog) {}
 
   ngOnInit(): void {
@@ -102,5 +104,9 @@ export class BudgetPlanViewComponent implements OnInit {
       return this.displayedColumns.filter((col) => col !== 'description');
     }
     return this.displayedColumns;
+  }
+
+  isAllowed(element: BudgetPlanEntry): Observable<boolean> {
+    return this.activeUserEmail$.pipe(map((activeUserEmail) => activeUserEmail === element.user.email));
   }
 }
