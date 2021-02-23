@@ -14,12 +14,13 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule, MatOptionModule } from '@angular/material/core';
+import { DateAdapter, MatNativeDateModule, MatOptionModule } from '@angular/material/core';
 import { MatMenuModule } from '@angular/material/menu';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { CustomDateAdapter } from './angular-material/adapters/custom-date.adapter';
 
 const modules = [
   LayoutModule,
@@ -49,5 +50,6 @@ const modules = [
 @NgModule({
   imports: modules,
   exports: modules,
+  providers: [{ provide: DateAdapter, useClass: CustomDateAdapter }],
 })
 export class MaterialModule {}
