@@ -36,7 +36,7 @@ export class BudgetPlanEntryDialogComponent implements OnInit, AfterViewInit {
     this.element = this.data.data;
     this.initForm();
 
-    this.descriptions$ = this.store.select(selectCashBoxSettings).pipe(map((state) => state.settings[this.data.cashBoxId].descriptions));
+    this.descriptions$ = this.store.select(selectCashBoxSettings).pipe(map((state) => state.settings[this.data.cashBoxId]?.descriptions));
 
     this.store.dispatch(
       loadCashBoxSettings({
