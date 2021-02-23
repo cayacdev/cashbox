@@ -44,13 +44,5 @@ button.toolbar-button {
       padding-left: 1rem;
       padding-right: 1rem;
     }
-
-    th.mat-header-cell:last-of-type, td.mat-cell:last-of-type, td.mat-footer-cell:last-of-type {
-      padding-right: 0;
-    }
-
-    th.mat-header-cell:first-of-type, td.mat-cell:first-of-type, td.mat-footer-cell:first-of-type {
-      padding-left: 0;
-    }
   }
 }
