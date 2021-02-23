@@ -24,7 +24,11 @@ import { LoadingState } from '../../../../store/state';
 export class BudgetPlanViewComponent implements OnInit {
   @Input() budgetPlan: BudgetPlan;
   @Input() cashBoxId: number;
-  @ViewChild(MatSort, { static: true }) sort: MatSort;
+
+  @ViewChild(MatSort, { static: false }) set sort(sort: MatSort) {
+    this.entries.sort = sort;
+  }
+
   entries = new MatTableDataSource<BudgetPlanEntry>();
   displayedColumns = ['date', 'user', 'description', 'value', 'actions'];
 
@@ -56,8 +60,6 @@ export class BudgetPlanViewComponent implements OnInit {
         budgetPlanId: id,
       })
     );
-
-    this.entries.sort = this.sort;
   }
 
   getTotalCost(): number {
