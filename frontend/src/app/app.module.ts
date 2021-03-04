@@ -22,6 +22,7 @@ import { UserModule } from './user/user.module';
 import localeDE from '@angular/common/locales/de';
 import { registerLocaleData } from '@angular/common';
 import { NotFoundRoutingModule } from './not-found-routing.module';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 registerLocaleData(localeDE);
 
@@ -43,6 +44,7 @@ registerLocaleData(localeDE);
       logOnly: environment.production, // Restrict extension to log-only mode
     }),
     NotFoundRoutingModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
   ],
   providers: [
     {
