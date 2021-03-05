@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, Inject, OnInit, ViewChild } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { BudgetPlanEntry } from '../../../model/budget-plan-entry.model';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
@@ -11,6 +11,7 @@ import { delay, filter, map, startWith, switchMap } from 'rxjs/operators';
 import { MatAutocomplete } from '@angular/material/autocomplete';
 import { loadCashBoxSettings } from '../../../cash-box/store/cash-box-settings/cash-box-settings.actions';
 import { selectCashBoxSettings } from '../../../cash-box/store/cash-box-settings/cash-box-settings.selectors';
+import { MatCheckbox } from '@angular/material/checkbox';
 
 export interface BudgetPlanEntryDialogData {
   data: BudgetPlanEntry;
@@ -29,8 +30,13 @@ export class BudgetPlanEntryDialogComponent implements OnInit, AfterViewInit {
   private descriptions$: Observable<PredefinedDescription[]>;
   filteredDescriptions$: Observable<PredefinedDescription[]>;
   @ViewChild('auto') autocomplete: MatAutocomplete;
+  @ViewChild('createAnotherCheckbox') createAnotherCheckbox: MatCheckbox;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: BudgetPlanEntryDialogData, private readonly store: Store<fromApp.AppState>) {}
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: BudgetPlanEntryDialogData,
+    private readonly store: Store<fromApp.AppState>,
+    private readonly matDialog: MatDialog
+  ) {}
 
   ngOnInit(): void {
     this.element = this.data.data;
@@ -79,6 +85,8 @@ export class BudgetPlanEntryDialogComponent implements OnInit, AfterViewInit {
     } else {
       this.store.dispatch(BudgetPlanActions.addBudgetPlanEntry(body));
     }
+
+    this.reopenDialogWhenRequested();
   }
 
   private _filter(value: string): Observable<PredefinedDescription[]> {
@@ -95,6 +103,18 @@ export class BudgetPlanEntryDialogComponent implements OnInit, AfterViewInit {
     const d = new Date(date);
     d.setMinutes(-1 * d.getTimezoneOffset());
     return d.toISOString().split('T')[0];
+  }
+
+  private reopenDialogWhenRequested(): void {
+    if (this.createAnotherCheckbox?.checked) {
+      this.matDialog.open(BudgetPlanEntryDialogComponent, {
+        data: {
+          data: null,
+          budgetPlanId: this.data.budgetPlanId,
+          cashBoxId: this.data.cashBoxId,
+        } as BudgetPlanEntryDialogData,
+      });
+    }
   }
 
   ngAfterViewInit(): void {
