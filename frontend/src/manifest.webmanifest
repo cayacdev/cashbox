@@ -1,6 +1,7 @@
 {
-  "name": "cashbox-frontend",
-  "short_name": "cashbox-frontend",
+  "name": "Cash Box",
+  "short_name": "Cash Box",
+  "description": "An app for managing shared household cash boxes.",
   "theme_color": "#1976d2",
   "background_color": "#fafafa",
   "display": "standalone",
