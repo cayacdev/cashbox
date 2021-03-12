@@ -1,3 +1,5 @@
+[![CodeQL](https://github.com/cayacdev/cashbox/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/cayacdev/cashbox/actions/workflows/codeql-analysis.yml)
+
 # Cashbox Application 
 
 I created this application because my girlfriend and me needed a digital *cash box*. Before COVID-19 we had an analog box to store cash every month. With this money we bought groceries or went out to eat. Since everybody now uses contactless payment the old approach is useless.
