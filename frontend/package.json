@@ -25,7 +25,7 @@
     "@angular/service-worker": "~11.2.7",
     "@ngrx/effects": "^11.0.1",
     "@ngrx/store": "^11.0.1",
-    "@ngrx/store-devtools": "^11.0.1",
+    "@ngrx/store-devtools": "^11.1.1",
     "chart.js": "^2.9.4",
     "ng2-charts": "^2.4.2",
     "rxjs": "^6.6.6",
