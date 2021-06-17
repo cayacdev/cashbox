@@ -20,3 +20,17 @@ Copy and adapt environment file `cp .env.template .env`
 Start backend server: `php -S localhost:8080 -t public`
 
 Start frontend server: `ng serve --open`
+
+## Backend
+
+### Start tests
+
+`cd` into backend directory
+
+**Run tests**
+
+`./vendor/bin/phpunit`
+
+**Run tests with coverage**
+
+`XDEBUG_MODE=coverage  ./vendor/bin/phpunit --coverage-html coverage`

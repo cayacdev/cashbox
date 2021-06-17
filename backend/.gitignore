@@ -5,3 +5,5 @@ Homestead.yaml
 .env
 .phpunit.result.cache
 _ide_helper.php
+coverage/
+.phpunit.result.cache
