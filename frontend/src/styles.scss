@@ -19,7 +19,6 @@ button.toolbar-button {
   margin: 2rem auto;
 }
 
-@import '~@angular/material/core/style/variables';
 
 .table-container {
   width: 100%;
@@ -32,14 +31,14 @@ button.toolbar-button {
 
   .mat-column-actions.mat-cell, .mat-column-actions.mat-header-cell {
     text-align: center;
-    @media screen and ($mat-xsmall) {
+    @media screen and (max-width: 599px) {
       width: 5vw;
       text-align: right;
       padding-left: 0;
     }
   }
 
-  @media screen and ($mat-xsmall) {
+  @media screen and (max-width: 599px) {
     .mat-cell, .mat-header-cell, .mat-footer-cell {
       padding-left: 1rem;
       padding-right: 1rem;
