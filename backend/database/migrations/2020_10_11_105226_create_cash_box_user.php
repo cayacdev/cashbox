@@ -29,6 +29,7 @@ class CreateCashBoxUser extends Migration
      */
     public function down()
     {
+        Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('cash_boxes_users');
     }
 }
