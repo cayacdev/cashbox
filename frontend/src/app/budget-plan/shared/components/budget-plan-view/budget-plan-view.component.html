@@ -68,8 +68,6 @@
     <tr mat-footer-row *matFooterRowDef="getDisplayedColumns();"></tr>
   </table>
 
-  <button class="entry-add-button" mat-fab color="primary" (click)="onEdit(null)">
-    <mat-icon>add</mat-icon>
-  </button>
+  <app-add-button (clickReceived)="onEdit(null)"></app-add-button>
 </div>
 
