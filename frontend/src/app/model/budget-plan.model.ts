@@ -6,10 +6,10 @@ export class BudgetPlan {
     public name: string,
     // following variable names dont match rule 'lowerCamelCase'.
     // This is necessary because these models will be used to map the responses from the rest interfaces.
-    // tslint:disable:variable-name
+    /* eslint-disable @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match */
     public start_date: Date,
     public end_date: Date,
-    // tslint:enable
+    /* eslint-enable */
     public budget: number,
     public entries: BudgetPlanEntry[]
   ) {}
