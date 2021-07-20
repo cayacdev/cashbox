@@ -1,4 +1,4 @@
-name: Laravel PHPUnit
+name: Backend Tests
 
 on:
   push:

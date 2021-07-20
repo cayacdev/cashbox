@@ -1,9 +1,9 @@
 export class Auth {
   constructor(
     public email: string,
-    // tslint:disable-next-line:variable-name
+    // eslint-disable-next-line @typescript-eslint/naming-convention,no-underscore-dangle,id-blacklist,id-match
     private _token: string,
-    // tslint:disable-next-line:variable-name
+    // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
     private _tokenExpirationDate: Date
   ) {}
 
