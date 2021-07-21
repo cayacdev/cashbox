@@ -35,14 +35,6 @@
 
       <ng-container matColumnDef="actions" stickyEnd>
         <th mat-header-cell *matHeaderCellDef>
-          <button mat-icon-button [matMenuTriggerFor]="menuTable">
-            <mat-icon>menu</mat-icon>
-          </button>
-          <mat-menu #menuTable="matMenu">
-            <button mat-menu-item routerLink="../budget-plans/new">
-              <span>Create new entry plan</span>
-            </button>
-          </mat-menu>
         </th>
         <td mat-cell class="actions" *matCellDef="let element">
           <button mat-icon-button [matMenuTriggerFor]="menu" (click)="$event.stopPropagation()">
