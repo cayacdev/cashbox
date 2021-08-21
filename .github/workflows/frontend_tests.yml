@@ -26,3 +26,9 @@ jobs:
       - run: npm ci
       - run: npm run test:ci
       - run: npm run lint
+      - name: Archive code coverage result
+        if: success()
+        uses: actions/upload-artifact@v1
+        with:
+          name: deploy_coverage
+          path: frontend/coverage
