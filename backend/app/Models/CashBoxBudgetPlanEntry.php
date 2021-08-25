@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Barryvdh\LaravelIdeHelper\Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -30,10 +31,10 @@ use Illuminate\Support\Carbon;
  * @method static Builder|CashBoxBudgetPlanEntry whereUpdatedAt($value)
  * @method static Builder|CashBoxBudgetPlanEntry whereUserId($value)
  * @method static Builder|CashBoxBudgetPlanEntry whereValue($value)
- * @property-read \App\Models\CashBoxBudgetPlan $budgetPlan
- * @property-read \App\Models\CashBox|null $cashBox
- * @property-read \App\Models\User $user
- * @mixin \Eloquent
+ * @property-read CashBoxBudgetPlan $budgetPlan
+ * @property-read CashBox|null $cashBox
+ * @property-read User $user
+ * @mixin Eloquent
  */
 class CashBoxBudgetPlanEntry extends Model
 {
@@ -54,7 +55,7 @@ class CashBoxBudgetPlanEntry extends Model
     /**
      * @return BelongsTo
      */
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo('App\Models\User');
     }
@@ -62,7 +63,7 @@ class CashBoxBudgetPlanEntry extends Model
     /**
      * @return BelongsTo
      */
-    public function budgetPlan()
+    public function budgetPlan(): BelongsTo
     {
         return $this->belongsTo('App\Models\CashBoxBudgetPlan', 'cash_box_budget_plan_id');
     }
@@ -70,7 +71,7 @@ class CashBoxBudgetPlanEntry extends Model
     /**
      * @return HasOneThrough
      */
-    public function cashBox()
+    public function cashBox(): HasOneThrough
     {
         return $this->hasOneThrough('App\Models\CashBox', 'App\Models\CashBoxBudgetPlan');
     }

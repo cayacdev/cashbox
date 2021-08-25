@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use Barryvdh\LaravelIdeHelper\Eloquent;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -21,6 +23,8 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read CashBox $cashBox
+ * @property int $active
+ * @property int $closed
  * @method static Builder|CashBoxBudgetPlan newModelQuery()
  * @method static Builder|CashBoxBudgetPlan newQuery()
  * @method static Builder|CashBoxBudgetPlan query()
@@ -32,11 +36,11 @@ use Illuminate\Support\Carbon;
  * @method static Builder|CashBoxBudgetPlan whereName($value)
  * @method static Builder|CashBoxBudgetPlan whereStartDate($value)
  * @method static Builder|CashBoxBudgetPlan whereUpdatedAt($value)
- * @property int $active
  * @method static Builder|CashBoxBudgetPlan whereActive($value)
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\CashBoxBudgetPlanEntry[] $entries
+ * @method static Builder|CashBoxBudgetPlan whereClosed($value)
+ * @property-read Collection|CashBoxBudgetPlanEntry[] $entries
  * @property-read int|null $entries_count
- * @mixin \Eloquent
+ * @mixin Eloquent
  */
 class CashBoxBudgetPlan extends Model
 {
@@ -58,7 +62,7 @@ class CashBoxBudgetPlan extends Model
     /**
      * @return BelongsTo
      */
-    public function cashBox()
+    public function cashBox(): BelongsTo
     {
         return $this->belongsTo('App\Models\CashBox');
     }
@@ -66,7 +70,7 @@ class CashBoxBudgetPlan extends Model
     /**
      * @return Builder
      */
-    public function users()
+    public function users(): Builder
     {
         return $this->manyThroughMany('App\Models\User', 'cash_box_user', 'user_id', 'cash_box_id');
     }
@@ -74,13 +78,13 @@ class CashBoxBudgetPlan extends Model
     /**
      * @return HasMany
      */
-    public function entries()
+    public function entries(): HasMany
     {
         return $this->hasMany('App\Models\CashBoxBudgetPlanEntry');
     }
 
     /**
-     * @param null $expectId
+     * @param  null  $expectId
      * @return HasMany
      */
     public function getConflictedPlans($expectId = null): HasMany
@@ -121,30 +125,30 @@ class CashBoxBudgetPlan extends Model
      * @param $secondKey
      * @return Builder
      */
-    public function manyThroughMany($related, $pivot, $firstKey, $secondKey)
+    public function manyThroughMany($related, $pivot, $firstKey, $secondKey): Builder
     {
         $model = new $related;
         $table = $model->getTable();
 
         return $model
-            ->join($pivot, $pivot . '.' . $firstKey, '=', $table . '.' . 'id')
-            ->select($table . '.*')
-            ->where($pivot . '.' . $secondKey, '=', $this->$secondKey);
+            ->join($pivot, $pivot.'.'.$firstKey, '=', $table.'.'.'id')
+            ->select($table.'.*')
+            ->where($pivot.'.'.$secondKey, '=', $this->$secondKey);
     }
 
-    public function calculateRemainingBudget()
+    public function calculateRemainingBudget(): float
     {
         $remainingBudget = $this->budget - $this->calculatePaidOverall();
         return round($remainingBudget, 2);
     }
 
-    public function calculatePaidOverall()
+    public function calculatePaidOverall(): float
     {
         $paidOverall = $this->entries()->sum('value');
         return round($paidOverall, 2);
     }
 
-    public function calculatePaidByUser()
+    public function calculatePaidByUser(): Collection
     {
         return $this->entries()->selectRaw('name, round(sum(value),2) as value')
             ->groupBy('user_id')
@@ -152,7 +156,7 @@ class CashBoxBudgetPlan extends Model
             ->get();
     }
 
-    public function calculateDebtsByUser()
+    public function calculateDebtsByUser(): array
     {
         $paidOverall = $this->calculatePaidOverall();
         $paidByUsers = $this->calculatePaidByUser();
