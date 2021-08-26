@@ -46,6 +46,7 @@ Route::group([
         Route::get('{id}', 'CashBoxBudgetPlanController@show');
         Route::post('', 'CashBoxBudgetPlanController@store');
         Route::put('{id}', 'CashBoxBudgetPlanController@update');
+        Route::put('{id}/closed', 'CashBoxBudgetPlanController@closed');
         Route::delete('{id}', 'CashBoxBudgetPlanController@destroy');
     });
     Route::group(['prefix' => '{cashBoxId}/settings'], function ($router) {
