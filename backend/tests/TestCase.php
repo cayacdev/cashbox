@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\CashBox;
+use App\Models\CashBoxBudgetPlan;
 use App\Models\User;
 use Laravel\Lumen\Testing\DatabaseMigrations;
 use Laravel\Lumen\Testing\TestCase as BaseTestCase;
@@ -47,5 +48,10 @@ abstract class TestCase extends BaseTestCase
         $cashBox = CashBox::factory()->create();
         $cashBox->users()->attach($user);
         return $cashBox;
+    }
+
+    protected function createBudgetPlan(CashBox $cashBox): CashBoxBudgetPlan
+    {
+        return CashBoxBudgetPlan::factory()->create(['cash_box_id' => $cashBox->id]);
     }
 }

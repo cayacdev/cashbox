@@ -3,8 +3,10 @@
 namespace App\Models;
 
 use Barryvdh\LaravelIdeHelper\Eloquent;
+use Database\Factories\CashBoxBudgetPlanFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -41,9 +43,12 @@ use Illuminate\Support\Carbon;
  * @property-read Collection|CashBoxBudgetPlanEntry[] $entries
  * @property-read int|null $entries_count
  * @mixin Eloquent
+ * @method static CashBoxBudgetPlanFactory factory(...$parameters)
  */
 class CashBoxBudgetPlan extends Model
 {
+
+    use HasFactory;
 
     /**
      * @var string[]
