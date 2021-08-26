@@ -194,11 +194,6 @@ class CashBoxBudgetPlanController extends Controller
         ]);
 
         $plan = $this->getPlanThroughCashBox($cashBoxId, $id);
-
-        if (!$request->has('closed')) {
-            throw new HttpException(ResponseAlias::HTTP_BAD_REQUEST);
-        }
-
         if (!$plan->update($request->all('closed'))) {
             throw new HttpException(ResponseAlias::HTTP_INTERNAL_SERVER_ERROR);
         }
