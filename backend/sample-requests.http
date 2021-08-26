@@ -52,7 +52,7 @@ Content-Type: application/json
 }
 
 ### Show cashbox with id 1
-GET {{domain}}/v1/cash-boxes/9
+GET {{domain}}/v1/cash-boxes/1
 Accept: application/json
 Authorization: Bearer {{auth_token}}
 

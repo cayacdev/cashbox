@@ -49,7 +49,7 @@ class CashBoxBudgetPlan extends Model
      * @var string[]
      */
     protected $fillable = [
-        'id', 'name', 'budget', 'start_date', 'end_date'
+        'id', 'name', 'budget', 'start_date', 'end_date', 'closed'
     ];
 
     /**
