@@ -99,6 +99,16 @@ Content-Type: application/json
     "end_date": "2020-08-31"
 }
 
+### Update Cashbox Budget Plan
+PUT {{domain}}/v1/cash-boxes/1/plans/1/closed
+Accept: application/json
+Authorization: Bearer {{auth_token}}
+Content-Type: application/json
+
+{
+    "closed": 1
+}
+
 ### Show cashbox budget plan with id 1
 GET {{domain}}/v1/cash-boxes/1/plans/1
 Accept: application/json
