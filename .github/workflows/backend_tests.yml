@@ -57,4 +57,10 @@ jobs:
           DB_USERNAME: user
           DB_PASSWORD: secret
           DB_PORT: ${{ job.services.mysql.ports[3306] }}
-        run: vendor/bin/phpunit
+        run: vendor/bin/phpunit --coverage-clover=coverage.xml
+      - name: Upload code coverage
+      - uses: codecov/codecov-action@v2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./coverage.xml
+          fail_ci_if_error: true
