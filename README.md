@@ -1,6 +1,7 @@
 [![CodeQL PHP](https://github.com/cayacdev/cashbox/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/cayacdev/cashbox/actions/workflows/codeql-analysis.yml)
 [![Backend Tests](https://github.com/cayacdev/cashbox/actions/workflows/backend_tests.yml/badge.svg)](https://github.com/cayacdev/cashbox/actions/workflows/backend_tests.yml)
 [![Frontend Tests](https://github.com/cayacdev/cashbox/actions/workflows/frontend_tests.yml/badge.svg)](https://github.com/cayacdev/cashbox/actions/workflows/frontend_tests.yml)
+[![codecov](https://codecov.io/gh/cayacdev/cashbox/branch/master/graph/badge.svg?token=SWJO8H1U9H)](https://codecov.io/gh/cayacdev/cashbox)
 
 # CashBox Application 
 
