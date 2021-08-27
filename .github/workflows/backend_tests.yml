@@ -3,12 +3,8 @@ name: Backend Tests
 on:
   push:
     branches: [ master ]
-    paths:
-      - 'backend/**'
   pull_request:
     branches: [ master ]
-    paths:
-      - 'backend/**'
 
 jobs:
   laravel-tests:
