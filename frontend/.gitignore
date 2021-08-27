@@ -12,3 +12,4 @@
 
 # project specific
 environment.prod.ts
+coverage/

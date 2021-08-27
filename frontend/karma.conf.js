@@ -9,18 +9,28 @@ module.exports = function (config) {
       require('karma-jasmine'),
       require('karma-chrome-launcher'),
       require('karma-jasmine-html-reporter'),
-      require('karma-coverage-istanbul-reporter'),
+      require('karma-sabarivka-reporter'),
+      require('karma-coverage'),
       require('@angular-devkit/build-angular/plugins/karma'),
     ],
     client: {
       clearContext: false, // leave Jasmine Spec Runner output visible in browser
     },
-    coverageIstanbulReporter: {
+    coverageReporter: {
       dir: require('path').join(__dirname, './coverage/cashbox-frontend'),
-      reports: ['html', 'lcovonly', 'text-summary'],
+      reporters: [{ type: 'lcov', subdir: '.' }, { type: 'text-summary' }],
       fixWebpackSourcePaths: true,
+      include: [
+        // Specify include pattern(s) first
+        'src/**/*.(ts|js)',
+        // Then specify "do not touch" patterns (note `!` sign on the beginning of each statement)
+        '!src/main.(ts|js)',
+        '!src/**/*.spec.(ts|js)',
+        '!src/**/*.module.(ts|js)',
+        '!src/**/environment*.(ts|js)',
+      ],
     },
-    reporters: ['progress', 'kjhtml'],
+    reporters: ['progress', 'sabarivka', 'coverage'],
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
