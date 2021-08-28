@@ -34,7 +34,6 @@ class ActiveBudgetPlanIntegrationTest extends TestCase
         ]);
     }
 
-
     public function test_budgetPlanHasActivePlan_expect_activePlan(): void
     {
         $response = $this->get('/v1/cash-boxes/'.$this->cashBoxWithActivePlan->id.'/plans/active', $this->headers);

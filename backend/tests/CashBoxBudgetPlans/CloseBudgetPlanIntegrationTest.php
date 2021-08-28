@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\CashBoxBudgetPlanController;
+use App\Models\CashBoxBudgetPlan;
+
 class CloseBudgetPlanIntegrationTest extends TestCase
 {
 
@@ -44,4 +47,15 @@ class CloseBudgetPlanIntegrationTest extends TestCase
         $this->put('/v1/cash-boxes/1/plans/1/closed', [], $this->headers)->assertResponseStatus(422);
     }
 
+    public function test_updateFailed_expect_internalServerError()
+    {
+        $planMock = $this->createMock(CashBoxBudgetPlan::class);
+        $planMock->expects($this->once())->method('update')->willReturn(false);
+
+        $mock = $this->createPartialMock(CashBoxBudgetPlanController::class, ['getPlanThroughCashBox']);
+        $mock->expects($this->once())->method('getPlanThroughCashBox')->willReturn($planMock);
+        $this->app->instance(CashBoxBudgetPlanController::class, $mock);
+
+        $this->put('/v1/cash-boxes/1/plans/1/closed', ['closed' => 1], $this->headers)->assertResponseStatus(500);
+    }
 }
