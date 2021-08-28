@@ -19,6 +19,7 @@ class ActiveBudgetPlanIntegrationTest extends TestCase
         $this->authenticate($user);
         $this->cashBoxWithActivePlan = $this->createCashBox($user);
         $this->cashBoxWithInactivePlan = $this->createCashBox($user);
+        $this->cashBoxWithoutAnyPlan = $this->createCashBox($user);
 
         $this->activePlan = CashBoxBudgetPlan::factory()->create([
             'cash_box_id' => $this->cashBoxWithActivePlan->id,
