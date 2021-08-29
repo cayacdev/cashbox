@@ -91,6 +91,9 @@ class CashBoxBudgetPlanEntryController extends Controller
      */
     public function destroy(string $cashBoxId, string $planId, string $id)
     {
+        $plan = $this->getPlanThroughCashBox($cashBoxId, $planId);
+        Gate::authorize('cashBoxBudgetPlanOpen', $plan);
+
         $entry = $this->findCashBoxBudgetPlanEntry($id);
         if (!$entry->delete()) {
             throw new HttpException(ResponseAlias::HTTP_INTERNAL_SERVER_ERROR);
