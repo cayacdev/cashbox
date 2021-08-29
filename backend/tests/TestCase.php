@@ -2,6 +2,7 @@
 
 use App\Models\CashBox;
 use App\Models\CashBoxBudgetPlan;
+use App\Models\CashBoxBudgetPlanEntry;
 use App\Models\User;
 use Laravel\Lumen\Application;
 use Laravel\Lumen\Testing\DatabaseMigrations;
@@ -64,6 +65,20 @@ abstract class TestCase extends BaseTestCase
         return CashBoxBudgetPlan::factory()->create(
             array_merge(
                 ['cash_box_id' => $cashBox->id],
+                $additionalAttributes));
+    }
+
+    protected function createBudgetPlanEntry(
+        CashBoxBudgetPlan $budgetPlan,
+        User $user,
+        array $additionalAttributes = []
+    ): CashBoxBudgetPlanEntry {
+        return CashBoxBudgetPlanEntry::factory()->create(
+            array_merge(
+                [
+                    'cash_box_budget_plan_id' => $budgetPlan->id,
+                    'user_id' => $user->id
+                ],
                 $additionalAttributes));
     }
 }

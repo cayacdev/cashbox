@@ -11,6 +11,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\ValidationException;
 use Laravel\Lumen\Http\ResponseFactory;
+use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class CashBoxBudgetPlanEntryController extends Controller
@@ -37,9 +38,10 @@ class CashBoxBudgetPlanEntryController extends Controller
      */
     public function store(string $cashBoxId, string $planId, Request $request)
     {
+        $this->validateCashBoxBudgetPlanEntry($request);
+
         $plan = $this->getPlanThroughCashBox($cashBoxId, $planId);
         Gate::authorize('cashBoxBudgetPlanOpen', $plan);
-        $this->validateCashBoxBudgetPlanEntry($request);
 
         $entry = new CashBoxBudgetPlanEntry($request->all());
         $entry->budgetPlan()->associate($plan);
@@ -65,14 +67,17 @@ class CashBoxBudgetPlanEntryController extends Controller
      */
     public function update(string $cashBoxId, string $planId, string $id, Request $request)
     {
-        $entry = $this->findCashBoxBudgetPlanEntry($id);
         $this->validateCashBoxBudgetPlanEntry($request);
 
+        $plan = $this->getPlanThroughCashBox($cashBoxId, $planId);
+        Gate::authorize('cashBoxBudgetPlanOpen', $plan);
+
+        $entry = $this->findCashBoxBudgetPlanEntry($id);
         if (!$entry->update($request->all())) {
-            throw new HttpException(Response::HTTP_INTERNAL_SERVER_ERROR);
+            throw new HttpException(ResponseAlias::HTTP_INTERNAL_SERVER_ERROR);
         }
 
-        return response('', Response::HTTP_CREATED);
+        return response('', ResponseAlias::HTTP_CREATED);
     }
 
     /**
@@ -88,10 +93,10 @@ class CashBoxBudgetPlanEntryController extends Controller
     {
         $entry = $this->findCashBoxBudgetPlanEntry($id);
         if (!$entry->delete()) {
-            throw new HttpException(Response::HTTP_INTERNAL_SERVER_ERROR);
+            throw new HttpException(ResponseAlias::HTTP_INTERNAL_SERVER_ERROR);
         }
 
-        return response('', Response::HTTP_NO_CONTENT);
+        return response('', ResponseAlias::HTTP_NO_CONTENT);
     }
 
     /**
