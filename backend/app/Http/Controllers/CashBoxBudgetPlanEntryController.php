@@ -28,9 +28,9 @@ class CashBoxBudgetPlanEntryController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param string $cashBoxId
-     * @param string $planId
-     * @param Request $request
+     * @param  string  $cashBoxId
+     * @param  string  $planId
+     * @param  Request  $request
      * @return Response|ResponseFactory
      * @throws AuthorizationException
      * @throws ValidationException
@@ -38,6 +38,7 @@ class CashBoxBudgetPlanEntryController extends Controller
     public function store(string $cashBoxId, string $planId, Request $request)
     {
         $plan = $this->getPlanThroughCashBox($cashBoxId, $planId);
+        Gate::authorize('cashBoxBudgetPlanOpen', $plan);
         $this->validateCashBoxBudgetPlanEntry($request);
 
         $entry = new CashBoxBudgetPlanEntry($request->all());
@@ -54,10 +55,10 @@ class CashBoxBudgetPlanEntryController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param string $cashBoxId
-     * @param string $planId
-     * @param string $id
-     * @param Request $request
+     * @param  string  $cashBoxId
+     * @param  string  $planId
+     * @param  string  $id
+     * @param  Request  $request
      * @return Response
      * @throws AuthorizationException
      * @throws ValidationException
@@ -77,9 +78,9 @@ class CashBoxBudgetPlanEntryController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param string $cashBoxId
-     * @param string $planId
-     * @param string $id
+     * @param  string  $cashBoxId
+     * @param  string  $planId
+     * @param  string  $id
      * @return Response
      * @throws Exception
      */
@@ -94,7 +95,7 @@ class CashBoxBudgetPlanEntryController extends Controller
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      * @throws ValidationException
      */
     private function validateCashBoxBudgetPlanEntry(Request $request): void
@@ -107,19 +108,20 @@ class CashBoxBudgetPlanEntryController extends Controller
     }
 
     /**
-     * @param int $id
+     * @param  int  $id
      * @return CashBoxBudgetPlanEntry
      * @throws AuthorizationException
      */
-    private function findCashBoxBudgetPlanEntry(int $id) {
+    private function findCashBoxBudgetPlanEntry(int $id)
+    {
         $entry = CashBoxBudgetPlanEntry::find($id);
         Gate::authorize('cashBoxBudgetPlanEntryOwner', $entry);
         return $entry;
     }
 
     /**
-     * @param string $cashBoxId
-     * @param string $cashBoxBudgetPlanId
+     * @param  string  $cashBoxId
+     * @param  string  $cashBoxBudgetPlanId
      * @return mixed
      * @throws AuthorizationException
      */

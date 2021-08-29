@@ -7,13 +7,10 @@ class ActiveBudgetPlanIntegrationTest extends TestCase
 {
     var CashBoxBudgetPlan $activePlan, $inactivePlan;
     var CashBox $cashBoxWithActivePlan, $cashBoxWithInactivePlan, $cashBoxWithoutAnyPlan;
-    var \Faker\Generator $faker;
 
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->faker = Faker\Factory::create();
 
         $user = $this->createUser();
         $this->authenticate($user);

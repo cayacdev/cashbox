@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\CashBox;
+use App\Models\CashBoxBudgetPlan;
 use App\Models\CashBoxBudgetPlanEntry;
 use App\Models\User;
 use Illuminate\Support\Facades\Gate;
@@ -46,6 +47,10 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('cashBoxBudgetPlanEntryOwner', function ($user, $entry) {
             /* @var $entry CashBoxBudgetPlanEntry */
             return $entry->user->id === $user->id;
+        });
+
+        Gate::define('cashBoxBudgetPlanOpen', function ($user, CashBoxBudgetPlan $budgetPlan) {
+            return $budgetPlan->closed == 0;
         });
     }
 }
