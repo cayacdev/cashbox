@@ -73,14 +73,6 @@ class CashBoxBudgetPlan extends Model
     }
 
     /**
-     * @return Builder
-     */
-    public function users(): Builder
-    {
-        return $this->manyThroughMany('App\Models\User', 'cash_box_user', 'user_id', 'cash_box_id');
-    }
-
-    /**
      * @return HasMany
      */
     public function entries(): HasMany
@@ -121,24 +113,6 @@ class CashBoxBudgetPlan extends Model
         }
 
         return $conflictedPlans;
-    }
-
-    /**
-     * @param $related
-     * @param $pivot
-     * @param $firstKey
-     * @param $secondKey
-     * @return Builder
-     */
-    public function manyThroughMany($related, $pivot, $firstKey, $secondKey): Builder
-    {
-        $model = new $related;
-        $table = $model->getTable();
-
-        return $model
-            ->join($pivot, $pivot.'.'.$firstKey, '=', $table.'.'.'id')
-            ->select($table.'.*')
-            ->where($pivot.'.'.$secondKey, '=', $this->$secondKey);
     }
 
     public function calculateRemainingBudget(): float

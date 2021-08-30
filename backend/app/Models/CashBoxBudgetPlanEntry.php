@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Support\Carbon;
 
 /**
@@ -71,13 +70,5 @@ class CashBoxBudgetPlanEntry extends Model
     public function budgetPlan(): BelongsTo
     {
         return $this->belongsTo('App\Models\CashBoxBudgetPlan', 'cash_box_budget_plan_id');
-    }
-
-    /**
-     * @return HasOneThrough
-     */
-    public function cashBox(): HasOneThrough
-    {
-        return $this->hasOneThrough('App\Models\CashBox', 'App\Models\CashBoxBudgetPlan');
     }
 }
