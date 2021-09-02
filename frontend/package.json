@@ -22,7 +22,7 @@
     "@angular/material": "^12.2.3",
     "@angular/platform-browser": "^12.2.3",
     "@angular/platform-browser-dynamic": "^12.2.3",
-    "@angular/router": "^12.2.3",
+    "@angular/router": "^12.2.4",
     "@angular/service-worker": "^12.2.3",
     "@ngrx/effects": "^12.2.2",
     "@ngrx/store": "^12.2.2",
