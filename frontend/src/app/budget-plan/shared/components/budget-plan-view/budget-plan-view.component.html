@@ -68,6 +68,6 @@
     <tr mat-footer-row *matFooterRowDef="getDisplayedColumns();"></tr>
   </table>
 
-  <app-add-button (clickReceived)="onEdit(null)"></app-add-button>
+  <app-add-button *ngIf="!budgetPlan.closed" (clickReceived)="onEdit(null)"></app-add-button>
 </div>
 

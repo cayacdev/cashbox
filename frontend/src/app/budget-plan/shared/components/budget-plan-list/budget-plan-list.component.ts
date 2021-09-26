@@ -1,11 +1,4 @@
-import {
-  ChangeDetectorRef,
-  Component,
-  Input,
-  OnDestroy,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import * as fromApp from '../../../../store/app.reducer';
 import { Store } from '@ngrx/store';
 import { BudgetPlan } from '../../../../model/budget-plan.model';
@@ -59,6 +52,16 @@ export class BudgetPlanListComponent implements OnInit, OnDestroy {
     this.router.navigate(['..', 'budget-plans', element.id, 'edit'], {
       relativeTo: this.activatedRoute,
     });
+  }
+
+  onCloseToggle(element: BudgetPlan): void {
+    this.store.dispatch(
+      BudgetPlanAction.closeBudgetPlan({
+        cashBoxId: this.cashBoxId,
+        index: element.id,
+        close: !element.closed,
+      })
+    );
   }
 
   onDelete(element: BudgetPlan): void {

@@ -107,6 +107,6 @@ export class BudgetPlanViewComponent implements OnInit {
   }
 
   isAllowed(element: BudgetPlanEntry): Observable<boolean> {
-    return this.activeUserEmail$.pipe(map((activeUserEmail) => activeUserEmail === element.user.email));
+    return this.activeUserEmail$.pipe(map((activeUserEmail) => activeUserEmail === element.user.email && !this.budgetPlan.closed));
   }
 }

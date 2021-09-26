@@ -12,6 +12,7 @@ const SET_SELECTED_BUDGET_PLAN = '[BudgetPlan] set selected budget plan';
 const ADD_BUDGET_PLAN = '[BudgetPlan] add budget plan';
 const UPDATE_BUDGET_PLAN = '[BudgetPlan] update budget plan';
 const DELETE_BUDGET_PLAN = '[BudgetPlan] delete budget plan';
+const CLOSE_BUDGET_PLAN = '[BudgetPlan] close budget plan';
 const UPDATE_BUDGET_PLAN_SUCCESS = '[BudgetPlan] add|update|delete budget plan success';
 const UPDATE_BUDGET_PLAN_FAIL = '[BudgetPlan] add|update|delete budget plan fail';
 
@@ -35,7 +36,9 @@ export const updateBudgetPlan = createAction(UPDATE_BUDGET_PLAN, props<{ cashBox
 
 export const deleteBudgetPlan = createAction(DELETE_BUDGET_PLAN, props<{ cashBoxId: number; index: number }>());
 
-export const updateBudgetPlanSuccess = createAction(UPDATE_BUDGET_PLAN_SUCCESS, props<{ cashBoxId: number; budgetPlan: BudgetPlan }>());
+export const closeBudgetPlan = createAction(CLOSE_BUDGET_PLAN, props<{ cashBoxId: number; index: number; close: boolean }>());
+
+export const updateBudgetPlanSuccess = createAction(UPDATE_BUDGET_PLAN_SUCCESS, props<{ cashBoxId: number }>());
 
 export const updateBudgetPlanFail = createAction(UPDATE_BUDGET_PLAN_FAIL, props<{ cashBoxId: number; error: string }>());
 
