@@ -41,7 +41,7 @@ export interface State {
   error: string;
 }
 
-const initialState: State = {
+export const initialState: State = {
   budgetPlans: [],
   activeBudgetPlanId: null,
   selectedBudgetPlanId: null,
@@ -75,8 +75,8 @@ const budgetPlanReducer = createReducer(
   on(updateBudgetPlanSuccess, (state) => {
     return { ...state, updateBudgetPlanState: LoadingState.LOADED };
   }),
-  on(updateBudgetPlanFail, (state) => {
-    return { ...state, updateBudgetPlanState: { errorMsg: 'Failed to update budget plan' } };
+  on(updateBudgetPlanFail, (state, { error }) => {
+    return { ...state, updateBudgetPlanState: { errorMsg: error } };
   }),
   on(setSelectedBudgetPlan, (state, { id }) => {
     return { ...state, selectedBudgetPlanId: id };
@@ -103,7 +103,11 @@ const budgetPlanReducer = createReducer(
     return { ...state, loadBudgetPlanEntriesState: LoadingState.LOADING };
   }),
   on(BudgetPlanAction.loadBudgetPlanEntriesSuccess, (state, { budgetPlanId, entries }) => {
-    return { ...state, loadBudgetPlanEntriesState: LoadingState.LOADED, budgetPlansEntries: { [budgetPlanId]: entries } };
+    return {
+      ...state,
+      loadBudgetPlanEntriesState: LoadingState.LOADED,
+      budgetPlansEntries: { [budgetPlanId]: entries },
+    };
   }),
   on(BudgetPlanAction.loadBudgetPlanEntriesFail, (state, { error }) => {
     return { ...state, loadBudgetPlanEntriesState: { errorMsg: 'Failed to load budget plan entries' } };
@@ -121,7 +125,11 @@ const budgetPlanReducer = createReducer(
     return { ...state, loadBudgetPlanReportsState: LoadingState.LOADING };
   }),
   on(BudgetPlanAction.loadBudgetPlanReportSuccess, (state, { budgetPlanId, report }) => {
-    return { ...state, loadBudgetPlanReportsState: LoadingState.LOADED, budgetPlansReports: { [budgetPlanId]: report } };
+    return {
+      ...state,
+      loadBudgetPlanReportsState: LoadingState.LOADED,
+      budgetPlansReports: { [budgetPlanId]: report },
+    };
   }),
   on(BudgetPlanAction.loadBudgetPlanReportFail, (state, { error }) => {
     return { ...state, loadBudgetPlanReportsState: { errorMsg: 'Failed to load budget plan report' } };
