@@ -5,6 +5,7 @@ use App\Models\CashBoxBudgetPlan;
 
 class CloseBudgetPlanIntegrationTest extends TestCase
 {
+    private CashBoxBudgetPlan $budgetPlan;
 
     protected function setUp(): void
     {
@@ -13,7 +14,7 @@ class CloseBudgetPlanIntegrationTest extends TestCase
         $user = $this->createUser();
         $this->authenticate($user);
         $cashBox = $this->createCashBox($user);
-        $this->createBudgetPlan($cashBox);
+        $this->budgetPlan = $this->createBudgetPlan($cashBox);
     }
 
     public function test_expect_defaultBudgetPlanIsOpen()
@@ -47,7 +48,7 @@ class CloseBudgetPlanIntegrationTest extends TestCase
         $this->put('/v1/cash-boxes/1/plans/1/closed', [], $this->headers)->assertResponseStatus(422);
     }
 
-    public function test_updateFailed_expect_internalServerError()
+    public function test_closeBudgetPlanFailed_expect_internalServerError()
     {
         $planMock = $this->createMock(CashBoxBudgetPlan::class);
         $planMock->expects($this->once())->method('update')->willReturn(false);
@@ -57,5 +58,29 @@ class CloseBudgetPlanIntegrationTest extends TestCase
         $this->app->instance(CashBoxBudgetPlanController::class, $mock);
 
         $this->put('/v1/cash-boxes/1/plans/1/closed', ['closed' => 1], $this->headers)->assertResponseStatus(500);
+    }
+
+    public function test_updateClosedBudgetPlan_expect_forbidden()
+    {
+        $this->budgetPlan->closed = 1;
+        $this->budgetPlan->save();
+
+        $response = $this->put('/v1/cash-boxes/1/plans/1', ['budget' => 100], $this->headers);
+
+        $response->assertResponseStatus(403);
+
+        $this->notSeeInDatabase('cash_box_budget_plans', ['budget' => 100]);
+        $this->seeInDatabase('cash_box_budget_plans', ['budget' => $this->budgetPlan->budget]);
+    }
+
+    public function test_deleteClosedBudgetPlan_expect_forbidden()
+    {
+        $this->budgetPlan->closed = 1;
+        $this->budgetPlan->save();
+
+        $response = $this->delete('/v1/cash-boxes/1/plans/1', [], $this->headers);
+
+        $response->assertResponseStatus(403);
+        $this->seeInDatabase('cash_box_budget_plans', ['budget' => $this->budgetPlan->budget]);
     }
 }

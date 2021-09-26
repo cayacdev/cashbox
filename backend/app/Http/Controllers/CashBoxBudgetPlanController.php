@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\ValidationException;
 use Laravel\Lumen\Http\ResponseFactory;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
@@ -126,6 +127,7 @@ class CashBoxBudgetPlanController extends Controller
     public function update(string $cashBoxId, string $id, Request $request)
     {
         $plan = $this->getPlanThroughCashBox($cashBoxId, $id);
+        Gate::authorize('cashBoxBudgetPlanOpen', $plan);
         $this->validateCashBoxBudgetPlan($request);
 
         $plan->fill($request->all());
@@ -152,6 +154,7 @@ class CashBoxBudgetPlanController extends Controller
     public function destroy(string $cashBoxId, string $id)
     {
         $plan = $this->getPlanThroughCashBox($cashBoxId, $id);
+        Gate::authorize('cashBoxBudgetPlanOpen', $plan);
         if (!$plan->delete()) {
             throw new HttpException(Response::HTTP_INTERNAL_SERVER_ERROR);
         }
