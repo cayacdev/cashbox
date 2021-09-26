@@ -6,6 +6,7 @@ use App\Models\CashBox;
 use App\Models\CashBoxBudgetPlan;
 use App\Models\CashBoxBudgetPlanEntry;
 use App\Models\User;
+use Illuminate\Auth\Access\Response;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
@@ -50,7 +51,8 @@ class AuthServiceProvider extends ServiceProvider
         });
 
         Gate::define('cashBoxBudgetPlanOpen', function ($user, CashBoxBudgetPlan $budgetPlan) {
-            return $budgetPlan->closed == 0;
+            return $budgetPlan->closed == 0 ? Response::allow()
+                : Response::deny('Entries on closed budget plans cannot be modified.');
         });
     }
 }
