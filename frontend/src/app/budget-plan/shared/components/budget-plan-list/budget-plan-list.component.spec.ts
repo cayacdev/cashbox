@@ -52,6 +52,10 @@ describe('BudgetPlanListComponent', () => {
     expect(component).toBeDefined();
   });
 
+  it('should have displayed columns', function () {
+    expect(component.displayedColumns).toEqual(['status', 'name', 'date', 'budget', 'actions']);
+  });
+
   describe('onCloseToggle', () => {
     it('should toggle close attribute to true', function () {
       component.onCloseToggle({ ...budgetPlan, closed: false });

@@ -17,6 +17,13 @@
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort
            matSortActive="end_date" matSortDirection="desc">
 
+      <ng-container matColumnDef="status" sticky>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Status</th>
+        <td mat-cell *matCellDef="let element">
+          <mat-icon *ngIf="element.closed">lock</mat-icon>
+        </td>
+      </ng-container>
+
       <ng-container matColumnDef="name" sticky>
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Name</th>
         <td mat-cell *matCellDef="let element"> {{element.name}} </td>
