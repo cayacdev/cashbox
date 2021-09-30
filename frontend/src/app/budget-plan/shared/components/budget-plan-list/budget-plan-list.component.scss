@@ -3,8 +3,20 @@
   cursor: pointer;
 }
 
-.mat-table-sticky {
-  background: none;
+.mat-column-status {
+  width: 1rem;
+
+  @media screen and (max-width: 599px) {
+    padding: 0;
+  }
+}
+
+.mat-column-actions {
+  width: 1rem;
+
+  @media screen and (max-width: 599px) {
+    padding: 0;
+  }
 }
 
 .mat-column-status {
