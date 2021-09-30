@@ -1,7 +1,10 @@
 <?php
 
 use App\Models\CashBox;
+use App\Models\CashBoxBudgetPlan;
+use App\Models\CashBoxBudgetPlanEntry;
 use App\Models\User;
+use Laravel\Lumen\Application;
 use Laravel\Lumen\Testing\DatabaseMigrations;
 use Laravel\Lumen\Testing\TestCase as BaseTestCase;
 
@@ -9,17 +12,25 @@ abstract class TestCase extends BaseTestCase
 {
     use DatabaseMigrations;
 
-    protected $headers;
+    protected array $headers;
+    protected \Faker\Generator $faker;
 
     /**
      * Creates the application.
      *
-     * @return \Laravel\Lumen\Application
+     * @return Application
      */
-    public function createApplication()
+    public function createApplication(): Application
     {
         return require __DIR__.'/../bootstrap/app.php';
     }
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->faker = Faker\Factory::create();
+    }
+
 
     protected function createUser(): User
     {
@@ -47,5 +58,27 @@ abstract class TestCase extends BaseTestCase
         $cashBox = CashBox::factory()->create();
         $cashBox->users()->attach($user);
         return $cashBox;
+    }
+
+    protected function createBudgetPlan(CashBox $cashBox, array $additionalAttributes = []): CashBoxBudgetPlan
+    {
+        return CashBoxBudgetPlan::factory()->create(
+            array_merge(
+                ['cash_box_id' => $cashBox->id],
+                $additionalAttributes));
+    }
+
+    protected function createBudgetPlanEntry(
+        CashBoxBudgetPlan $budgetPlan,
+        User $user,
+        array $additionalAttributes = []
+    ): CashBoxBudgetPlanEntry {
+        return CashBoxBudgetPlanEntry::factory()->create(
+            array_merge(
+                [
+                    'cash_box_budget_plan_id' => $budgetPlan->id,
+                    'user_id' => $user->id
+                ],
+                $additionalAttributes));
     }
 }

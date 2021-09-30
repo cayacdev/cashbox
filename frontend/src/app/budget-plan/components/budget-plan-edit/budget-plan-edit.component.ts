@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BudgetPlan } from '../../../model/budget-plan.model';
 import { Store } from '@ngrx/store';
 import * as fromApp from '../../../store/app.reducer';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import * as BudgetPlanAction from '../../store/budget-plan.actions';
 import { Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
@@ -22,10 +22,7 @@ export class BudgetPlanEditComponent implements OnInit, OnDestroy {
   cashBoxId: number;
   private sub: Subscription;
 
-  constructor(
-    private store: Store<fromApp.AppState>,
-    private activatedRoute: ActivatedRoute
-  ) {}
+  constructor(private store: Store<fromApp.AppState>, private activatedRoute: ActivatedRoute, private readonly router: Router) {}
 
   ngOnInit(): void {
     this.budgetPlan = this.activatedRoute.snapshot.data.budgetPlan;
@@ -86,6 +83,8 @@ export class BudgetPlanEditComponent implements OnInit, OnDestroy {
         })
       );
     }
+
+    this.router.navigate([`/cash-boxes/${this.cashBoxId}`]);
   }
 
   private fixDate(date: string): string {

@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, switchMap, tap } from 'rxjs/operators';
+import { catchError, map, switchMap } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { of } from 'rxjs';
-import { Router } from '@angular/router';
 import { BudgetPlan, BudgetPlanReport } from '../../model/budget-plan.model';
 import {
   addBudgetPlan,
   addBudgetPlanEntry,
+  closeBudgetPlan,
   deleteBudgetPlan,
   deleteBudgetPlanEntry,
   loadActiveBudgetPlan,
@@ -33,7 +33,7 @@ import {
 
 @Injectable()
 export class BudgetPlanEffects {
-  constructor(private actions$: Actions, private http: HttpClient, private router: Router) {}
+  constructor(private actions$: Actions, private http: HttpClient) {}
 
   loadBudgetPlans$ = createEffect(() => {
     return this.actions$.pipe(
@@ -52,7 +52,7 @@ export class BudgetPlanEffects {
       ofType(addBudgetPlan),
       switchMap(({ cashBoxId, budgetPlan }) => {
         return this.http.post(`${BudgetPlanEffects.getEndpoint(cashBoxId)}`, budgetPlan).pipe(
-          map(() => updateBudgetPlanSuccess({ cashBoxId, budgetPlan })),
+          map(() => updateBudgetPlanSuccess({ cashBoxId })),
           catchError((error: HttpErrorResponse) => of(updateBudgetPlanFail({ cashBoxId, error: error.message })))
         );
       })
@@ -64,7 +64,7 @@ export class BudgetPlanEffects {
       ofType(updateBudgetPlan),
       switchMap(({ cashBoxId, budgetPlan, index }) => {
         return this.http.put(`${BudgetPlanEffects.getEndpoint(cashBoxId)}/${index}`, budgetPlan).pipe(
-          map(() => updateBudgetPlanSuccess({ cashBoxId, budgetPlan })),
+          map(() => updateBudgetPlanSuccess({ cashBoxId })),
           catchError((error: HttpErrorResponse) => of(updateBudgetPlanFail({ cashBoxId, error: error.message })))
         );
       })
@@ -76,24 +76,33 @@ export class BudgetPlanEffects {
       ofType(deleteBudgetPlan),
       switchMap(({ index, cashBoxId }) => {
         return this.http.delete(`${BudgetPlanEffects.getEndpoint(cashBoxId)}/${index}`).pipe(
-          map(() => updateBudgetPlanSuccess({ budgetPlan: null, cashBoxId })),
+          map(() => updateBudgetPlanSuccess({ cashBoxId })),
           catchError((error: HttpErrorResponse) => of(updateBudgetPlanFail({ cashBoxId, error: error.message })))
         );
       })
     );
   });
 
-  updateBudgetPlanSuccess$ = createEffect(
-    () => {
-      return this.actions$.pipe(
-        ofType(updateBudgetPlanSuccess),
-        tap(({ cashBoxId }) => {
-          this.router.navigate([`/cash-boxes/${cashBoxId}`]);
-        })
-      );
-    },
-    { dispatch: false }
-  );
+  updateBudgetPlanSuccess$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(updateBudgetPlanSuccess),
+      map(({ cashBoxId }) => {
+        return loadBudgetPlans({ cashBoxId: cashBoxId });
+      })
+    );
+  });
+
+  closeBudgetPlan$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(closeBudgetPlan),
+      switchMap(({ cashBoxId, index, close }) => {
+        return this.http.put(`${BudgetPlanEffects.getEndpoint(cashBoxId)}/${index}/closed`, { closed: close }).pipe(
+          map(() => updateBudgetPlanSuccess({ cashBoxId })),
+          catchError((error: HttpErrorResponse) => of(updateBudgetPlanFail({ cashBoxId, error: error.message })))
+        );
+      })
+    );
+  });
 
   // todo feature load active budget plan
 
@@ -116,7 +125,12 @@ export class BudgetPlanEffects {
       ofType(loadBudgetPlanEntries),
       switchMap(({ budgetPlanId, cashBoxId }) => {
         return this.http.get<BudgetPlan>(`${BudgetPlanEffects.getEndpoint(cashBoxId)}/${budgetPlanId}`).pipe(
-          map((budgetPlan) => loadBudgetPlanEntriesSuccess({ budgetPlanId: budgetPlan.id, entries: budgetPlan.entries })),
+          map((budgetPlan) =>
+            loadBudgetPlanEntriesSuccess({
+              budgetPlanId: budgetPlan.id,
+              entries: budgetPlan.entries,
+            })
+          ),
           catchError((err: HttpErrorResponse) => of(loadBudgetPlanEntriesFail({ error: err.message })))
         );
       })

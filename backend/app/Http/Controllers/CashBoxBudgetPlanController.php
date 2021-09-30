@@ -10,8 +10,10 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\ValidationException;
 use Laravel\Lumen\Http\ResponseFactory;
+use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 /**
@@ -32,7 +34,7 @@ class CashBoxBudgetPlanController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param string $cashBoxId
+     * @param  string  $cashBoxId
      * @return JsonResponse
      * @throws AuthorizationException
      */
@@ -45,8 +47,8 @@ class CashBoxBudgetPlanController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param string $cashBoxId
-     * @param Request $request
+     * @param  string  $cashBoxId
+     * @param  Request  $request
      * @return Response
      * @throws AuthorizationException
      * @throws ValidationException
@@ -75,8 +77,8 @@ class CashBoxBudgetPlanController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param string $cashBoxId
-     * @param string $id
+     * @param  string  $cashBoxId
+     * @param  string  $id
      * @return JsonResponse
      * @throws AuthorizationException
      */
@@ -92,8 +94,8 @@ class CashBoxBudgetPlanController extends Controller
     /**
      * Get the reports for a specific resource.
      *
-     * @param string $cashBoxId
-     * @param string $id
+     * @param  string  $cashBoxId
+     * @param  string  $id
      * @return JsonResponse
      * @throws AuthorizationException
      */
@@ -115,9 +117,9 @@ class CashBoxBudgetPlanController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param string $cashBoxId
-     * @param string $id
-     * @param Request $request
+     * @param  string  $cashBoxId
+     * @param  string  $id
+     * @param  Request  $request
      * @return Response|ResponseFactory
      * @throws AuthorizationException
      * @throws ValidationException
@@ -125,6 +127,7 @@ class CashBoxBudgetPlanController extends Controller
     public function update(string $cashBoxId, string $id, Request $request)
     {
         $plan = $this->getPlanThroughCashBox($cashBoxId, $id);
+        Gate::authorize('cashBoxBudgetPlanOpen', $plan);
         $this->validateCashBoxBudgetPlan($request);
 
         $plan->fill($request->all());
@@ -143,14 +146,15 @@ class CashBoxBudgetPlanController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param string $cashBoxId
-     * @param string $id
+     * @param  string  $cashBoxId
+     * @param  string  $id
      * @return Response|ResponseFactory
      * @throws AuthorizationException
      */
     public function destroy(string $cashBoxId, string $id)
     {
         $plan = $this->getPlanThroughCashBox($cashBoxId, $id);
+        Gate::authorize('cashBoxBudgetPlanOpen', $plan);
         if (!$plan->delete()) {
             throw new HttpException(Response::HTTP_INTERNAL_SERVER_ERROR);
         }
@@ -161,7 +165,7 @@ class CashBoxBudgetPlanController extends Controller
     /**
      * Get the active plan for the given cash box
      *
-     * @param string $cashBoxId
+     * @param  string  $cashBoxId
      * @return JsonResponse|Response|ResponseFactory
      * @throws AuthorizationException
      */
@@ -178,7 +182,30 @@ class CashBoxBudgetPlanController extends Controller
     }
 
     /**
-     * @param Request $request
+     * Updates the CashBoxBudgetPlan's closed attribute
+     *
+     * @param  string  $cashBoxId
+     * @param  string  $id
+     * @param  Request  $request
+     * @return Response|ResponseFactory
+     * @throws AuthorizationException|ValidationException
+     */
+    public function closed(string $cashBoxId, string $id, Request $request)
+    {
+        $this->validate($request, [
+            'closed' => 'required|boolean',
+        ]);
+
+        $plan = $this->getPlanThroughCashBox($cashBoxId, $id);
+        if (!$plan->update($request->all('closed'))) {
+            throw new HttpException(ResponseAlias::HTTP_INTERNAL_SERVER_ERROR);
+        }
+
+        return response('');
+    }
+
+    /**
+     * @param  Request  $request
      * @throws ValidationException
      */
     private function validateCashBoxBudgetPlan(Request $request): void
@@ -192,8 +219,8 @@ class CashBoxBudgetPlanController extends Controller
     }
 
     /**
-     * @param string $cashBoxId
-     * @param string $id
+     * @param  string  $cashBoxId
+     * @param  string  $id
      * @return CashBoxBudgetPlan|Model|HasMany|object
      * @throws AuthorizationException
      */

@@ -4,6 +4,7 @@ import * as BudgetPlanAction from './budget-plan.actions';
 import {
   addBudgetPlan,
   addBudgetPlanEntry,
+  closeBudgetPlan,
   deleteBudgetPlan,
   deleteBudgetPlanEntry,
   loadActiveBudgetPlan,
@@ -17,6 +18,7 @@ import {
   updateBudgetPlanEntry,
   updateBudgetPlanEntryFail,
   updateBudgetPlanFail,
+  updateBudgetPlanSuccess,
 } from './budget-plan.actions';
 import { BudgetPlanEntry } from '../../model/budget-plan-entry.model';
 import { CallState, LoadingState } from '../../store/state';
@@ -32,13 +34,14 @@ export interface State {
   loadActiveBudgetPlanState: CallState;
   loadBudgetPlanEntriesState: CallState;
   loadBudgetPlanReportsState: CallState;
+  updateBudgetPlanState: CallState;
 
   // todo deprecated
   loading: boolean;
   error: string;
 }
 
-const initialState: State = {
+export const initialState: State = {
   budgetPlans: [],
   activeBudgetPlanId: null,
   selectedBudgetPlanId: null,
@@ -48,6 +51,7 @@ const initialState: State = {
   loadActiveBudgetPlanState: LoadingState.INIT,
   loadBudgetPlanEntriesState: LoadingState.INIT,
   loadBudgetPlanReportsState: LoadingState.INIT,
+  updateBudgetPlanState: LoadingState.INIT,
 
   // todo deprecated
   loading: false,
@@ -68,11 +72,17 @@ const budgetPlanReducer = createReducer(
   on(addBudgetPlan, updateBudgetPlan, deleteBudgetPlan, (state) => {
     return { ...state, loadBudgetPlansState: LoadingState.LOADING };
   }),
-  on(updateBudgetPlanFail, (state) => {
-    return { ...state, loadBudgetPlansState: { errorMsg: 'Failed to update budget plan' } };
+  on(updateBudgetPlanSuccess, (state) => {
+    return { ...state, updateBudgetPlanState: LoadingState.LOADED };
+  }),
+  on(updateBudgetPlanFail, (state, { error }) => {
+    return { ...state, updateBudgetPlanState: { errorMsg: error } };
   }),
   on(setSelectedBudgetPlan, (state, { id }) => {
     return { ...state, selectedBudgetPlanId: id };
+  }),
+  on(closeBudgetPlan, (state) => {
+    return { ...state, updateBudgetPlanState: LoadingState.LOADING };
   }),
 
   // todo feature active budget plan
@@ -93,7 +103,11 @@ const budgetPlanReducer = createReducer(
     return { ...state, loadBudgetPlanEntriesState: LoadingState.LOADING };
   }),
   on(BudgetPlanAction.loadBudgetPlanEntriesSuccess, (state, { budgetPlanId, entries }) => {
-    return { ...state, loadBudgetPlanEntriesState: LoadingState.LOADED, budgetPlansEntries: { [budgetPlanId]: entries } };
+    return {
+      ...state,
+      loadBudgetPlanEntriesState: LoadingState.LOADED,
+      budgetPlansEntries: { [budgetPlanId]: entries },
+    };
   }),
   on(BudgetPlanAction.loadBudgetPlanEntriesFail, (state, { error }) => {
     return { ...state, loadBudgetPlanEntriesState: { errorMsg: 'Failed to load budget plan entries' } };
@@ -111,7 +125,11 @@ const budgetPlanReducer = createReducer(
     return { ...state, loadBudgetPlanReportsState: LoadingState.LOADING };
   }),
   on(BudgetPlanAction.loadBudgetPlanReportSuccess, (state, { budgetPlanId, report }) => {
-    return { ...state, loadBudgetPlanReportsState: LoadingState.LOADED, budgetPlansReports: { [budgetPlanId]: report } };
+    return {
+      ...state,
+      loadBudgetPlanReportsState: LoadingState.LOADED,
+      budgetPlansReports: { [budgetPlanId]: report },
+    };
   }),
   on(BudgetPlanAction.loadBudgetPlanReportFail, (state, { error }) => {
     return { ...state, loadBudgetPlanReportsState: { errorMsg: 'Failed to load budget plan report' } };

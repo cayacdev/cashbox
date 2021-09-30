@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Barryvdh\LaravelIdeHelper\Eloquent;
+use Database\Factories\CashBoxFactory;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -26,6 +28,8 @@ use Illuminate\Support\Facades\Gate;
  * @property-read int|null $budget_plans_count
  * @property-read Collection|User[] $users
  * @property-read int|null $users_count
+ * @property-read Collection|PredefinedEntryDescription[] $predefinedEntryDescriptions
+ * @property-read int|null $predefined_entry_descriptions_count
  * @method static Builder|CashBox newModelQuery()
  * @method static Builder|CashBox newQuery()
  * @method static Builder|CashBox query()
@@ -34,7 +38,8 @@ use Illuminate\Support\Facades\Gate;
  * @method static Builder|CashBox whereId($value)
  * @method static Builder|CashBox whereName($value)
  * @method static Builder|CashBox whereUpdatedAt($value)
- * @mixin \Eloquent
+ * @method static CashBoxFactory factory(...$parameters)
+ * @mixin Eloquent
  */
 class CashBox extends Model
 {
@@ -56,11 +61,11 @@ class CashBox extends Model
     protected $hidden = ['created_at', 'updated_at'];
 
     /**
-     * @param int $id
+     * @param  int  $id
      * @return CashBox
      * @throws AuthorizationException
      */
-    public static function findCashBox(int $id)
+    public static function findCashBox(int $id): CashBox
     {
         $cashBox = CashBox::find($id);
         Gate::authorize('cashBoxMember', $cashBox);
@@ -70,7 +75,7 @@ class CashBox extends Model
     /**
      * @return BelongsToMany
      */
-    public function users()
+    public function users(): BelongsToMany
     {
         return $this->belongsToMany('App\Models\User');
     }
@@ -78,7 +83,7 @@ class CashBox extends Model
     /**
      * @return HasMany
      */
-    public function budgetPlans()
+    public function budgetPlans(): HasMany
     {
         return $this->hasMany('App\Models\CashBoxBudgetPlan');
     }
@@ -86,7 +91,7 @@ class CashBox extends Model
     /**
      * @return HasMany
      */
-    public function predefinedEntryDescriptions()
+    public function predefinedEntryDescriptions(): HasMany
     {
         return $this->hasMany('App\Models\PredefinedEntryDescription');
     }
@@ -94,7 +99,7 @@ class CashBox extends Model
     /**
      * @return HasMany
      */
-    public function getActivePlan()
+    public function getActivePlan(): HasMany
     {
         $plans = $this->budgetPlans();
         return $plans->where(function ($query) {

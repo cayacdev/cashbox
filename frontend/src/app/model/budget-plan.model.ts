@@ -11,7 +11,8 @@ export class BudgetPlan {
     public end_date: Date,
     /* eslint-enable */
     public budget: number,
-    public entries: BudgetPlanEntry[]
+    public entries: BudgetPlanEntry[],
+    public closed: boolean
   ) {}
 }
 

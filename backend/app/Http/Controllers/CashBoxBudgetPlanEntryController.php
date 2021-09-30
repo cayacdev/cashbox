@@ -11,6 +11,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\ValidationException;
 use Laravel\Lumen\Http\ResponseFactory;
+use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class CashBoxBudgetPlanEntryController extends Controller
@@ -28,17 +29,19 @@ class CashBoxBudgetPlanEntryController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param string $cashBoxId
-     * @param string $planId
-     * @param Request $request
+     * @param  string  $cashBoxId
+     * @param  string  $planId
+     * @param  Request  $request
      * @return Response|ResponseFactory
      * @throws AuthorizationException
      * @throws ValidationException
      */
     public function store(string $cashBoxId, string $planId, Request $request)
     {
-        $plan = $this->getPlanThroughCashBox($cashBoxId, $planId);
         $this->validateCashBoxBudgetPlanEntry($request);
+
+        $plan = $this->getPlanThroughCashBox($cashBoxId, $planId);
+        Gate::authorize('cashBoxBudgetPlanOpen', $plan);
 
         $entry = new CashBoxBudgetPlanEntry($request->all());
         $entry->budgetPlan()->associate($plan);
@@ -54,47 +57,53 @@ class CashBoxBudgetPlanEntryController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param string $cashBoxId
-     * @param string $planId
-     * @param string $id
-     * @param Request $request
+     * @param  string  $cashBoxId
+     * @param  string  $planId
+     * @param  string  $id
+     * @param  Request  $request
      * @return Response
      * @throws AuthorizationException
      * @throws ValidationException
      */
     public function update(string $cashBoxId, string $planId, string $id, Request $request)
     {
-        $entry = $this->findCashBoxBudgetPlanEntry($id);
         $this->validateCashBoxBudgetPlanEntry($request);
 
+        $plan = $this->getPlanThroughCashBox($cashBoxId, $planId);
+        Gate::authorize('cashBoxBudgetPlanOpen', $plan);
+
+        $entry = $this->findCashBoxBudgetPlanEntry($id);
         if (!$entry->update($request->all())) {
-            throw new HttpException(Response::HTTP_INTERNAL_SERVER_ERROR);
+            throw new HttpException(ResponseAlias::HTTP_INTERNAL_SERVER_ERROR);
         }
 
-        return response('', Response::HTTP_CREATED);
+        return response('', ResponseAlias::HTTP_CREATED);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param string $cashBoxId
-     * @param string $planId
-     * @param string $id
+     * @param  string  $cashBoxId
+     * @param  string  $planId
+     * @param  string  $id
      * @return Response
      * @throws Exception
      */
     public function destroy(string $cashBoxId, string $planId, string $id)
     {
+        $plan = $this->getPlanThroughCashBox($cashBoxId, $planId);
+        Gate::authorize('cashBoxBudgetPlanOpen', $plan);
+
         $entry = $this->findCashBoxBudgetPlanEntry($id);
         if (!$entry->delete()) {
-            throw new HttpException(Response::HTTP_INTERNAL_SERVER_ERROR);
+            throw new HttpException(ResponseAlias::HTTP_INTERNAL_SERVER_ERROR);
         }
 
-        return response('', Response::HTTP_NO_CONTENT);
+        return response('', ResponseAlias::HTTP_NO_CONTENT);
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      * @throws ValidationException
      */
     private function validateCashBoxBudgetPlanEntry(Request $request): void
@@ -107,19 +116,20 @@ class CashBoxBudgetPlanEntryController extends Controller
     }
 
     /**
-     * @param int $id
+     * @param  int  $id
      * @return CashBoxBudgetPlanEntry
      * @throws AuthorizationException
      */
-    private function findCashBoxBudgetPlanEntry(int $id) {
+    private function findCashBoxBudgetPlanEntry(int $id)
+    {
         $entry = CashBoxBudgetPlanEntry::find($id);
         Gate::authorize('cashBoxBudgetPlanEntryOwner', $entry);
         return $entry;
     }
 
     /**
-     * @param string $cashBoxId
-     * @param string $cashBoxBudgetPlanId
+     * @param  string  $cashBoxId
+     * @param  string  $cashBoxBudgetPlanId
      * @return mixed
      * @throws AuthorizationException
      */
