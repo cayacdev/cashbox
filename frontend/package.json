@@ -45,7 +45,7 @@
     "@ngrx/schematics": "^12.2.2",
     "@types/jasmine": "^3.9.1",
     "@types/jasminewd2": "^2.0.10",
-    "@types/node": "^16.7.10",
+    "@types/node": "^16.11.1",
     "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^4.33.0",
     "eslint": "^7.29.0",
