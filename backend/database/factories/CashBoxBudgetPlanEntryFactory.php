@@ -23,7 +23,7 @@ class CashBoxBudgetPlanEntryFactory extends Factory
     {
         return [
             'value' => $this->faker->randomFloat(2, 1, 100),
-            'description' => $this->faker->text(),
+            'description' => $this->faker->text(191),
             'date' => $this->faker->dateTime()->setTime(0, 0),
         ];
     }
