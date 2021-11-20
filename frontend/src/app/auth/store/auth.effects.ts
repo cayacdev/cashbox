@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Actions, Effect, ofType } from '@ngrx/effects';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, switchMap, take, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
@@ -51,8 +51,8 @@ const handleError = (errorRes: HttpErrorResponse) => {
 export class AuthEffects {
   readonly ENDPOINT_AUTH = `${environment.backendDomain}/v1/auth`;
 
-  @Effect({ dispatch: false })
-  authSignup = this.actions$.pipe(
+  
+  authSignup = createEffect(() => this.actions$.pipe(
     ofType(AuthActions.SIGNUP_START),
     switchMap((signupAction: AuthActions.SignupStart) => {
       return this.http
@@ -69,10 +69,10 @@ export class AuthEffects {
           })
         );
     })
-  );
+  ), { dispatch: false });
 
-  @Effect()
-  authLogin = this.actions$.pipe(
+  
+  authLogin = createEffect(() => this.actions$.pipe(
     ofType(AuthActions.LOGIN_START),
     switchMap((authData: AuthActions.LoginStart) => {
       return this.http
@@ -92,20 +92,20 @@ export class AuthEffects {
           })
         );
     })
-  );
+  ));
 
-  @Effect({ dispatch: false })
-  authRedirect = this.actions$.pipe(
+  
+  authRedirect = createEffect(() => this.actions$.pipe(
     ofType(AuthActions.AUTHENTICATE_SUCCESS),
     tap((authSuccessAction: AuthActions.AuthenticateSuccess) => {
       if (authSuccessAction.payload.redirect) {
         this.router.navigate(['/']);
       }
     })
-  );
+  ), { dispatch: false });
 
-  @Effect()
-  autoLogin = this.actions$.pipe(
+  
+  autoLogin = createEffect(() => this.actions$.pipe(
     ofType(AuthActions.AUTO_LOGIN),
     map(() => {
       const userData: {
@@ -132,20 +132,20 @@ export class AuthEffects {
       }
       return { type: 'DUMMY' };
     })
-  );
+  ));
 
-  @Effect({ dispatch: false })
-  authLogout = this.actions$.pipe(
+  
+  authLogout = createEffect(() => this.actions$.pipe(
     ofType(AuthActions.LOGOUT),
     tap(() => {
       this.authService.clearLogoutTimer();
       localStorage.removeItem('userData');
       this.router.navigate(['/auth']);
     })
-  );
+  ), { dispatch: false });
 
-  @Effect({ dispatch: false })
-  changePassword = this.actions$.pipe(
+  
+  changePassword = createEffect(() => this.actions$.pipe(
     ofType(AuthActions.CHANGE_PASSWORD),
     tap((action: AuthActions.ChangePassword) => {
       this.http
@@ -158,7 +158,7 @@ export class AuthEffects {
           this.router.navigate(['/']);
         });
     })
-  );
+  ), { dispatch: false });
 
   constructor(private actions$: Actions, private http: HttpClient, private router: Router, private authService: AuthService) {}
 }
