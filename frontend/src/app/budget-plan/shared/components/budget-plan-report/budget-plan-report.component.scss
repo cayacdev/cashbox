@@ -12,9 +12,19 @@ td.actions {
 
 div.content {
   width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  row-gap: 20px;
 
-  div {
-    padding: 10px;
+  .report-card {
+    margin-bottom: 10px;
+    width: 48%;
+
+    @media screen and (max-width: 599px) {
+      width: 100%;
+    }
   }
 
   .mat-card {

@@ -3,13 +3,16 @@
   <h1>{{cashBox.name}}</h1>
   <p>{{cashBox.description}}</p>
 
-  <app-cash-box-budget-plan-view
-    *ngIf="budgetPlan"
-    [budgetPlan]="budgetPlan"
-    [cashBoxId]="cashBox.id">
-  </app-cash-box-budget-plan-view>
+  <ng-container *ngIf="budgetPlan$ | async as budgetPlan; else noActiveBudgetPlan">
+    <app-cash-box-budget-plan-view
+      [budgetPlan]="budgetPlan"
+      [cashBoxId]="cashBox.id">
+    </app-cash-box-budget-plan-view>
+  </ng-container>
 
-  <h2 *ngIf="!budgetPlan">No active budget plan</h2>
+  <ng-template #noActiveBudgetPlan>
+    <h2>No active budget plan</h2>
+  </ng-template>
 </ng-container>
 
 

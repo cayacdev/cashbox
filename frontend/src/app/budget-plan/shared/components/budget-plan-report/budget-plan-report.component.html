@@ -1,15 +1,15 @@
 <h2>{{name}}</h2>
-<div class="content" fxLayout="row wrap" *ngIf="report">
-  <div fxFlex="50%" fxFlex.xs="100%">
+<div class="content" *ngIf="report">
+  <div class="report-card">
     <ng-container [ngTemplateOutlet]="summarize"></ng-container>
   </div>
-  <div fxFlex="50%" fxFlex.xs="100%">
+  <div class="report-card">
     <ng-container [ngTemplateOutlet]="paidByUser"></ng-container>
   </div>
-  <div fxFlex="50%" fxFlex.xs="100%">
+  <div class="report-card">
     <ng-container [ngTemplateOutlet]="paidByDescription"></ng-container>
   </div>
-  <div fxFlex="50%" fxFlex.xs="100%">
+  <div class="report-card">
     <ng-container [ngTemplateOutlet]="debtorsAndCreditors"></ng-container>
   </div>
 </div>
