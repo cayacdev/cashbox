@@ -14,3 +14,6 @@
 # project specific
 environment.prod.ts
 coverage/
+
+cypress/screenshots
+cypress/videos
