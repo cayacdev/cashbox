@@ -30,6 +30,7 @@ use Illuminate\Support\Facades\Gate;
  * @property-read int|null $users_count
  * @property-read Collection|PredefinedEntryDescription[] $predefinedEntryDescriptions
  * @property-read int|null $predefined_entry_descriptions_count
+ * @method static Builder|CashBox find($id)
  * @method static Builder|CashBox newModelQuery()
  * @method static Builder|CashBox newQuery()
  * @method static Builder|CashBox query()

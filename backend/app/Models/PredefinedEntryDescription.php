@@ -5,7 +5,9 @@ namespace App\Models;
 
 
 use Barryvdh\LaravelIdeHelper\Eloquent;
+use Database\Factories\PredefinedEntryDescriptionFactory;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
@@ -27,10 +29,14 @@ use Illuminate\Support\Carbon;
  * @method static Builder|PredefinedEntryDescription whereId($value)
  * @method static Builder|PredefinedEntryDescription whereUpdatedAt($value)
  * @method static Builder|PredefinedEntryDescription whereValue($value)
+ * @method static PredefinedEntryDescriptionFactory factory(...$parameters)
  * @mixin Eloquent
  */
 class PredefinedEntryDescription extends Model
 {
+
+    use HasFactory;
+
     /**
      * @var string[]
      */

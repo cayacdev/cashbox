@@ -15,6 +15,17 @@ For the lumen backend following steps are necessary:
 * Generate secret key `php artisan jwt:secret`
 * Copy and adapt environment file `cp .env.template .env`
 
+### Create test data for development
+
+This command creates test data with four users
+`cd backend; php artisan migrate:fresh --seed`
+
+| User           | Password  |
+|----------------|-----------|
+ | test1@test.com | 12345678  |
+ | test2@test.com | 12345678  |
+ | test3@test.com | 12345678  |
+ | test4@test.com | 12345678  |
 
 ### Start servers
 
