@@ -42,7 +42,7 @@
     "@angular-eslint/schematics": "13.0.1",
     "@angular-eslint/template-parser": "13.0.1",
     "@angular/cli": "^13.0.3",
-    "@angular/compiler-cli": "^13.0.2",
+    "@angular/compiler-cli": "^13.3.3",
     "@cypress/schematic": "^1.6.0",
     "@ngrx/schematics": "^13.0.1",
     "@types/jasmine": "^3.10.2",
