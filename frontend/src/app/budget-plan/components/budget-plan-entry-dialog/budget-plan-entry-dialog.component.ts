@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { BudgetPlanEntry } from '../../../model/budget-plan-entry.model';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import * as fromApp from '../../../store/app.reducer';
 import * as BudgetPlanActions from '../../store/budget-plan.actions';
@@ -25,7 +25,7 @@ export interface BudgetPlanEntryDialogData {
   styleUrls: ['./budget-plan-entry-dialog.component.scss'],
 })
 export class BudgetPlanEntryDialogComponent implements OnInit, AfterViewInit {
-  form: FormGroup;
+  form: UntypedFormGroup;
   element: BudgetPlanEntry;
   private descriptions$: Observable<PredefinedDescription[]>;
   filteredDescriptions$: Observable<PredefinedDescription[]>;
@@ -58,10 +58,10 @@ export class BudgetPlanEntryDialogComponent implements OnInit, AfterViewInit {
   }
 
   private initForm(): void {
-    this.form = new FormGroup({
-      description: new FormControl(this.data?.data?.description, [Validators.required, Validators.maxLength(255)]),
-      value: new FormControl(this.data?.data?.value, [Validators.required]),
-      date: new FormControl(this.data.data?.date ?? new Date(), [Validators.required]),
+    this.form = new UntypedFormGroup({
+      description: new UntypedFormControl(this.data?.data?.description, [Validators.required, Validators.maxLength(255)]),
+      value: new UntypedFormControl(this.data?.data?.value, [Validators.required]),
+      date: new UntypedFormControl(this.data.data?.date ?? new Date(), [Validators.required]),
     });
   }
 

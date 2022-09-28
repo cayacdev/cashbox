@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import * as fromApp from '../../store/app.reducer';
 import * as AuthActions from '../../auth/store/auth.actions';
@@ -9,14 +9,14 @@ import * as AuthActions from '../../auth/store/auth.actions';
   templateUrl: './change-password.component.html',
 })
 export class ChangePasswordComponent implements OnInit {
-  form: FormGroup;
+  form: UntypedFormGroup;
 
   constructor(private store: Store<fromApp.AppState>) {}
 
   ngOnInit(): void {
-    this.form = new FormGroup({
-      oldPassword: new FormControl('', [Validators.required]),
-      password: new FormControl('', [Validators.required]),
+    this.form = new UntypedFormGroup({
+      oldPassword: new UntypedFormControl('', [Validators.required]),
+      password: new UntypedFormControl('', [Validators.required]),
     });
   }
 

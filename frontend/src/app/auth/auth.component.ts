@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import * as AuthActions from './store/auth.actions';
 import { Store } from '@ngrx/store';
 import * as fromApp from '../store/app.reducer';
@@ -11,9 +11,9 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./auth.component.scss'],
 })
 export class AuthComponent implements OnInit {
-  form: FormGroup = new FormGroup({
-    email: new FormControl(''),
-    password: new FormControl(''),
+  form: UntypedFormGroup = new UntypedFormGroup({
+    email: new UntypedFormControl(''),
+    password: new UntypedFormControl(''),
   });
   isLoginMode = true;
   isLoading = false;
