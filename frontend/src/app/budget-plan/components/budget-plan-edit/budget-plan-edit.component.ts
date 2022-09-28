@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { BudgetPlan } from '../../../model/budget-plan.model';
 import { Store } from '@ngrx/store';
 import * as fromApp from '../../../store/app.reducer';
@@ -14,7 +14,7 @@ import { take } from 'rxjs/operators';
   styleUrls: ['./budget-plan-edit.component.scss'],
 })
 export class BudgetPlanEditComponent implements OnInit, OnDestroy {
-  form: FormGroup;
+  form: UntypedFormGroup;
   loading: boolean;
   error: string;
   editMode = false;
@@ -38,17 +38,17 @@ export class BudgetPlanEditComponent implements OnInit, OnDestroy {
   }
 
   private initForm(): void {
-    this.form = new FormGroup({
-      name: new FormControl(this.budgetPlan?.name, [
+    this.form = new UntypedFormGroup({
+      name: new UntypedFormControl(this.budgetPlan?.name, [
         Validators.required,
         Validators.maxLength(255),
       ]),
-      budget: new FormControl(this.budgetPlan?.budget, [Validators.required]),
-      range: new FormGroup({
-        start_date: new FormControl(this.budgetPlan?.start_date, [
+      budget: new UntypedFormControl(this.budgetPlan?.budget, [Validators.required]),
+      range: new UntypedFormGroup({
+        start_date: new UntypedFormControl(this.budgetPlan?.start_date, [
           Validators.required,
         ]),
-        end_date: new FormControl(this.budgetPlan?.end_date, [
+        end_date: new UntypedFormControl(this.budgetPlan?.end_date, [
           Validators.required,
         ]),
       }),

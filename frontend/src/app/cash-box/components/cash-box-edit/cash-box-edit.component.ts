@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import * as fromApp from '../../../store/app.reducer';
 import * as CashBoxActions from '../../store/cash-boxes/cash-box.actions';
 import { Store } from '@ngrx/store';
@@ -14,7 +14,7 @@ import { ErrorState, LoadingState } from '../../../store/state';
   styleUrls: ['./cash-box-edit.component.scss'],
 })
 export class CashBoxEditComponent implements OnInit, OnDestroy {
-  form: FormGroup;
+  form: UntypedFormGroup;
   isLoading: boolean;
   error: string;
   editMode = false;
@@ -51,9 +51,9 @@ export class CashBoxEditComponent implements OnInit, OnDestroy {
   }
 
   private initForm(): void {
-    this.form = new FormGroup({
-      name: new FormControl(this.cashBox?.name, [Validators.required, Validators.maxLength(255)]),
-      description: new FormControl(this.cashBox?.description, [Validators.maxLength(255)]),
+    this.form = new UntypedFormGroup({
+      name: new UntypedFormControl(this.cashBox?.name, [Validators.required, Validators.maxLength(255)]),
+      description: new UntypedFormControl(this.cashBox?.description, [Validators.maxLength(255)]),
     });
   }
 
