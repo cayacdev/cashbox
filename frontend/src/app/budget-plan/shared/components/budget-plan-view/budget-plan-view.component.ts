@@ -1,11 +1,11 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
 import { MatSort } from '@angular/material/sort';
 import { BudgetPlan } from '../../../../model/budget-plan.model';
 import { BudgetPlanEntry } from '../../../../model/budget-plan-entry.model';
 import { Store } from '@ngrx/store';
 import * as fromApp from '../../../../store/app.reducer';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import {
   BudgetPlanEntryDialogComponent,
   BudgetPlanEntryDialogData,

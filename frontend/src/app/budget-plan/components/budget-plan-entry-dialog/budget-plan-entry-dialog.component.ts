@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, Inject, OnInit, ViewChild } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { BudgetPlanEntry } from '../../../model/budget-plan-entry.model';
 import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
@@ -8,10 +8,10 @@ import * as BudgetPlanActions from '../../store/budget-plan.actions';
 import { combineLatest, fromEvent, Observable } from 'rxjs';
 import { PredefinedDescription } from '../../../model/cash-box.model';
 import { delay, filter, map, startWith, switchMap } from 'rxjs/operators';
-import { MatAutocomplete } from '@angular/material/autocomplete';
+import { MatLegacyAutocomplete as MatAutocomplete } from '@angular/material/legacy-autocomplete';
 import { loadCashBoxSettings } from '../../../cash-box/store/cash-box-settings/cash-box-settings.actions';
 import { selectCashBoxSettings } from '../../../cash-box/store/cash-box-settings/cash-box-settings.selectors';
-import { MatCheckbox } from '@angular/material/checkbox';
+import { MatLegacyCheckbox as MatCheckbox } from '@angular/material/legacy-checkbox';
 
 export interface BudgetPlanEntryDialogData {
   data: BudgetPlanEntry;
