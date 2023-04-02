@@ -41,7 +41,7 @@ class CreateCashBoxTest extends TestCase
             $this->headers);
 
         $response->assertResponseStatus(422);
-        $response->seeJsonEquals(['name' => ['The name may not be greater than 255 characters.']]);
+        $response->seeJsonEquals(['name' => ['The name must not be greater than 255 characters.']]);
     }
 
     public function testCreateCashBoxWithTooLongDescriptionValidation()
@@ -57,6 +57,6 @@ class CreateCashBoxTest extends TestCase
             $this->headers);
 
         $response->assertResponseStatus(422);
-        $response->seeJsonEquals(['description' => ['The description may not be greater than 255 characters.']]);
+        $response->seeJsonEquals(['description' => ['The description must not be greater than 255 characters.']]);
     }
 }

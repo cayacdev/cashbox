@@ -15,7 +15,7 @@ button.toolbar-button {
   margin-bottom: 1rem;
 }
 
-.mat-spinner {
+.mat-mdc-progress-spinner {
   margin: 2rem auto;
 }
 
@@ -29,7 +29,7 @@ button.toolbar-button {
     width: 100%;
   }
 
-  .mat-column-actions.mat-cell, .mat-column-actions.mat-header-cell {
+  .mat-column-actions.mat-mdc-cell, .mat-column-actions.mat-mdc-header-cell {
     text-align: center;
     @media screen and (max-width: 599px) {
       width: 5vw;
@@ -39,7 +39,7 @@ button.toolbar-button {
   }
 
   @media screen and (max-width: 599px) {
-    .mat-cell, .mat-header-cell, .mat-footer-cell {
+    .mat-mdc-cell, .mat-mdc-header-cell, .mat-mdc-footer-cell {
       padding-left: 1rem;
       padding-right: 1rem;
     }

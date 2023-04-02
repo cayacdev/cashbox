@@ -36,10 +36,10 @@ jobs:
           DOMAIN: ${{ secrets.BACKEND_DOMAIN }}
         run: |
           echo "export const environment = {  production: true,  backendDomain: '${DOMAIN}',};" > src/environments/environment.prod.ts
-      - name: Use Node 14.x
+      - name: Use Node 18.x
         uses: actions/setup-node@v1
         with:
-          node-version: '14.x'
+          node-version: '18.x'
       - name: Install dependencies
         run: npm ci
       - name: Lint
