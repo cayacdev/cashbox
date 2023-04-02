@@ -2,12 +2,12 @@ import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit, ViewChild } fro
 import * as fromApp from '../../../../store/app.reducer';
 import { Store } from '@ngrx/store';
 import { BudgetPlan } from '../../../../model/budget-plan.model';
-import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
+import { MatTableDataSource } from '@angular/material/table';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatSort } from '@angular/material/sort';
 import { DeleteDialogComponent } from '../../../../shared/delete-dialog/delete-dialog.component';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import * as BudgetPlanAction from '../../../store/budget-plan.actions';
 
 @Component({

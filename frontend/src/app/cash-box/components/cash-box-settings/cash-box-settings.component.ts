@@ -5,7 +5,7 @@ import { map, take } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 import { CashBoxSettings, PredefinedDescription } from '../../../model/cash-box.model';
 import { combineLatest, Observable } from 'rxjs';
-import { MatLegacyChipInputEvent as MatChipInputEvent } from '@angular/material/legacy-chips';
+import { MatChipInputEvent } from '@angular/material/chips';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { LoadingState } from '../../../store/state';
 import {

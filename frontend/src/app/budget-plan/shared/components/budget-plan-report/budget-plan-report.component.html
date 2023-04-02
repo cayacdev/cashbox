@@ -15,7 +15,7 @@
 </div>
 
 <ng-template #summarize>
-  <mat-card>
+  <mat-card appearance="outlined">
     <mat-card-header><strong>Summarize</strong></mat-card-header>
     <div class="card-slide-toggle">
       <mat-slide-toggle #summarizeToggle>Show chart</mat-slide-toggle>
@@ -37,7 +37,7 @@
 </ng-template>
 
 <ng-template #paidByDescription>
-  <mat-card>
+  <mat-card appearance="outlined">
     <mat-card-header><strong>Paid by description</strong></mat-card-header>
     <div class="card-slide-toggle">
       <mat-slide-toggle #paidByDescriptionToggle [checked]="true">Show chart</mat-slide-toggle>
@@ -72,7 +72,7 @@
 </ng-template>
 
 <ng-template #paidByUser>
-  <mat-card>
+  <mat-card appearance="outlined">
     <mat-card-header>Paid by user</mat-card-header>
     <mat-card-content class="table-container">
       <table mat-table [dataSource]="paidByUserEntries" matSort matSortActive="value"
@@ -96,7 +96,7 @@
 </ng-template>
 
 <ng-template #debtorsAndCreditors>
-  <mat-card>
+  <mat-card appearance="outlined">
     <mat-card-header>Debtors and Creditors</mat-card-header>
     <mat-card-content class="table-container">
       <table mat-table [dataSource]="debtsEntries" matSort matSortActive="debtor" matSortDirection="asc"
