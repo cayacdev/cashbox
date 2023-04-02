@@ -2,8 +2,8 @@
 <ng-container *ngIf="(settings$ | async) as settings">
   <mat-form-field class="example-chip-list">
     <mat-chip-grid #chipList>
-      <mat-chip-row *ngFor="let description of settings.descriptions" [selectable]="false"
-                [removable]="true" (removed)="remove(description)" [disabled]="isLoading$ | async">
+      <mat-chip-row *ngFor="let description of settings.descriptions"
+                    [removable]="true" (removed)="remove(description)" [disabled]="isLoading$ | async">
         {{description.value}}
         <mat-icon matChipRemove>cancel</mat-icon>
       </mat-chip-row>

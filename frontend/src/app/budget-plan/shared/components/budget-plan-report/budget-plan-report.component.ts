@@ -8,6 +8,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ChartOptions } from 'chart.js';
 import { BudgetPlanEntry } from '../../../../model/budget-plan-entry.model';
 import { Subscription } from 'rxjs';
+import { SingleOrMultiDataSet } from 'ng2-charts';
 
 @Component({
   selector: 'app-budget-plan-report',
@@ -108,7 +109,7 @@ export class BudgetPlanReportComponent implements OnInit, AfterViewChecked, OnDe
     return this.paidByDescriptionEntries.data.map((entry) => entry.description);
   }
 
-  getData(): unknown[] {
+  getData(): SingleOrMultiDataSet {
     return this.paidByDescriptionEntries.data.map((entry) => entry.value);
   }
 
