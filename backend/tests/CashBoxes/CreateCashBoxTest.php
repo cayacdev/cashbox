@@ -1,8 +1,9 @@
 <?php
-
+namespace CashBoxes;
 
 use App\Models\CashBox;
 use Illuminate\Auth\Access\AuthorizationException;
+use TestCase;
 
 class CreateCashBoxTest extends TestCase
 {

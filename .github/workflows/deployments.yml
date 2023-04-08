@@ -1,17 +1,44 @@
 name: Deployments
 
 on:
-  push:
-    branches: [ master ]
+  workflow_call:
+    inputs:
+      ref:
+        type: string
+        description: The branch, tag or SHA to deploy
+        required: true
+  workflow_dispatch:
+    inputs:
+      ref:
+        type: string
+        description: The branch, tag or SHA to deploy
+        required: true
 
 jobs:
+  frontend-tests:
+    uses: ./.github/workflows/backend_tests.yml
+    with:
+      ref: ${{ inputs.ref }}
+    secrets: inherit
+
+  backend-tests:
+    uses: ./.github/workflows/frontend_tests.yml
+    with:
+      ref: ${{ inputs.ref }}
+    secrets: inherit
+
   backend-deployment:
+    needs:
+      - frontend-tests
+      - backend-tests
     name: Deploy Backend
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.ref }}
       - name: Deployment
         uses: appleboy/ssh-action@master
         env:
@@ -23,29 +50,41 @@ jobs:
           script: ./backend_deployment.sh
 
   frontend-build:
-    name: Build and Test Frontend
+    needs:
+      - frontend-tests
+      - backend-tests
+    name: Build Frontend
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: ./frontend
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.ref }}
       - name: Create prod file
         env:
           DOMAIN: ${{ secrets.BACKEND_DOMAIN }}
         run: |
           echo "export const environment = {  production: true,  backendDomain: '${DOMAIN}',};" > src/environments/environment.prod.ts
-      - name: Use Node 14.x
+      - name: Use Node 18.x
         uses: actions/setup-node@v1
         with:
-          node-version: '14.x'
+          node-version: '18.x'
+      - name: Get npm cache directory
+        id: npm-cache-dir
+        run: |
+          echo "::set-output name=dir::$(npm config get cache)"
+      - uses: actions/cache@v3
+        id: npm-cache
+        with:
+          path: ${{ steps.npm-cache-dir.outputs.dir }}
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
       - name: Install dependencies
         run: npm ci
-      - name: Lint
-        run: npm run lint
-      - name: Test
-        run: npm run test:ci
       - name: Build
         run: npm run build
       - name: Archive build

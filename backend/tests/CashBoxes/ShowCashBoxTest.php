@@ -1,5 +1,9 @@
 <?php
 
+namespace CashBoxes;
+
+use TestCase;
+
 class ShowCashBoxTest extends TestCase
 {
     public function testIndex_expect_seeAssignedCashBoxes()

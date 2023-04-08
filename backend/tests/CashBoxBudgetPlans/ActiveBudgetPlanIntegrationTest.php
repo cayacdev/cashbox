@@ -1,7 +1,9 @@
 <?php
+namespace CashBoxBudgetPlans;
 
 use App\Models\CashBox;
 use App\Models\CashBoxBudgetPlan;
+use TestCase;
 
 class ActiveBudgetPlanIntegrationTest extends TestCase
 {

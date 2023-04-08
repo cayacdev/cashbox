@@ -1,4 +1,7 @@
 <?php
+namespace User;
+
+use TestCase;
 
 class UserLoginTest extends TestCase
 {

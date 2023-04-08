@@ -1,5 +1,5 @@
 <mat-spinner *ngIf="loading"></mat-spinner>
-<mat-card *ngIf="!loading">
+<mat-card appearance="outlined" *ngIf="!loading">
   <mat-card-title>{{ editMode ? 'Update' : 'Create'}} budget plan</mat-card-title>
   <mat-card-content>
     <form [formGroup]="form" (ngSubmit)="onSubmit()">

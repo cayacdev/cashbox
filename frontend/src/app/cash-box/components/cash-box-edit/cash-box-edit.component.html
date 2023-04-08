@@ -1,4 +1,4 @@
-<mat-card *ngIf="!isLoading">
+<mat-card appearance="outlined" *ngIf="!isLoading">
   <mat-card-title>{{editMode ? 'Update' : 'Create'}} cash box</mat-card-title>
   <mat-card-content>
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
