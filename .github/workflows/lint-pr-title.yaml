@@ -13,7 +13,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - uses: dreampulse/action-commitlint-pull-request-title
+      - uses: dreampulse/action-commitlint-pull-request-title@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:

@@ -53,7 +53,7 @@ jobs:
     needs:
       - frontend-tests
       - backend-tests
-    name: Deploy Frontend
+    name: Build Frontend
     runs-on: ubuntu-latest
     defaults:
       run:
