@@ -1,14 +1,18 @@
 name: Backend Tests
 
 on:
-  push:
-    branches: [ master ]
   pull_request:
-    branches: [ master ]
+    types: [opened, synchronize]
+  workflow_call:
+    inputs:
+      ref:
+        type: string
+        description: The branch, tag or SHA to deploy
+        required: true
 
 jobs:
-  laravel-tests:
-
+  backend-tests:
+    name: Backend Tests
     runs-on: ubuntu-latest
     services:
       mysql:
@@ -25,7 +29,15 @@ jobs:
       run:
         working-directory: ./backend
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v3
+        if: inputs.ref
+        with:
+          ref: ${{ inputs.ref }}
+      - name: Checkout
+        uses: actions/checkout@v3
+        if: github.event_name == 'pull_request'
+
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:

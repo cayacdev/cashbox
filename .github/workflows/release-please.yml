@@ -1,0 +1,39 @@
+name: Release please
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
+      tag_name: ${{ steps.release.outputs.tag_name }}
+    steps:
+      - id: release
+        uses: google-github-actions/release-please-action@v3
+        with:
+          release-type: node
+          package-name: cashbox
+          token: ${{ secrets.ACTIONS_PAT }}
+          changelog-types: >-
+            [
+              {"type":"feat","section":"Features","hidden":false},
+              {"type":"fix","section":"Bug Fixes","hidden":false},
+              {"type":"docs","section":"Other","hidden":false},
+              {"type":"refactor","section":"Other","hidden":false},
+              {"type":"ci","section":"Other","hidden":false},
+              {"type":"test","section":"Other","hidden":false},
+              {"type":"chore","section":"Other","hidden":true}
+            ]
+
+  deployment:
+    needs:
+      - release-please
+    if: ${{ needs.release-please.outputs.release_created == 'true' }}
+    uses: ./.github/workflows/deployments.yml
+    with:
+      ref: ${{ needs.release-please.outputs.tag_name }}
+    secrets: inherit
