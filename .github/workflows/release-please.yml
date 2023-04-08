@@ -15,7 +15,7 @@ jobs:
       - id: release
         uses: google-github-actions/release-please-action@v3
         with:
-          release-type: node
+          release-type: simple
           package-name: cashbox
           changelog-types: >-
             [
