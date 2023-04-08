@@ -1,7 +1,9 @@
 <?php
+namespace CashBoxBudgetPlans;
 
 use App\Http\Controllers\CashBoxBudgetPlanController;
 use App\Models\CashBoxBudgetPlan;
+use TestCase;
 
 class CloseBudgetPlanIntegrationTest extends TestCase
 {

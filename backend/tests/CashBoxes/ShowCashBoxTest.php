@@ -1,5 +1,9 @@
 <?php
 
+namespace CashBoxes;
+
+use TestCase;
+
 class ShowCashBoxTest extends TestCase
 {
     public function testIndex_expect_seeAssignedCashBoxes()
@@ -20,6 +24,16 @@ class ShowCashBoxTest extends TestCase
                 'description' => $cashBox->description,
                 'pivot' => ['cash_box_id' => $cashBox->id, 'user_id' => $user->id]
             ]
+        ]);
+    }
+
+    public function testIndex_notAuthenticated_expect_notAuthenticated()
+    {
+        $response = $this->get('/v1/cash-boxes/');
+
+        $response->assertResponseStatus(401);
+        $response->seeJsonEquals([
+            'error' => 'Unauthorized'
         ]);
     }
 

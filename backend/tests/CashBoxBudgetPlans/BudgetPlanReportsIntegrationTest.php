@@ -1,7 +1,9 @@
 <?php
+namespace CashBoxBudgetPlans;
 
 use App\Models\CashBoxBudgetPlan;
 use App\Models\User;
+use TestCase;
 
 class BudgetPlanReportsIntegrationTest extends TestCase
 {
