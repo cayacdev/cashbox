@@ -13,7 +13,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - uses: amannn/action-semantic-pull-request@v1.2.0
+
+      - uses: dreampulse/action-commitlint-pull-request-title@2b9c111eb0916d6da6318634db6a1d595edefa83
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
