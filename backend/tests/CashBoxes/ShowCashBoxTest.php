@@ -27,6 +27,16 @@ class ShowCashBoxTest extends TestCase
         ]);
     }
 
+    public function testIndex_notAuthenticated_expect_notAuthenticated()
+    {
+        $response = $this->get('/v1/cash-boxes/');
+
+        $response->assertResponseStatus(401);
+        $response->seeJsonEquals([
+            'error' => 'Unauthorized'
+        ]);
+    }
+
     public function testShow_expect_seeCashbox()
     {
         $user = $this->createUser();
