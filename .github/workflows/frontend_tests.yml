@@ -1,14 +1,14 @@
 name: Frontend Tests
 
 on:
+  pull_request:
+    types: [opened, synchronize]
   workflow_call:
     inputs:
       ref:
         type: string
         description: The branch, tag or SHA to deploy
         required: true
-  pull_request:
-    types: [opened, synchronize]
 
 jobs:
   frontend_test:
