@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.1.0](https://github.com/cayacdev/cashbox/compare/v1.0.0...v1.1.0) (2023-04-16)
+
+
+### Features
+
+* **fonts:** host fonts locally ([#631](https://github.com/cayacdev/cashbox/issues/631)) ([b6d173c](https://github.com/cayacdev/cashbox/commit/b6d173c531c3b03bad8b7c235daaae4da7102ec4))
+* **other:** renaming default branch to main ([#629](https://github.com/cayacdev/cashbox/issues/629)) ([d37fbc7](https://github.com/cayacdev/cashbox/commit/d37fbc77aa035a5f76f86527439eb39ff2bb05d8))
+
 ## 1.0.0 (2023-04-08)
 
 
