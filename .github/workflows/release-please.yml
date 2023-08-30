@@ -23,6 +23,7 @@ jobs:
               {"type":"feat","section":"Features","hidden":false},
               {"type":"fix","section":"Bug Fixes","hidden":false},
               {"type":"docs","section":"Other","hidden":false},
+              {"type":"deps","section":"Other","hidden":false},
               {"type":"refactor","section":"Other","hidden":false},
               {"type":"ci","section":"Other","hidden":false},
               {"type":"test","section":"Other","hidden":false},
