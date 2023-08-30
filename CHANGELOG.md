@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.2.0](https://github.com/cayacdev/cashbox/compare/v1.1.0...v1.2.0) (2023-08-30)
+
+
+### Features
+
+* **ci:** allow dependency ([61367cf](https://github.com/cayacdev/cashbox/commit/61367cfb8cb816af662d6b915682e5fa2bd63ebc))
+
+
+### Other
+
+* **backend:** update backend dependencies ([#636](https://github.com/cayacdev/cashbox/issues/636)) ([61367cf](https://github.com/cayacdev/cashbox/commit/61367cfb8cb816af662d6b915682e5fa2bd63ebc))
+* **frontend:** update frontend dependencies ([61367cf](https://github.com/cayacdev/cashbox/commit/61367cfb8cb816af662d6b915682e5fa2bd63ebc))
+
 ## [1.1.0](https://github.com/cayacdev/cashbox/compare/v1.0.0...v1.1.0) (2023-04-16)
 
 
