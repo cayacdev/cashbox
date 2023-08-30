@@ -1,13 +1,9 @@
-import {
-  ActivatedRouteSnapshot,
-  Resolve,
-  RouterStateSnapshot,
-} from '@angular/router';
+import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 
 @Injectable({ providedIn: 'root' })
-export class CashBoxIdResolver implements Resolve<number> {
+export class CashBoxIdResolver  {
   resolve(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot

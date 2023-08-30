@@ -1,4 +1,4 @@
-import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
+import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
@@ -10,7 +10,7 @@ import { Actions } from '@ngrx/effects';
 @Injectable({
   providedIn: 'root',
 })
-export class BudgetPlansResolver implements Resolve<boolean> {
+export class BudgetPlansResolver  {
   constructor(private store: Store<fromApp.AppState>, private actions$: Actions) {}
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {

@@ -1,4 +1,4 @@
-import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
+import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { BudgetPlan } from '../../model/budget-plan.model';
 import { Observable, of } from 'rxjs';
 import { Store } from '@ngrx/store';
@@ -9,7 +9,7 @@ import * as BudgetPlanAction from '../store/budget-plan.actions';
 import { Actions, ofType } from '@ngrx/effects';
 
 @Injectable({ providedIn: 'root' })
-export class BudgetPlanResolver implements Resolve<BudgetPlan> {
+export class BudgetPlanResolver  {
   constructor(private store: Store<fromApp.AppState>, private actions$: Actions) {}
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<BudgetPlan> | Promise<BudgetPlan> | BudgetPlan {

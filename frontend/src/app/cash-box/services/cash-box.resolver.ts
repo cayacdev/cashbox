@@ -1,4 +1,4 @@
-import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
+import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { CashBox } from '../../model/cash-box.model';
 import { Observable, of } from 'rxjs';
 import { Injectable } from '@angular/core';
@@ -13,7 +13,7 @@ import { loadActiveBudgetPlan } from '../../budget-plan/store/budget-plan.action
 @Injectable({
   providedIn: 'root',
 })
-export class CashBoxResolver implements Resolve<CashBox> {
+export class CashBoxResolver  {
   constructor(private store: Store<fromApp.AppState>, private actions$: Actions) {}
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<CashBox> | Promise<CashBox> | CashBox {
