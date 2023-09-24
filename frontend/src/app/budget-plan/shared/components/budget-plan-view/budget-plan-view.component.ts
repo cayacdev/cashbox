@@ -1,20 +1,20 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
-import { MatSort } from '@angular/material/sort';
-import { BudgetPlan } from '../../../../model/budget-plan.model';
-import { BudgetPlanEntry } from '../../../../model/budget-plan-entry.model';
-import { Store } from '@ngrx/store';
-import * as fromApp from '../../../../store/app.reducer';
-import { MatDialog } from '@angular/material/dialog';
+import { Component, Input, OnInit, ViewChild } from '@angular/core'
+import { MatTableDataSource } from '@angular/material/table'
+import { MatSort } from '@angular/material/sort'
+import { BudgetPlan } from '../../../../model/budget-plan.model'
+import { BudgetPlanEntry } from '../../../../model/budget-plan-entry.model'
+import { Store } from '@ngrx/store'
+import * as fromApp from '../../../../store/app.reducer'
+import { MatDialog } from '@angular/material/dialog'
 import {
   BudgetPlanEntryDialogComponent,
   BudgetPlanEntryDialogData,
-} from '../../../components/budget-plan-entry-dialog/budget-plan-entry-dialog.component';
-import * as BudgetPlanAction from '../../../store/budget-plan.actions';
-import { DeleteDialogComponent, DeleteDialogData } from '../../../../shared/delete-dialog/delete-dialog.component';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { LoadingState } from '../../../../store/state';
+} from '../../../components/budget-plan-entry-dialog/budget-plan-entry-dialog.component'
+import * as BudgetPlanAction from '../../../store/budget-plan.actions'
+import { DeleteDialogComponent, DeleteDialogData } from '../../../../shared/delete-dialog/delete-dialog.component'
+import { Observable } from 'rxjs'
+import { map } from 'rxjs/operators'
+import { LoadingState } from '../../../../store/state'
 
 @Component({
   selector: 'app-cash-box-budget-plan-view',
@@ -22,50 +22,53 @@ import { LoadingState } from '../../../../store/state';
   styleUrls: ['./budget-plan-view.component.scss'],
 })
 export class BudgetPlanViewComponent implements OnInit {
-  @Input() budgetPlan: BudgetPlan;
-  @Input() cashBoxId: number;
+  @Input() budgetPlan: BudgetPlan
+  @Input() cashBoxId: number
 
   @ViewChild(MatSort, { static: false }) set sort(sort: MatSort) {
-    this.entries.sort = sort;
+    this.entries.sort = sort
   }
 
-  entries = new MatTableDataSource<BudgetPlanEntry>();
-  displayedColumns = ['date', 'user', 'description', 'value', 'actions'];
+  entries = new MatTableDataSource<BudgetPlanEntry>()
+  displayedColumns = ['date', 'user', 'description', 'value', 'actions']
 
-  showDescription = false;
-  entriesLoaded$: Observable<boolean>;
+  showDescription = false
+  entriesLoaded$: Observable<boolean>
 
-  activeUserEmail$ = this.store.select('auth').pipe(map((state) => state.user.email));
+  activeUserEmail$ = this.store.select('auth').pipe(map((state) => state.user.email))
 
-  constructor(private store: Store<fromApp.AppState>, private dialog: MatDialog) {}
+  constructor(
+    private store: Store<fromApp.AppState>,
+    private dialog: MatDialog,
+  ) {}
 
   ngOnInit(): void {
     this.entries.sortingDataAccessor = (item, property): string | number => {
       switch (property) {
         case 'date':
-          return new Date(item.date).getTime();
+          return new Date(item.date).getTime()
         case 'user':
-          return item.user.name;
+          return item.user.name
         default:
-          return item[property];
+          return item[property]
       }
-    };
-    this.entriesLoaded$ = this.store.select('budgetPlan').pipe(map((state) => state.loadBudgetPlanEntriesState === LoadingState.LOADED));
+    }
+    this.entriesLoaded$ = this.store.select('budgetPlan').pipe(map((state) => state.loadBudgetPlanEntriesState === LoadingState.LOADED))
 
-    const id = this.budgetPlan.id;
+    const id = this.budgetPlan.id
     this.store.select('budgetPlan').subscribe((state) => {
-      this.entries.data = state.budgetPlansEntries[id] ?? [];
-    });
+      this.entries.data = state.budgetPlansEntries[id] ?? []
+    })
     this.store.dispatch(
       BudgetPlanAction.loadBudgetPlanEntries({
         cashBoxId: this.cashBoxId,
         budgetPlanId: id,
-      })
-    );
+      }),
+    )
   }
 
   getTotalCost(): number {
-    return this.entries.data?.map((t) => t.value).reduce((acc, value) => acc + value, 0);
+    return this.entries.data?.map((t) => t.value).reduce((acc, value) => acc + value, 0)
   }
 
   onEdit(element: BudgetPlanEntry): void {
@@ -75,7 +78,7 @@ export class BudgetPlanViewComponent implements OnInit {
         budgetPlanId: this.budgetPlan.id,
         cashBoxId: this.cashBoxId,
       } as BudgetPlanEntryDialogData,
-    });
+    })
   }
 
   onDelete(element: BudgetPlanEntry): void {
@@ -84,7 +87,7 @@ export class BudgetPlanViewComponent implements OnInit {
         data: element,
         headline: `${element.id}`,
       } as DeleteDialogData,
-    });
+    })
 
     dialogRef.afterClosed().subscribe((data) => {
       if (data === element) {
@@ -93,20 +96,24 @@ export class BudgetPlanViewComponent implements OnInit {
             cashBoxId: this.cashBoxId,
             budgetPlanId: this.budgetPlan.id,
             budgetPlanEntryId: element.id,
-          })
-        );
+          }),
+        )
       }
-    });
+    })
   }
 
   getDisplayedColumns(): string[] {
     if (!this.showDescription) {
-      return this.displayedColumns.filter((col) => col !== 'description');
+      return this.displayedColumns.filter((col) => col !== 'description')
     }
-    return this.displayedColumns;
+    return this.displayedColumns
   }
 
   isAllowed(element: BudgetPlanEntry): Observable<boolean> {
-    return this.activeUserEmail$.pipe(map((activeUserEmail) => activeUserEmail === element.user.email && !this.budgetPlan.closed));
+    return this.activeUserEmail$.pipe(map((activeUserEmail) => activeUserEmail === element.user.email && !this.budgetPlan.closed))
+  }
+
+  getEntriesData(): BudgetPlanEntry[] {
+    return this.entries.data
   }
 }

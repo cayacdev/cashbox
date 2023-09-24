@@ -1,12 +1,13 @@
-<div class="flex">
-  <div class="flex-item">
-    <div class="chart-container">
+<div class='flex'>
+  <div class='flex-item'>
+    <div class='chart-container'>
       <canvas baseChart
-              [datasets]="lineChartData"
-              [options]="lineChartOptions"
-              [colors]="lineChartColors"
-              [legend]="lineChartLegend"
-              [chartType]="lineChartType"></canvas>
+              type='line'
+              [data]='lineChartData'
+              [options]='lineChartOptions'
+              [legend]='lineChartLegend'>
+
+      </canvas>
     </div>
   </div>
 </div>
