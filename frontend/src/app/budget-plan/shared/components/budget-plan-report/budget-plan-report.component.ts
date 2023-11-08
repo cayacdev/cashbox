@@ -27,8 +27,7 @@ export class BudgetPlanReportComponent implements OnInit, AfterViewChecked, OnDe
   debtsEntries = new MatTableDataSource<unknown>()
   debtsDisplayedColumns = ['debtor', 'creditor', 'value']
 
-  @ViewChild('paidByDescriptionSort', { static: false })
-  paidByDescriptionSort: MatSort
+  @ViewChild('paidByDescriptionSort', { static: false }) paidByDescriptionSort: MatSort
   paidByDescriptionEntries = new MatTableDataSource<{ description: string; value: number }>()
   paidByDescriptionDisplayedColumns = ['description', 'value']
 
