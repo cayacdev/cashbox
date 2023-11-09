@@ -161,19 +161,8 @@ describe('BudgetPlanReportComponent', () => {
 
     expect(component.name).toEqual('Plan 2')
     expect(component.report).toEqual(mockState.budgetPlan.budgetPlansReports[2])
-    expect(component.paidByUserEntries.data).toEqual([
-      {
-        name: 'User 2',
-        value: 20,
-      },
-    ])
-    expect(component.debtsEntries.data).toEqual([
-      {
-        value: 20,
-        creditor: 'User 2',
-        debtor: 'User 1',
-      },
-    ])
+    expect(component.paidByUserEntries.data).toEqual([{ name: 'User 2', value: 20 }])
+    expect(component.debtsEntries.data).toEqual([{ value: 20, creditor: 'User 2', debtor: 'User 1' }])
     expect(component.paidByDescriptionEntries.data).toEqual([
       { description: 'Car', value: 76 },
       { description: 'Home', value: 34 },
