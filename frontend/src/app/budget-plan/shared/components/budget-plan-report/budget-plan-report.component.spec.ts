@@ -88,10 +88,66 @@ describe('BudgetPlanReportComponent', () => {
           2: [
             {
               id: 2,
-              description: 'Entry 2',
+              description: 'Grooceries',
               value: 20,
               date: new Date(),
               user: { id: 2, name: 'User 2', email: '' },
+            },
+            {
+              id: 3,
+              description: 'Home',
+              value: 34,
+              date: new Date(),
+              user: { id: 2, name: 'User 2', email: '' },
+            },
+            {
+              id: 4,
+              description: 'Car',
+              value: 76,
+              date: new Date(),
+              user: { id: 2, name: 'User 2', email: '' },
+            },
+            {
+              id: 5,
+              description: 'Going Out',
+              value: 12,
+              date: new Date(),
+              user: { id: 2, name: 'User 2', email: '' },
+            },
+            {
+              id: 6,
+              description: 'Grooceries',
+              value: 1,
+              date: new Date(),
+              user: { id: 1, name: 'User 2', email: '' },
+            },
+            {
+              id: 7,
+              description: 'Going Out',
+              value: 2,
+              date: new Date(),
+              user: { id: 2, name: 'User 2', email: '' },
+            },
+            {
+              id: 8,
+              description: 'Drugstore',
+              value: 3,
+              date: new Date(),
+              user: { id: 1, name: 'User 2', email: '' },
+            },
+            {
+              id: 9,
+              description: 'Hobby',
+              value: 4,
+              date: new Date(),
+              user: { id: 2, name: 'User 2', email: '' },
+            },
+            {
+              id: 10,
+              description: 'Wellness',
+              value: 5,
+              date: new Date(),
+              user: { id: 1, name: 'User 2', email: '' },
             },
           ],
         },
@@ -100,20 +156,32 @@ describe('BudgetPlanReportComponent', () => {
 
     store.setState(mockState)
 
-    component.budgetPlanId = 1
+    component.budgetPlanId = 2
     component.ngOnInit()
 
-    expect(component.name).toEqual('Plan 1')
-    expect(component.report).toEqual(jasmine.objectContaining(mockState.budgetPlan.budgetPlansReports[1]))
-    expect(component.paidByUserEntries.data).toEqual([{ name: 'User 1', value: 20 }])
+    expect(component.name).toEqual('Plan 2')
+    expect(component.report).toEqual(mockState.budgetPlan.budgetPlansReports[2])
+    expect(component.paidByUserEntries.data).toEqual([
+      {
+        name: 'User 2',
+        value: 20,
+      },
+    ])
     expect(component.debtsEntries.data).toEqual([
       {
         value: 20,
-        creditor: 'User 1',
-        debtor: 'User 2',
+        creditor: 'User 2',
+        debtor: 'User 1',
       },
     ])
-    expect(component.paidByDescriptionEntries.data).toEqual([{ description: 'Entry 1', value: 20 }])
+    expect(component.paidByDescriptionEntries.data).toEqual([
+      { description: 'Car', value: 76 },
+      { description: 'Home', value: 34 },
+      { description: 'Grooceries', value: 21 },
+      { description: 'Going Out', value: 14 },
+      { description: 'Wellness', value: 5 },
+      { description: 'Misc', value: 7 },
+    ])
   })
 
   it('should unsubscribe on destroy', () => {
