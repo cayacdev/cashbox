@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.1](https://github.com/cayacdev/cashbox/compare/v1.2.0...v1.2.1) (2024-07-07)
+
+
+### Other
+
+* upgrade dependencies ([#638](https://github.com/cayacdev/cashbox/issues/638)) ([f932b0a](https://github.com/cayacdev/cashbox/commit/f932b0a66aa99e6b329cf9fddf068921ea1f4188))
+
 ## [1.2.0](https://github.com/cayacdev/cashbox/compare/v1.1.0...v1.2.0) (2023-08-30)
 
 
