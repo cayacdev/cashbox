@@ -5,8 +5,8 @@ import { Action } from '@ngrx/store'
 import { provideMockActions } from '@ngrx/effects/testing'
 import * as Test from './budget-plan.actions'
 import { addBudgetPlan, closeBudgetPlan, updateBudgetPlan } from './budget-plan.actions'
-import { HttpClient } from '@angular/common/http'
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing'
+import { HttpClient, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing'
 import { BudgetPlan } from '../../model/budget-plan.model'
 
 describe('BudgetPlanEffects', function () {
@@ -17,9 +17,9 @@ describe('BudgetPlanEffects', function () {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [BudgetPlanEffects, provideMockActions(() => actions$)],
-    })
+    imports: [],
+    providers: [BudgetPlanEffects, provideMockActions(() => actions$), provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+})
 
     systemUnderTest = TestBed.inject(BudgetPlanEffects)
     httpClient = TestBed.inject(HttpClient)
