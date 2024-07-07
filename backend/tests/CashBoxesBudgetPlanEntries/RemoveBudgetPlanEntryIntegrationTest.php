@@ -1,4 +1,5 @@
 <?php
+
 namespace CashBoxesBudgetPlanEntries;
 
 use App\Models\CashBoxBudgetPlan;
@@ -25,10 +26,19 @@ class RemoveBudgetPlanEntryIntegrationTest extends TestCase
         $this->entryOnClosedBudgetPlan = $this->createBudgetPlanEntry($this->closedBudgetPlan, $user);
     }
 
+    protected function tearDown(): void
+    {
+        // Reset error and exception handlers to PHP's default
+        restore_error_handler();
+        restore_exception_handler();
+
+        parent::tearDown();
+    }
+
     public function test_expect_entryRemoved()
     {
         $response = $this->delete(
-            '/v1/cash-boxes/1/plans/'.$this->budgetPlan->id.'/entries/'.$this->entry->id,
+            '/v1/cash-boxes/1/plans/' . $this->budgetPlan->id . '/entries/' . $this->entry->id,
             [], $this->headers);
 
         $response->assertResponseStatus(204);
@@ -38,7 +48,7 @@ class RemoveBudgetPlanEntryIntegrationTest extends TestCase
     public function test_closedBudgetPlan_expect_forbidden()
     {
         $response = $this->delete(
-            '/v1/cash-boxes/1/plans/'.$this->closedBudgetPlan->id.'/entries/'.$this->entryOnClosedBudgetPlan->id,
+            '/v1/cash-boxes/1/plans/' . $this->closedBudgetPlan->id . '/entries/' . $this->entryOnClosedBudgetPlan->id,
             [], $this->headers);
 
         $response->assertResponseStatus(403);

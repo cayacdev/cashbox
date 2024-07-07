@@ -1,9 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
 
-$roboto-font-path: "~roboto-fontface/fonts" !default;
+$roboto-font-path: "../fonts" !default;
 @import "roboto-fontface/css/roboto/sass/roboto-fontface";
 
-$material-icons-font-path: '~material-icons/iconfont/';
+$material-icons-font-path: '../iconfont/';
 @import 'material-icons/iconfont/material-icons.scss';
 
 html, body {

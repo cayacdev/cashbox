@@ -1,7 +1,7 @@
 import { Subject } from 'rxjs';
 import { Action } from '@ngrx/store';
-import { HttpClient } from '@angular/common/http';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { HttpClient, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { AuthEffects } from './auth.effects';
@@ -16,14 +16,16 @@ describe('AuthEffects', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [
+    imports: [],
+    providers: [
         AuthEffects,
         provideMockActions(() => actions$),
         { provide: Router, useValue: {} },
         { provide: AuthService, useValue: {} },
-      ],
-    });
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+    ]
+});
 
     systemUnderTest = TestBed.inject(AuthEffects);
     httpClient = TestBed.inject(HttpClient);

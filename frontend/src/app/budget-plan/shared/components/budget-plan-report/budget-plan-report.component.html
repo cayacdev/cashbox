@@ -1,124 +1,104 @@
 <h2>{{name}}</h2>
-<div class="content" *ngIf="report">
-  <div class="report-card">
-    <ng-container [ngTemplateOutlet]="summarize"></ng-container>
+<div class='content' *ngIf='report'>
+  <div class='report-card'>
+    <ng-container [ngTemplateOutlet]='summarize'></ng-container>
   </div>
-  <div class="report-card">
-    <ng-container [ngTemplateOutlet]="paidByUser"></ng-container>
+  <div class='report-card'>
+    <ng-container [ngTemplateOutlet]='paidByUser'></ng-container>
   </div>
-  <div class="report-card">
-    <ng-container [ngTemplateOutlet]="paidByDescription"></ng-container>
+  <div class='report-card'>
+    <ng-container [ngTemplateOutlet]='paidByDescription'></ng-container>
   </div>
-  <div class="report-card">
-    <ng-container [ngTemplateOutlet]="debtorsAndCreditors"></ng-container>
+  <div class='report-card'>
+    <ng-container [ngTemplateOutlet]='debtorsAndCreditors'></ng-container>
   </div>
 </div>
 
 <ng-template #summarize>
-  <mat-card appearance="outlined">
+  <mat-card appearance='outlined'>
     <mat-card-header><strong>Summarize</strong></mat-card-header>
-    <div class="card-slide-toggle">
-      <mat-slide-toggle #summarizeToggle>Show chart</mat-slide-toggle>
-    </div>
     <mat-card-content>
-      <mat-list *ngIf="!summarizeToggle.checked">
+      <mat-list>
         <mat-list-item>Paid: {{report.paidOverall}}</mat-list-item>
         <mat-list-item>Remaining: {{report.remainingBudget}}</mat-list-item>
       </mat-list>
-      <canvas *ngIf="summarizeToggle.checked" baseChart
-              [datasets]="[{data:[report.remainingBudget,report.paidOverall]}]"
-              [options]="barChartOptions"
-              [labels]="['Remaining','Paid']"
-              [legend]="false"
-              chartType="bar">
-      </canvas>
     </mat-card-content>
   </mat-card>
 </ng-template>
 
 <ng-template #paidByDescription>
-  <mat-card appearance="outlined">
+  <mat-card appearance='outlined'>
     <mat-card-header><strong>Paid by description</strong></mat-card-header>
-    <div class="card-slide-toggle">
-      <mat-slide-toggle #paidByDescriptionToggle [checked]="true">Show chart</mat-slide-toggle>
-    </div>
     <mat-card-content>
-      <table mat-table [dataSource]="paidByDescriptionEntries" matSort matSortActive="value"
-             matSortDirection="asc" #paidByDescriptionSort="matSort" *ngIf="!paidByDescriptionToggle.checked">
+      <table mat-table [dataSource]='paidByDescriptionEntries' matSort matSortActive='value'
+             matSortDirection='asc' #paidByDescriptionSort='matSort'>
 
-        <ng-container matColumnDef="description">
+        <ng-container matColumnDef='description'>
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Description</th>
-          <td mat-cell *matCellDef="let transaction"> {{transaction.description}} </td>
+          <td mat-cell *matCellDef='let transaction'> {{transaction.description}} </td>
         </ng-container>
 
-        <ng-container matColumnDef="value">
+        <ng-container matColumnDef='value'>
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Value</th>
-          <td mat-cell *matCellDef="let transaction"> {{transaction.value | currency}} </td>
+          <td mat-cell *matCellDef='let transaction'> {{transaction.value | currency}} </td>
         </ng-container>
 
-        <tr mat-header-row *matHeaderRowDef="paidByDescriptionDisplayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: paidByDescriptionDisplayedColumns;"></tr>
+        <tr mat-header-row *matHeaderRowDef='paidByDescriptionDisplayedColumns'></tr>
+        <tr mat-row *matRowDef='let row; columns: paidByDescriptionDisplayedColumns;'></tr>
       </table>
-      <div class="chart" *ngIf="paidByDescriptionToggle.checked">
-        <canvas baseChart
-                [data]="getData()"
-                [labels]="getLabels()"
-                [options]="pieChartOptions"
-                chartType="pie">
-        </canvas>
-      </div>
     </mat-card-content>
   </mat-card>
 </ng-template>
 
 <ng-template #paidByUser>
-  <mat-card appearance="outlined">
+  <mat-card appearance='outlined'>
     <mat-card-header>Paid by user</mat-card-header>
-    <mat-card-content class="table-container">
-      <table mat-table [dataSource]="paidByUserEntries" matSort matSortActive="value"
-             matSortDirection="asc" #paidByUserSort="matSort">
+    <mat-card-content class='table-container'>
+      <table mat-table [dataSource]='paidByUserEntries' matSort matSortActive='value'
+             matSortDirection='asc' #paidByUserSort='matSort'>
 
-        <ng-container matColumnDef="name">
+        <ng-container matColumnDef='name'>
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Name</th>
-          <td mat-cell *matCellDef="let transaction"> {{transaction.name}} </td>
+          <td mat-cell *matCellDef='let transaction'> {{transaction.name}} </td>
         </ng-container>
 
-        <ng-container matColumnDef="value">
+        <ng-container matColumnDef='value'>
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Value</th>
-          <td mat-cell *matCellDef="let transaction"> {{transaction.value | currency}} </td>
+          <td mat-cell *matCellDef='let transaction'> {{transaction.value | currency}} </td>
         </ng-container>
 
-        <tr mat-header-row *matHeaderRowDef="paidByUserDisplayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: paidByUserDisplayedColumns;"></tr>
+        <tr mat-header-row *matHeaderRowDef='paidByUserDisplayedColumns'></tr>
+        <tr mat-row *matRowDef='let row; columns: paidByUserDisplayedColumns;'></tr>
       </table>
     </mat-card-content>
   </mat-card>
 </ng-template>
 
 <ng-template #debtorsAndCreditors>
-  <mat-card appearance="outlined">
+  <mat-card appearance='outlined'>
     <mat-card-header>Debtors and Creditors</mat-card-header>
-    <mat-card-content class="table-container">
-      <table mat-table [dataSource]="debtsEntries" matSort matSortActive="debtor" matSortDirection="asc"
-             #debtsSort="matSort">
+    <mat-card-content class='table-container'>
+      <table mat-table [dataSource]='debtsEntries' matSort matSortActive='debtor'
+             matSortDirection='asc'
+             #debtsSort='matSort'>
 
-        <ng-container matColumnDef="debtor">
+        <ng-container matColumnDef='debtor'>
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Debtor</th>
-          <td mat-cell *matCellDef="let transaction"> {{transaction.debtor}} </td>
+          <td mat-cell *matCellDef='let transaction'> {{transaction.debtor}} </td>
         </ng-container>
 
-        <ng-container matColumnDef="creditor">
+        <ng-container matColumnDef='creditor'>
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Value</th>
-          <td mat-cell *matCellDef="let transaction"> {{transaction.creditor}} </td>
+          <td mat-cell *matCellDef='let transaction'> {{transaction.creditor}} </td>
         </ng-container>
 
-        <ng-container matColumnDef="value">
+        <ng-container matColumnDef='value'>
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Value</th>
-          <td mat-cell *matCellDef="let transaction"> {{transaction.value | currency}} </td>
+          <td mat-cell *matCellDef='let transaction'> {{transaction.value | currency}} </td>
         </ng-container>
 
-        <tr mat-header-row *matHeaderRowDef="debtsDisplayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: debtsDisplayedColumns;"></tr>
+        <tr mat-header-row *matHeaderRowDef='debtsDisplayedColumns'></tr>
+        <tr mat-row *matRowDef='let row; columns: debtsDisplayedColumns;'></tr>
       </table>
     </mat-card-content>
 

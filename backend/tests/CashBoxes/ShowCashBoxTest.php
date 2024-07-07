@@ -6,6 +6,16 @@ use TestCase;
 
 class ShowCashBoxTest extends TestCase
 {
+
+    protected function tearDown(): void
+    {
+        // Reset error and exception handlers to PHP's default
+        restore_error_handler();
+        restore_exception_handler();
+
+        parent::tearDown();
+    }
+
     public function testIndex_expect_seeAssignedCashBoxes()
     {
         $user = $this->createUser();
@@ -43,7 +53,7 @@ class ShowCashBoxTest extends TestCase
         $cashBox = $this->createCashBox($user);
 
         $this->authenticate($user);
-        $response = $this->get('/v1/cash-boxes/'.$cashBox->id, $this->headers);
+        $response = $this->get('/v1/cash-boxes/' . $cashBox->id, $this->headers);
 
         $response->assertResponseOk();
         $response->seeJsonStructure(['id', 'name', 'description']);

@@ -1,4 +1,5 @@
 <?php
+
 namespace CashBoxesBudgetPlanEntries;
 
 use App\Models\CashBoxBudgetPlan;
@@ -25,10 +26,19 @@ class UpdateBudgetPlanEntryIntegrationTest extends TestCase
         $this->entryOnClosedBudgetPlan = $this->createBudgetPlanEntry($this->closedBudgetPlan, $user);
     }
 
+    protected function tearDown(): void
+    {
+        // Reset error and exception handlers to PHP's default
+        restore_error_handler();
+        restore_exception_handler();
+
+        parent::tearDown();
+    }
+
     public function test_expect_entryUpdated()
     {
         $updatedDateTime = $this->faker->dateTime();
-        $response = $this->put('/v1/cash-boxes/1/plans/'.$this->budgetPlan->id.'/entries/'.$this->entry->id,
+        $response = $this->put('/v1/cash-boxes/1/plans/' . $this->budgetPlan->id . '/entries/' . $this->entry->id,
             [
                 'value' => 99,
                 'description' => 'updated description',
@@ -47,7 +57,7 @@ class UpdateBudgetPlanEntryIntegrationTest extends TestCase
     public function test_closedBudgetPlan_expect_forbidden()
     {
         $response = $this->put(
-            '/v1/cash-boxes/1/plans/'.$this->closedBudgetPlan->id.'/entries/'.$this->entryOnClosedBudgetPlan->id,
+            '/v1/cash-boxes/1/plans/' . $this->closedBudgetPlan->id . '/entries/' . $this->entryOnClosedBudgetPlan->id,
             [
                 'value' => 99,
                 'description' => 'updated description',

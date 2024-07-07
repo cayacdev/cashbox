@@ -1,10 +1,20 @@
 <?php
+
 namespace User;
 
 use TestCase;
 
 class UserLoginTest extends TestCase
 {
+    protected function tearDown(): void
+    {
+        // Reset error and exception handlers to PHP's default
+        restore_error_handler();
+        restore_exception_handler();
+
+        parent::tearDown();
+    }
+
     public function testLogin_expect_userCanLogin()
     {
         $user = $this->createUser();
