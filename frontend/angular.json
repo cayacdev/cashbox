@@ -78,10 +78,10 @@
           "options": {},
           "configurations": {
             "production": {
-              "browserTarget": "cashbox-frontend:build:production"
+              "buildTarget": "cashbox-frontend:build:production"
             },
             "development": {
-              "browserTarget": "cashbox-frontend:build:development"
+              "buildTarget": "cashbox-frontend:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -89,7 +89,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "cashbox-frontend:build"
+            "buildTarget": "cashbox-frontend:build"
           }
         },
         "test": {
