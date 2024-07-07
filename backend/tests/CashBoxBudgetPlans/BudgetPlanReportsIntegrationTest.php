@@ -1,4 +1,5 @@
 <?php
+
 namespace CashBoxBudgetPlans;
 
 use App\Models\CashBoxBudgetPlan;
@@ -23,6 +24,15 @@ class BudgetPlanReportsIntegrationTest extends TestCase
         $this->createBudgetPlanEntry($this->budgetPlan, $this->user1, ['value' => 10.99]);
         $this->createBudgetPlanEntry($this->budgetPlan, $this->user1, ['value' => 15.95]);
         $this->createBudgetPlanEntry($this->budgetPlan, $this->user2, ['value' => 20.99]);
+    }
+
+    protected function tearDown(): void
+    {
+        // Reset error and exception handlers to PHP's default
+        restore_error_handler();
+        restore_exception_handler();
+
+        parent::tearDown();
     }
 
     public function test_expect_remainingBudget()

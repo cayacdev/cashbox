@@ -1,4 +1,5 @@
 <?php
+
 namespace CashBoxes;
 
 use App\Models\CashBox;
@@ -7,6 +8,16 @@ use TestCase;
 
 class CreateCashBoxTest extends TestCase
 {
+
+    protected function tearDown(): void
+    {
+        // Reset error and exception handlers to PHP's default
+        restore_error_handler();
+        restore_exception_handler();
+
+        parent::tearDown();
+    }
+
     /**
      * @throws AuthorizationException
      */

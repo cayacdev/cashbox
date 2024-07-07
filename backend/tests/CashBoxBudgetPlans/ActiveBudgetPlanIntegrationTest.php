@@ -1,4 +1,5 @@
 <?php
+
 namespace CashBoxBudgetPlans;
 
 use App\Models\CashBox;
@@ -33,9 +34,18 @@ class ActiveBudgetPlanIntegrationTest extends TestCase
         ]);
     }
 
+    protected function tearDown(): void
+    {
+        // Reset error and exception handlers to PHP's default
+        restore_error_handler();
+        restore_exception_handler();
+
+        parent::tearDown();
+    }
+
     public function test_budgetPlanHasActivePlan_expect_activePlan(): void
     {
-        $response = $this->get('/v1/cash-boxes/'.$this->cashBoxWithActivePlan->id.'/plans/active', $this->headers);
+        $response = $this->get('/v1/cash-boxes/' . $this->cashBoxWithActivePlan->id . '/plans/active', $this->headers);
         $response->assertResponseOk();
 
         $expectedPlan = array_merge(
@@ -48,13 +58,13 @@ class ActiveBudgetPlanIntegrationTest extends TestCase
 
     public function test_budgetPlanHasInactivePlan_expect_noContent(): void
     {
-        $response = $this->get('/v1/cash-boxes/'.$this->cashBoxWithInactivePlan->id.'/plans/active', $this->headers);
+        $response = $this->get('/v1/cash-boxes/' . $this->cashBoxWithInactivePlan->id . '/plans/active', $this->headers);
         $response->assertResponseStatus(204);
     }
 
     public function test_budgetPlanHasNoPlan_expect_noContent(): void
     {
-        $response = $this->get('/v1/cash-boxes/'.$this->cashBoxWithoutAnyPlan->id.'/plans/active', $this->headers);
+        $response = $this->get('/v1/cash-boxes/' . $this->cashBoxWithoutAnyPlan->id . '/plans/active', $this->headers);
         $response->assertResponseStatus(204);
     }
 }

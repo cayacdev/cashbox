@@ -1,4 +1,5 @@
 <?php
+
 namespace CashBoxBudgetPlans;
 
 use App\Http\Controllers\CashBoxBudgetPlanController;
@@ -17,6 +18,15 @@ class CloseBudgetPlanIntegrationTest extends TestCase
         $this->authenticate($user);
         $cashBox = $this->createCashBox($user);
         $this->budgetPlan = $this->createBudgetPlan($cashBox);
+    }
+
+    protected function tearDown(): void
+    {
+        // Reset error and exception handlers to PHP's default
+        restore_error_handler();
+        restore_exception_handler();
+
+        parent::tearDown();
     }
 
     public function test_expect_defaultBudgetPlanIsOpen()
