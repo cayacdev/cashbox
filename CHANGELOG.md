@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://github.com/cayacdev/cashbox/compare/v1.2.1...v1.3.0) (2024-07-11)
+
+
+### Features
+
+* **auth:** refresh expired token instead of logout immediately ([#645](https://github.com/cayacdev/cashbox/issues/645)) ([b1bdc5e](https://github.com/cayacdev/cashbox/commit/b1bdc5e3cc138a631d85ad7873d0b28344e8c855))
+
 ## [1.2.1](https://github.com/cayacdev/cashbox/compare/v1.2.0...v1.2.1) (2024-07-07)
 
 
