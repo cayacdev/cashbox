@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing'
 import { ActivatedRouteSnapshot } from '@angular/router'
 import { MockStore, provideMockStore } from '@ngrx/store/testing'
-import { Observable, Subject } from 'rxjs'
+import { BehaviorSubject, Observable } from 'rxjs'
 import { BudgetPlanResolver } from './budget-plan.resolver'
 import * as BudgetPlanAction from '../store/budget-plan.actions'
 import { BudgetPlan } from '../../model/budget-plan.model'
@@ -11,7 +11,7 @@ import { Action } from '@ngrx/store'
 describe('BudgetPlanResolver', () => {
   let resolver: BudgetPlanResolver
   let store: MockStore
-  let actions$ = new Subject<Action>()
+  let actions$ = new BehaviorSubject<Action | null>(null)
   let route: ActivatedRouteSnapshot
 
   beforeEach(() => {

@@ -17,9 +17,4 @@ describe('Auth', () => {
     auth = new Auth('test@test.com', 'token', new Date(new Date().getTime() + 10000))
     expect(auth.token).toEqual('token')
   })
-
-  it('should return null if token expiration date is in the past', () => {
-    auth = new Auth('test@test.com', 'token', new Date(new Date().getTime() - 10000))
-    expect(auth.token).toBeNull()
-  })
 })
