@@ -1,12 +1,12 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
-import { BudgetPlan } from '../../../model/budget-plan.model';
-import { Store } from '@ngrx/store';
-import * as fromApp from '../../../store/app.reducer';
-import { ActivatedRoute, Router } from '@angular/router';
-import * as BudgetPlanAction from '../../store/budget-plan.actions';
-import { Subscription } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { Component, OnDestroy, OnInit } from '@angular/core'
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms'
+import { BudgetPlan } from '../../../model/budget-plan.model'
+import { Store } from '@ngrx/store'
+import * as fromApp from '../../../store/app.reducer'
+import { ActivatedRoute, Router } from '@angular/router'
+import * as BudgetPlanAction from '../../store/budget-plan.actions'
+import { Subscription } from 'rxjs'
+import { take } from 'rxjs/operators'
 
 @Component({
   selector: 'app-budget-plan-edit',
@@ -14,50 +14,47 @@ import { take } from 'rxjs/operators';
   styleUrls: ['./budget-plan-edit.component.scss'],
 })
 export class BudgetPlanEditComponent implements OnInit, OnDestroy {
-  form: UntypedFormGroup;
-  loading: boolean;
-  error: string;
-  editMode = false;
-  budgetPlan: BudgetPlan;
-  cashBoxId: number;
-  private sub: Subscription;
+  form: UntypedFormGroup
+  loading: boolean
+  error?: string
+  editMode = false
+  budgetPlan: BudgetPlan
+  cashBoxId: number
+  private sub: Subscription
 
-  constructor(private store: Store<fromApp.AppState>, private activatedRoute: ActivatedRoute, private readonly router: Router) {}
+  constructor(
+    private store: Store<fromApp.AppState>,
+    private activatedRoute: ActivatedRoute,
+    private readonly router: Router,
+  ) {}
 
   ngOnInit(): void {
-    this.budgetPlan = this.activatedRoute.snapshot.data.budgetPlan;
-    this.editMode = !!this.budgetPlan;
-    this.activatedRoute.parent.data.pipe(take(1)).subscribe((data) => {
-      this.cashBoxId = data.cashBoxId;
-    });
+    this.budgetPlan = this.activatedRoute.snapshot.data.budgetPlan
+    this.editMode = !!this.budgetPlan
+    this.activatedRoute.parent!.data.pipe(take(1)).subscribe((data) => {
+      this.cashBoxId = data.cashBoxId
+    })
     this.sub = this.store.select('budgetPlan').subscribe((state) => {
-      this.loading = state.loading;
-      this.error = state.error;
-    });
-    this.initForm();
+      this.loading = state.loading
+      this.error = state.error
+    })
+    this.initForm()
   }
 
   private initForm(): void {
     this.form = new UntypedFormGroup({
-      name: new UntypedFormControl(this.budgetPlan?.name, [
-        Validators.required,
-        Validators.maxLength(255),
-      ]),
+      name: new UntypedFormControl(this.budgetPlan?.name, [Validators.required, Validators.maxLength(255)]),
       budget: new UntypedFormControl(this.budgetPlan?.budget, [Validators.required]),
       range: new UntypedFormGroup({
-        start_date: new UntypedFormControl(this.budgetPlan?.start_date, [
-          Validators.required,
-        ]),
-        end_date: new UntypedFormControl(this.budgetPlan?.end_date, [
-          Validators.required,
-        ]),
+        start_date: new UntypedFormControl(this.budgetPlan?.start_date, [Validators.required]),
+        end_date: new UntypedFormControl(this.budgetPlan?.end_date, [Validators.required]),
       }),
-    });
+    })
   }
 
   onSubmit(): void {
     if (!this.form.valid) {
-      return;
+      return
     }
     if (!this.editMode) {
       this.store.dispatch(
@@ -68,8 +65,8 @@ export class BudgetPlanEditComponent implements OnInit, OnDestroy {
             start_date: this.fixDate(this.form.value.range.start_date),
             end_date: this.fixDate(this.form.value.range.end_date),
           },
-        })
-      );
+        }),
+      )
     } else {
       this.store.dispatch(
         BudgetPlanAction.updateBudgetPlan({
@@ -80,20 +77,20 @@ export class BudgetPlanEditComponent implements OnInit, OnDestroy {
             end_date: this.fixDate(this.form.value.range.end_date),
           },
           index: this.budgetPlan.id,
-        })
-      );
+        }),
+      )
     }
 
-    this.router.navigate([`/cash-boxes/${this.cashBoxId}`]);
+    this.router.navigate([`/cash-boxes/${this.cashBoxId}`])
   }
 
   private fixDate(date: string): string {
-    const d = new Date(date);
-    d.setMinutes(-1 * d.getTimezoneOffset());
-    return d.toISOString().split('T')[0];
+    const d = new Date(date)
+    d.setMinutes(-1 * d.getTimezoneOffset())
+    return d.toISOString().split('T')[0]
   }
 
   ngOnDestroy(): void {
-    this.sub.unsubscribe();
+    this.sub.unsubscribe()
   }
 }

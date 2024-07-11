@@ -70,10 +70,10 @@ export class BudgetPlanChartComponent implements OnInit, OnChanges {
         take(1),
       )
       .subscribe((isHandset) => {
-        this.lineChartOptions.aspectRatio = isHandset ? 2 : 4
+        this.lineChartOptions!.aspectRatio = isHandset ? 2 : 4
       })
 
-    this.lineChartData.datasets.find((d) => d.label === 'Planned').data = [
+    this.lineChartData.datasets.find((d) => d.label === 'Planned')!.data = [
       { x: new Date(this.budgetPlan.start_date), y: this.budgetPlan.budget },
       { x: new Date(this.budgetPlan.end_date), y: 0 },
     ]
@@ -92,7 +92,7 @@ export class BudgetPlanChartComponent implements OnInit, OnChanges {
     this.generateDataFromEntries(this.budgetPlan, grouped, this.budgetPlan.budget, data)
 
     let dataset = this.lineChartData.datasets.find((d) => d.label === 'Real')
-    if (dataset.data.length === 0) {
+    if (dataset?.data.length === 0) {
       dataset.data.push(...data)
     }
   }
@@ -109,11 +109,6 @@ export class BudgetPlanChartComponent implements OnInit, OnChanges {
       const d1 = new Date(a.date)
       const d2 = new Date(b.date)
 
-      const same = d1.getTime() === d2.getTime()
-      if (same) {
-        return 0
-      }
-
       if (d1 > d2) {
         return 1
       }
@@ -121,6 +116,8 @@ export class BudgetPlanChartComponent implements OnInit, OnChanges {
       if (d1 < d2) {
         return -1
       }
+
+      return 0
     }
   }
 

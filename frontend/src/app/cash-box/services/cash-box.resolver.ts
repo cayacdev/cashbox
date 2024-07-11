@@ -24,7 +24,7 @@ export class CashBoxResolver {
   ) {}
 
   resolve(route: ActivatedRouteSnapshot, _: RouterStateSnapshot): Observable<CashBox> | Promise<CashBox> | CashBox {
-    const id = route.paramMap.get('id')
+    const id = route.paramMap.get('id') as string
     this.store.dispatch(CashBoxActions.setSelectedCashBox({ cashBoxId: +id }))
     this.store.dispatch(loadActiveBudgetPlan({ cashBoxId: +id }))
 
@@ -43,7 +43,11 @@ export class CashBoxResolver {
             ofType(CashBoxAction.loadCashBoxesSuccess),
             take(1),
             map((result) => {
-              return result.cashBoxes.find((c) => c.id === +id)
+              let cashBox = result.cashBoxes.find((c) => c.id === +id)
+              if (!cashBox) {
+                throw new Error('Cash box not found')
+              }
+              return cashBox
             }),
           )
         }

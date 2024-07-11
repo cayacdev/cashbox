@@ -35,7 +35,7 @@ export class BudgetPlanViewComponent implements OnInit {
   showDescription = false
   entriesLoaded$: Observable<boolean>
 
-  activeUserEmail$ = this.store.select('auth').pipe(map((state) => state.user.email))
+  activeUserEmail$ = this.store.select('auth').pipe(map((state) => state.user?.email))
 
   constructor(
     private store: Store<fromApp.AppState>,
@@ -48,7 +48,7 @@ export class BudgetPlanViewComponent implements OnInit {
         case 'date':
           return new Date(item.date).getTime()
         case 'user':
-          return item.user.name
+          return item.user.name ?? item.user.email
         default:
           return item[property]
       }

@@ -17,9 +17,14 @@ describe('BudgetPlanEffects', function () {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-    imports: [],
-    providers: [BudgetPlanEffects, provideMockActions(() => actions$), provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
-})
+      imports: [],
+      providers: [
+        BudgetPlanEffects,
+        provideMockActions(() => actions$),
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+      ],
+    })
 
     systemUnderTest = TestBed.inject(BudgetPlanEffects)
     httpClient = TestBed.inject(HttpClient)
@@ -32,7 +37,7 @@ describe('BudgetPlanEffects', function () {
 
   describe('closeBudgetPlan$', () => {
     it('should set budget plan to closed and dispatch to success event', () => {
-      let type = null
+      let type
       systemUnderTest.closeBudgetPlan$.subscribe((action) => {
         type = action.type
       })
@@ -48,7 +53,7 @@ describe('BudgetPlanEffects', function () {
     })
 
     it('should set budget plan to open and dispatch to success event', () => {
-      let type = null
+      let type
       systemUnderTest.closeBudgetPlan$.subscribe((action) => {
         type = action.type
       })
@@ -64,7 +69,7 @@ describe('BudgetPlanEffects', function () {
     })
 
     it('should set budget plan to closed and dispatch to failure event if forbidden', () => {
-      let type = null
+      let type
       systemUnderTest.closeBudgetPlan$.subscribe((action) => {
         type = action.type
       })
@@ -81,7 +86,7 @@ describe('BudgetPlanEffects', function () {
 
   describe('updateBudgetPlan$', () => {
     it('should update budget plan and dispatch to success event', () => {
-      let type = null
+      let type
       systemUnderTest.updateBudgetPlan$.subscribe((action) => {
         type = action.type
       })
@@ -109,7 +114,7 @@ describe('BudgetPlanEffects', function () {
 
   describe('addBudgetPlan$', () => {
     it('should update budget plan and dispatch to success event', () => {
-      let type = null
+      let type
       systemUnderTest.addBudgetPlan$.subscribe((action) => {
         type = action.type
       })

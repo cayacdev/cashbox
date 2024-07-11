@@ -16,7 +16,7 @@ import { Subscription } from 'rxjs'
 export class BudgetPlanReportComponent implements OnInit, AfterViewChecked, OnDestroy {
   @Input() cashBoxId: number
   @Input() budgetPlanId: number
-  name: string
+  name?: string
   report: BudgetPlanReport
 
   @ViewChild('paidByUserSort', { static: false }) paidByUserSort: MatSort
@@ -76,7 +76,7 @@ export class BudgetPlanReportComponent implements OnInit, AfterViewChecked, OnDe
       }
 
       return previousValue
-    }, [])
+    }, [] as DataSet[])
 
     groups = groups.sort((a: DataSet, b: DataSet) => {
       return b.value - a.value
