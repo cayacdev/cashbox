@@ -17,7 +17,7 @@ export class BudgetPlansResolver {
   constructor(private store: Store<fromApp.AppState>) {}
 
   resolve(route: ActivatedRouteSnapshot, _state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-    const id = route.paramMap.get('id')
+    const id = route.paramMap.get('id') as string
 
     return this.store.select('budgetPlan').pipe(
       take(1),

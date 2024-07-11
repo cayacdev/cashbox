@@ -11,7 +11,7 @@ import { Action } from '@ngrx/store'
 describe('BudgetPlanResolver', () => {
   let resolver: BudgetPlanResolver
   let store: MockStore
-  let actions$ = new BehaviorSubject<Action>(null)
+  let actions$ = new BehaviorSubject<Action | null>(null)
   let route: ActivatedRouteSnapshot
 
   beforeEach(() => {
@@ -28,6 +28,7 @@ describe('BudgetPlanResolver', () => {
   it('should return budget plan if it exists in the store', (done) => {
     store.setState({ budgetPlan: { budgetPlans: [{ id: 1 }] } })
 
+    // @ts-ignore
     let result = resolver.resolve(route, null) as Observable<BudgetPlan>
 
     result.subscribe((budgetPlan) => {
@@ -42,6 +43,7 @@ describe('BudgetPlanResolver', () => {
 
     actions$.next(BudgetPlanAction.loadBudgetPlansSuccess({ budgetPlans: [{ id: 1 } as BudgetPlan] }))
 
+    // @ts-ignore
     let result = resolver.resolve(route, null) as Observable<BudgetPlan>
 
     result.subscribe((budgetPlan) => {

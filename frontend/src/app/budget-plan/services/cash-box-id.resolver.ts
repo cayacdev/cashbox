@@ -9,6 +9,7 @@ export const resolveCashBoxId: ResolveFn<number> = (route: ActivatedRouteSnapsho
 @Injectable({ providedIn: 'root' })
 export class CashBoxIdResolver {
   resolve(route: ActivatedRouteSnapshot, _: RouterStateSnapshot): Observable<number> | Promise<number> | number {
-    return +route.paramMap.get('id')
+    const id = route.paramMap.get('id') as string
+    return +id
   }
 }

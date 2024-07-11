@@ -39,6 +39,7 @@ describe('AuthGuard', () => {
   it('should return true if user is authenticated', (done) => {
     store.setState({ auth: { user: { id: '1', email: 'test@test.com' } } })
 
+    // @ts-ignore
     const canActivate = guard.canActivate(null, null) as Observable<boolean>
 
     canActivate.subscribe((isAuth) => {
@@ -51,6 +52,7 @@ describe('AuthGuard', () => {
     const urlTree = router.createUrlTree(['/auth'])
 
     createUrlTreeSpy.and.returnValue(urlTree)
+    // @ts-ignore
     const canActivate = guard.canActivate(null, null) as Observable<boolean | UrlTree>
 
     canActivate.subscribe((result) => {

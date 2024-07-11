@@ -25,7 +25,7 @@ Route::group([
     Route::post('login', 'AuthController@login');
     Route::put('changePassword', 'AuthController@changePassword');
     Route::post('logout', 'AuthController@logout');
-    Route::post('refresh', 'AuthController@refresh');
+    Route::post('refresh', ['uses' => 'AuthController@refresh', 'middleware' => 'jwt.refresh']);
     Route::get('me', 'AuthController@me');
 });
 

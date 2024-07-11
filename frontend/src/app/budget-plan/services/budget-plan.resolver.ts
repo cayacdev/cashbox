@@ -20,7 +20,7 @@ export class BudgetPlanResolver {
   ) {}
 
   resolve(route: ActivatedRouteSnapshot, _: RouterStateSnapshot): Observable<BudgetPlan> | Promise<BudgetPlan> | BudgetPlan {
-    const id = route.paramMap.get('id')
+    const id = route.paramMap.get('id') as string
     return this.store.select('budgetPlan').pipe(
       take(1),
       switchMap((storeState) => {
@@ -34,7 +34,7 @@ export class BudgetPlanResolver {
             ofType(BudgetPlanAction.loadBudgetPlansSuccess),
             take(1),
             map((result) => {
-              return result.budgetPlans.find((c) => c.id === +id)
+              return result.budgetPlans.find((c) => c.id === +id) as BudgetPlan
             }),
           )
         }

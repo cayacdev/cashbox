@@ -47,7 +47,7 @@ describe('BudgetPlanChartComponent', () => {
 
     component.ngOnInit()
 
-    expect(component.lineChartOptions.aspectRatio).toEqual(4)
+    expect(component.lineChartOptions?.aspectRatio).toEqual(4)
   })
 
   it('should update chart data on changes', () => {

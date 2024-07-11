@@ -19,6 +19,12 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
+        if (User::where('email', $request->email)->exists()) {
+            return response()->json([
+                'message' => 'Internal Server Error',
+            ], 500);
+        }
+
         $this->validate($request, [
             'name' => 'required',
             'email' => 'required|email',
@@ -102,7 +108,7 @@ class AuthController extends Controller
      */
     public function refresh()
     {
-        return $this->respondWithToken(auth()->refresh());
+        return $this->respondWithToken(auth()->refresh(true));
     }
 
     /**
